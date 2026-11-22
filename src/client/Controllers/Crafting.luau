@@ -42,7 +42,7 @@ local function nearStation(station: string): boolean
 end
 
 function Crafting.init(gui: ScreenGui)
-	local _, body = Widgets.window(gui, "Crafting", "🛠️ Fabricar", Vector2.new(820, 520))
+	local _, body = Widgets.window(gui, "Crafting", "🔨 Criar", Vector2.new(820, 520))
 	local tabBar = Lib.new("Frame", { Size = UDim2.new(1, 0, 0, 38), BackgroundTransparency = 1, Parent = body })
 	Lib.new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 6), Parent = tabBar })
 	local listHolder = Lib.new("Frame", { Position = UDim2.fromOffset(0, 46), Size = UDim2.new(0, 470, 1, -46), BackgroundTransparency = 1, Parent = body })

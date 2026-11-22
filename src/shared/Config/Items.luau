@@ -34,9 +34,9 @@ local C = Color3.fromRGB
 local Items: { [string]: ItemDef } = {
 	-- ===== Recursos =====
 	stick = { id = "stick", name = "Galho", description = "Base de quase toda ferramenta.", category = "resource", icon = "🥢", color = C(150, 105, 60), stack = 99, rarity = "common" },
-	stone = { id = "stone", name = "Pedra", description = "Dura e útil.", category = "resource", icon = "🪨", color = C(140, 140, 145), stack = 99, rarity = "common" },
+	stone = { id = "stone", name = "Pedra", description = "Dura e útil.", category = "resource", icon = "🗻", color = C(140, 140, 145), stack = 99, rarity = "common" },
 	fiber = { id = "fiber", name = "Fibra", description = "Trançada vira corda.", category = "resource", icon = "🌿", color = C(110, 170, 70), stack = 99, rarity = "common" },
-	wood = { id = "wood", name = "Madeira", description = "Tábuas para construir.", category = "resource", icon = "🪵", color = C(160, 110, 65), stack = 99, rarity = "common" },
+	wood = { id = "wood", name = "Madeira", description = "Tábuas para construir.", category = "resource", icon = "🌲", color = C(160, 110, 65), stack = 99, rarity = "common" },
 	leaf = { id = "leaf", name = "Folha de Palmeira", description = "Cobre telhados e camas.", category = "resource", icon = "🍃", color = C(80, 160, 80), stack = 99, rarity = "common" },
 	flint = { id = "flint", name = "Sílex", description = "Faz faísca. Essencial para fogo.", category = "resource", icon = "🔺", color = C(90, 90, 100), stack = 99, rarity = "uncommon" },
 	hide = { id = "hide", name = "Couro", description = "Couro de javali.", category = "resource", icon = "🟫", color = C(120, 80, 50), stack = 50, rarity = "uncommon" },
@@ -47,7 +47,7 @@ local Items: { [string]: ItemDef } = {
 	shade_essence = { id = "shade_essence", name = "Essência Sombria", description = "Deixada pelas Sombras da Maré.", category = "resource", icon = "🌑", color = C(110, 80, 160), stack = 50, rarity = "rare" },
 
 	-- ===== Comida e bebida =====
-	berry = { id = "berry", name = "Frutas Silvestres", description = "Matam um pouco a fome.", category = "food", icon = "🫐", color = C(90, 70, 180), stack = 50, hunger = 8, thirst = 3, rarity = "common" },
+	berry = { id = "berry", name = "Frutas Silvestres", description = "Matam um pouco a fome.", category = "food", icon = "🍇", color = C(90, 70, 180), stack = 50, hunger = 8, thirst = 3, rarity = "common" },
 	banana = { id = "banana", name = "Banana", description = "Energia rápida.", category = "food", icon = "🍌", color = C(240, 210, 70), stack = 30, hunger = 15, rarity = "common" },
 	coconut = { id = "coconut", name = "Coco", description = "Água e polpa.", category = "food", icon = "🥥", color = C(130, 90, 60), stack = 30, hunger = 5, thirst = 25, rarity = "common" },
 	fresh_water = { id = "fresh_water", name = "Água Fresca", description = "Coletada da chuva.", category = "food", icon = "💧", color = C(80, 170, 240), stack = 20, thirst = 40, rarity = "common" },
@@ -89,7 +89,7 @@ local Items: { [string]: ItemDef } = {
 	stone_floor = { id = "stone_floor", name = "Piso de Pedra", description = "Fundação sólida.", category = "structure", icon = "⬜", color = C(140, 140, 145), stack = 50, structure = "stone_floor", rarity = "uncommon" },
 	chest = { id = "chest", name = "Baú", description = "Guarda 20 pilhas de itens.", category = "structure", icon = "📦", color = C(150, 100, 55), stack = 10, structure = "chest", rarity = "common" },
 	leaf_bed = { id = "leaf_bed", name = "Cama de Folhas", description = "Ponto de renascimento.", category = "structure", icon = "🛏️", color = C(110, 170, 70), stack = 3, structure = "leaf_bed", rarity = "common" },
-	rain_collector = { id = "rain_collector", name = "Coletor de Chuva", description = "Gera Água Fresca quando chove.", category = "structure", icon = "🪣", color = C(80, 170, 240), stack = 5, structure = "rain_collector", rarity = "uncommon" },
+	rain_collector = { id = "rain_collector", name = "Coletor de Chuva", description = "Gera Água Fresca quando chove.", category = "structure", icon = "🌧️", color = C(80, 170, 240), stack = 5, structure = "rain_collector", rarity = "uncommon" },
 	torch_post = { id = "torch_post", name = "Poste de Tocha", description = "Ilumina sua base.", category = "structure", icon = "🏮", color = C(255, 160, 60), stack = 20, structure = "torch_post", rarity = "common" },
 	base_totem = { id = "base_totem", name = "Totem do Território", description = "Reivindica e protege sua base.", category = "structure", icon = "🗿", color = C(200, 160, 90), stack = 1, structure = "base_totem", rarity = "uncommon" },
 	rescue_beacon = { id = "rescue_beacon", name = "Farol de Resgate", description = "Objetivo final: chame o resgate!", category = "structure", icon = "🗼", color = C(255, 220, 120), stack = 1, structure = "rescue_beacon", rarity = "legendary" },

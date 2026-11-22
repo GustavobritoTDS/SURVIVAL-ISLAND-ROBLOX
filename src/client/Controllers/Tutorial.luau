@@ -8,13 +8,13 @@ local T = Lib.Theme
 local Tutorial = {}
 
 local STEPS = {
-	{ text = "Você naufragou! Pegue Galhos 🥢 e Pedras 🪨 na areia (aproxime-se e segure E / toque).", done = function()
+	{ text = "Você naufragou! Pegue Galhos 🥢 e Pedras 🗻 na areia (aproxime-se e segure E / toque).", done = function()
 		return State.count("stick") >= 3 and State.count("stone") >= 2
 	end },
 	{ text = "Colete Fibra 🌿 nos arbustos da selva.", done = function()
 		return State.count("fiber") >= 2
 	end },
-	{ text = "Abra 🛠️ Fabricar (C) e crie um Machado de Pedra.", done = function()
+	{ text = "Abra 🔨 Criar (C) e crie um Machado de Pedra.", done = function()
 		return State.count("stone_axe") >= 1
 	end },
 	{ text = "Selecione o machado na barra rápida (1) e golpeie uma Palmeira 🌴.", done = function()

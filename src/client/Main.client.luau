@@ -21,6 +21,7 @@ task.spawn(function()
 	for _ = 1, 20 do
 		local ok = pcall(function()
 			StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
+			StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, false) -- usamos a nossa barra de vida
 		end)
 		if ok then
 			break

@@ -1,0 +1,65 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;width:512px;height:512px;overflow:hidden;background:#0b2230}
+  svg{display:block}
+  .t{font-family:'Fredoka',sans-serif;font-weight:700}
+</style></head>
+<body>
+<!-- Ícone 512x512: ilha ao entardecer, palmeira, farol e olhos das Sombras da Maré -->
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1d4e6b"/><stop offset=".55" stop-color="#f08a5d"/><stop offset="1" stop-color="#ffc56b"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1fa3a8"/><stop offset="1" stop-color="#0b3a4f"/>
+    </linearGradient>
+    <radialGradient id="sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff2c0"/><stop offset="1" stop-color="#ffb347" stop-opacity="0"/></radialGradient>
+    <radialGradient id="beam" cx="0" cy=".5" r="1"><stop offset="0" stop-color="#fff6c8" stop-opacity=".9"/><stop offset="1" stop-color="#fff6c8" stop-opacity="0"/></radialGradient>
+    <clipPath id="r"><rect width="512" height="512" rx="96"/></clipPath>
+  </defs>
+  <g clip-path="url(#r)">
+    <rect width="512" height="512" fill="url(#sky)"/>
+    <circle cx="300" cy="300" r="120" fill="url(#sun)"/>
+    <circle cx="300" cy="300" r="58" fill="#ffe08a"/>
+    <!-- feixe do farol -->
+    <path d="M150 196 L512 120 L512 270 Z" fill="url(#beam)" opacity=".55"/>
+    <!-- mar -->
+    <rect y="318" width="512" height="194" fill="url(#sea)"/>
+    <path d="M0 340 Q64 330 128 340 T256 340 T384 340 T512 340" stroke="#7fe6df" stroke-width="5" fill="none" opacity=".6"/>
+    <!-- ilha -->
+    <path d="M24 392 Q110 290 300 326 Q420 342 488 392 Q256 414 24 392 Z" fill="#f3d08a"/>
+    <path d="M60 368 Q160 300 290 345 L120 380 Z" fill="#3f9a5a"/>
+    <!-- farol -->
+    <g transform="translate(130 190)">
+      <path d="M8 0 h28 l10 150 h-48 z" fill="#f4efe6"/>
+      <rect x="-1" y="40" width="46" height="18" fill="#d94b3c"/>
+      <rect x="-4" y="95" width="52" height="18" fill="#d94b3c"/>
+      <rect x="4" y="-22" width="36" height="24" rx="4" fill="#ffe9a0"/>
+      <path d="M0 -22 L22 -42 L44 -22 Z" fill="#d94b3c"/>
+    </g>
+    <!-- palmeira -->
+    <path d="M360 345 Q352 260 380 190" stroke="#7a4b2a" stroke-width="16" fill="none" stroke-linecap="round"/>
+    <g fill="#2f8f4e">
+      <path d="M380 190 Q330 160 290 190 Q335 175 380 196 Z"/>
+      <path d="M380 190 Q430 150 470 180 Q425 172 382 198 Z"/>
+      <path d="M380 190 Q360 140 320 130 Q365 150 378 196 Z"/>
+      <path d="M380 190 Q420 200 440 240 Q410 210 378 198 Z"/>
+      <path d="M380 190 Q340 210 330 250 Q350 215 382 198 Z"/>
+    </g>
+    <circle cx="374" cy="202" r="9" fill="#6b3f22"/><circle cx="388" cy="205" r="9" fill="#6b3f22"/>
+    <!-- Sombras da Maré emergindo -->
+    <g opacity=".95">
+      <path d="M180 512 Q190 430 230 420 Q270 430 280 512 Z" fill="#2a1d4d"/>
+      <rect x="208" y="446" width="12" height="6" rx="3" fill="#7ffff0"/>
+      <rect x="236" y="446" width="12" height="6" rx="3" fill="#7ffff0"/>
+      <path d="M330 512 Q338 456 368 450 Q398 456 404 512 Z" fill="#2a1d4d" opacity=".85"/>
+      <rect x="352" y="472" width="9" height="5" rx="2.5" fill="#7ffff0"/>
+      <rect x="373" y="472" width="9" height="5" rx="2.5" fill="#7ffff0"/>
+    </g>
+  </g>
+  <rect width="508" height="508" x="2" y="2" rx="94" fill="none" stroke="#ffd27a" stroke-width="4" opacity=".7"/>
+</svg>
+</body></html>

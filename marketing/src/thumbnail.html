@@ -1,0 +1,24 @@
+<!doctype html>
+<!-- Thumbnail 1920x1080: captura REAL do jogo ao fundo + logo + chamada.
+     Troque a imagem em ?img=../capturas/arquivo.png (padrão: gameplay_cena.png). -->
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#0b2230}
+  .bg{position:absolute;inset:0;background-size:cover;background-position:center}
+  .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,20,30,.55) 0%,rgba(8,20,30,0) 38%,rgba(8,20,30,0) 62%,rgba(8,20,30,.7) 100%)}
+  .logo{position:absolute;top:40px;left:50%;transform:translateX(-50%);width:1300px}
+  .tag{position:absolute;bottom:56px;left:50%;transform:translateX(-50%);font-family:'Fredoka',sans-serif;font-weight:700;font-size:64px;
+    color:#fff4dc;-webkit-text-stroke:8px #13303d;paint-order:stroke fill;white-space:nowrap}
+  .tag b{color:#ffba49}
+</style></head>
+<body>
+  <div class="bg" id="bg"></div><div class="shade"></div>
+  <img class="logo" src="../logo.png" alt="">
+  <div class="tag" id="tag">Colete · Construa · <b>Sobreviva à noite</b></div>
+<script>
+  const p = new URLSearchParams(location.search);
+  document.getElementById('bg').style.backgroundImage = `url(${p.get('img') || '../capturas/gameplay_cena.png'})`;
+  if (p.get('tag')) document.getElementById('tag').innerHTML = p.get('tag');
+</script>
+</body></html>

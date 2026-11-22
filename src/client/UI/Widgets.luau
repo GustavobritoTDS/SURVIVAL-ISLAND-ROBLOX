@@ -96,7 +96,7 @@ function Widgets.window(gui: ScreenGui, name: string, title: string, size: Vecto
 	Lib.new("UISizeConstraint", { MaxSize = Vector2.new(size.X, size.Y), Parent = f })
 	local header = Lib.new("Frame", { Size = UDim2.new(1, 0, 0, 46), BackgroundTransparency = 1, Parent = f })
 	Lib.text({ Position = UDim2.fromOffset(18, 0), Size = UDim2.new(1, -80, 1, 0), Text = title, TextSize = 22, TextXAlignment = Enum.TextXAlignment.Left, TextColor3 = T.accent, Parent = header })
-	Lib.button({ AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -10, 0.5, 0), Size = UDim2.fromOffset(34, 34), Text = "✕", TextSize = 18, Parent = header }, function()
+	Lib.button({ AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -10, 0.5, 0), Size = UDim2.fromOffset(34, 34), Text = "X", TextSize = 18, Parent = header }, function()
 		Widgets.toggle(name, false)
 	end)
 	local body = Lib.new("Frame", { Name = "Body", Position = UDim2.fromOffset(14, 50), Size = UDim2.new(1, -28, 1, -64), BackgroundTransparency = 1, Parent = f })

@@ -219,7 +219,7 @@ local function setupRain()
 end
 
 -- ===== Prompts de interação customizados =====
-local KIND_ICON = { collect = "✋", chest = "📦", door = "🚪", bed = "🛏️", water = "🪣", drink = "💧", beacon = "🗼", bag = "🎒" }
+local KIND_ICON = { collect = "✋", chest = "📦", door = "🚪", bed = "🛏️", water = "🌧️", drink = "💧", beacon = "🗼", bag = "🎒" }
 local function setupPrompts(gui: ScreenGui)
 	ProximityPromptService.PromptShown:Connect(function(prompt: ProximityPrompt, inputType)
 		if prompt.Style ~= Enum.ProximityPromptStyle.Custom then

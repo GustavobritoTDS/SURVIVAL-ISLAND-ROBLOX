@@ -191,7 +191,7 @@ function Build.init(gui: ScreenGui)
 	Lib.button({ Size = UDim2.fromOffset(110, 48), Text = "❌ Sair", BackgroundColor3 = T.bad:Lerp(T.panel, 0.5), Parent = row }, stop)
 
 	-- Janela "Construir": lista de construções no inventário + desmontar
-	local _, body = Widgets.window(gui, "Build", "🏗️ Construir", Vector2.new(640, 440))
+	local _, body = Widgets.window(gui, "Build", "🏠 Construir", Vector2.new(640, 440))
 	local grid = Widgets.scroll(body, Vector2.new(140, 110), 10)
 	local function rebuild()
 		for _, c in grid:GetChildren() do
