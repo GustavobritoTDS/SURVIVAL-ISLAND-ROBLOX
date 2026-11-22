@@ -1,0 +1,9 @@
+build/
+sourcemap.json
+*.rbxl.lock
+*.rbxlx.lock
+.env
+*.key
+roblox-api-key*
+tools/globalTypes.d.luau
+.vscode/settings.local.json
