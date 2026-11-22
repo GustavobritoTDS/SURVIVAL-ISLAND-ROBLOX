@@ -74,7 +74,15 @@ function Lib.corner(r: number): UICorner
 end
 
 function Lib.stroke(color: Color3?, thickness: number?, transparency: number?): UIStroke
-	return Lib.new("UIStroke", { Color = color or T.stroke, Thickness = thickness or 1.5, Transparency = transparency or 0.35, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
+	return Lib.new(
+		"UIStroke",
+		{
+			Color = color or T.stroke,
+			Thickness = thickness or 1.5,
+			Transparency = transparency or 0.35,
+			ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+		}
+	)
 end
 
 function Lib.pad(px: number): UIPadding
@@ -97,11 +105,21 @@ function Lib.text(props: { [string]: any }): TextLabel
 	return Lib.new("TextLabel", defaults)
 end
 
-function Lib.tween(inst: Instance, t: number, props: { [string]: any }, style: Enum.EasingStyle?, dir: Enum.EasingDirection?): Tween
+function Lib.tween(
+	inst: Instance,
+	t: number,
+	props: { [string]: any },
+	style: Enum.EasingStyle?,
+	dir: Enum.EasingDirection?
+): Tween
 	if Lib.reducedMotion() then
 		t = math.min(t, 0.05)
 	end
-	local tw = TweenService:Create(inst, TweenInfo.new(t, style or Enum.EasingStyle.Quad, dir or Enum.EasingDirection.Out), props)
+	local tw = TweenService:Create(
+		inst,
+		TweenInfo.new(t, style or Enum.EasingStyle.Quad, dir or Enum.EasingDirection.Out),
+		props
+	)
 	tw:Play()
 	return tw
 end

@@ -19,9 +19,35 @@ function Widgets.slot(parent: Instance, size: number, index: number?): Slot
 		Parent = parent,
 	})
 	local icon = Lib.text({ Size = UDim2.fromScale(1, 1), Text = "", TextScaled = true, Parent = b })
-	Lib.new("UIPadding", { PaddingTop = UDim.new(0.16, 0), PaddingBottom = UDim.new(0.2, 0), PaddingLeft = UDim.new(0.16, 0), PaddingRight = UDim.new(0.16, 0), Parent = icon })
-	local count = Lib.text({ AnchorPoint = Vector2.new(1, 1), Position = UDim2.new(1, -4, 1, -2), Size = UDim2.fromOffset(40, 16), Text = "", TextSize = 14, TextXAlignment = Enum.TextXAlignment.Right, TextStrokeTransparency = 0.4, Parent = b })
-	local key = Lib.text({ Position = UDim2.fromOffset(4, 2), Size = UDim2.fromOffset(14, 14), Text = "", TextSize = 11, TextColor3 = T.muted, TextXAlignment = Enum.TextXAlignment.Left, Parent = b })
+	Lib.new(
+		"UIPadding",
+		{
+			PaddingTop = UDim.new(0.16, 0),
+			PaddingBottom = UDim.new(0.2, 0),
+			PaddingLeft = UDim.new(0.16, 0),
+			PaddingRight = UDim.new(0.16, 0),
+			Parent = icon,
+		}
+	)
+	local count = Lib.text({
+		AnchorPoint = Vector2.new(1, 1),
+		Position = UDim2.new(1, -4, 1, -2),
+		Size = UDim2.fromOffset(40, 16),
+		Text = "",
+		TextSize = 14,
+		TextXAlignment = Enum.TextXAlignment.Right,
+		TextStrokeTransparency = 0.4,
+		Parent = b,
+	})
+	local key = Lib.text({
+		Position = UDim2.fromOffset(4, 2),
+		Size = UDim2.fromOffset(14, 14),
+		Text = "",
+		TextSize = 11,
+		TextColor3 = T.muted,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		Parent = b,
+	})
 	if index and index <= 6 and parent.Name == "Hotbar" then
 		key.Text = tostring(index)
 	end
@@ -58,14 +84,35 @@ end
 
 -- Barra horizontal com ícone e valor
 function Widgets.bar(parent: Instance, icon: string, color: Color3, order: number): (number) -> ()
-	local row = Lib.new("Frame", { Size = UDim2.fromOffset(210, 22), BackgroundTransparency = 1, LayoutOrder = order, Parent = parent })
+	local row = Lib.new(
+		"Frame",
+		{ Size = UDim2.fromOffset(210, 22), BackgroundTransparency = 1, LayoutOrder = order, Parent = parent }
+	)
 	Lib.text({ Size = UDim2.fromOffset(22, 22), Text = icon, TextScaled = true, Parent = row })
-	local back = Lib.new("Frame", { Position = UDim2.fromOffset(28, 4), Size = UDim2.new(1, -28, 0, 14), BackgroundColor3 = Color3.fromRGB(10, 16, 20), BackgroundTransparency = 0.2, Parent = row })
+	local back = Lib.new(
+		"Frame",
+		{
+			Position = UDim2.fromOffset(28, 4),
+			Size = UDim2.new(1, -28, 0, 14),
+			BackgroundColor3 = Color3.fromRGB(10, 16, 20),
+			BackgroundTransparency = 0.2,
+			Parent = row,
+		}
+	)
 	Lib.corner(7).Parent = back
 	local fill = Lib.new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = color, Parent = back })
 	Lib.corner(7).Parent = fill
-	Lib.new("UIGradient", { Color = ColorSequence.new(color:Lerp(Color3.new(1, 1, 1), 0.25), color), Rotation = 90, Parent = fill })
-	local label = Lib.text({ Size = UDim2.fromScale(1, 1), Text = "100", TextSize = 11, TextStrokeTransparency = 0.5, Parent = back })
+	Lib.new(
+		"UIGradient",
+		{ Color = ColorSequence.new(color:Lerp(Color3.new(1, 1, 1), 0.25), color), Rotation = 90, Parent = fill }
+	)
+	local label = Lib.text({
+		Size = UDim2.fromScale(1, 1),
+		Text = "100",
+		TextSize = 11,
+		TextStrokeTransparency = 0.5,
+		Parent = back,
+	})
 	local last = 100
 	return function(v: number)
 		v = math.clamp(v, 0, 100)
@@ -95,11 +142,38 @@ function Widgets.window(gui: ScreenGui, name: string, title: string, size: Vecto
 	})
 	Lib.new("UISizeConstraint", { MaxSize = Vector2.new(size.X, size.Y), Parent = f })
 	local header = Lib.new("Frame", { Size = UDim2.new(1, 0, 0, 46), BackgroundTransparency = 1, Parent = f })
-	Lib.text({ Position = UDim2.fromOffset(18, 0), Size = UDim2.new(1, -80, 1, 0), Text = title, TextSize = 22, TextXAlignment = Enum.TextXAlignment.Left, TextColor3 = T.accent, Parent = header })
-	Lib.button({ AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -10, 0.5, 0), Size = UDim2.fromOffset(34, 34), Text = "X", TextSize = 18, Parent = header }, function()
-		Widgets.toggle(name, false)
-	end)
-	local body = Lib.new("Frame", { Name = "Body", Position = UDim2.fromOffset(14, 50), Size = UDim2.new(1, -28, 1, -64), BackgroundTransparency = 1, Parent = f })
+	Lib.text({
+		Position = UDim2.fromOffset(18, 0),
+		Size = UDim2.new(1, -80, 1, 0),
+		Text = title,
+		TextSize = 22,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		TextColor3 = T.accent,
+		Parent = header,
+	})
+	Lib.button(
+		{
+			AnchorPoint = Vector2.new(1, 0.5),
+			Position = UDim2.new(1, -10, 0.5, 0),
+			Size = UDim2.fromOffset(34, 34),
+			Text = "X",
+			TextSize = 18,
+			Parent = header,
+		},
+		function()
+			Widgets.toggle(name, false)
+		end
+	)
+	local body = Lib.new(
+		"Frame",
+		{
+			Name = "Body",
+			Position = UDim2.fromOffset(14, 50),
+			Size = UDim2.new(1, -28, 1, -64),
+			BackgroundTransparency = 1,
+			Parent = f,
+		}
+	)
 	windows[name] = { frame = f }
 	return f, body
 end
@@ -154,8 +228,19 @@ function Widgets.scroll(parent: Instance, cell: Vector2, pad: number): Scrolling
 		CanvasSize = UDim2.new(),
 		Parent = parent,
 	})
-	Lib.new("UIGridLayout", { CellSize = UDim2.fromOffset(cell.X, cell.Y), CellPadding = UDim2.fromOffset(pad, pad), SortOrder = Enum.SortOrder.LayoutOrder, Parent = s })
-	Lib.new("UIPadding", { PaddingTop = UDim.new(0, 4), PaddingLeft = UDim.new(0, 4), PaddingRight = UDim.new(0, 8), Parent = s })
+	Lib.new(
+		"UIGridLayout",
+		{
+			CellSize = UDim2.fromOffset(cell.X, cell.Y),
+			CellPadding = UDim2.fromOffset(pad, pad),
+			SortOrder = Enum.SortOrder.LayoutOrder,
+			Parent = s,
+		}
+	)
+	Lib.new(
+		"UIPadding",
+		{ PaddingTop = UDim.new(0, 4), PaddingLeft = UDim.new(0, 4), PaddingRight = UDim.new(0, 8), Parent = s }
+	)
 	return s
 end
 

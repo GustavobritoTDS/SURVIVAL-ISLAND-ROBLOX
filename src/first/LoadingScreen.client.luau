@@ -161,7 +161,11 @@ ts.Scale = reduced and 1 or 0.8
 ts.Parent = title
 TweenService:Create(ts, TweenInfo.new(0.6, Enum.EasingStyle.Back), { Scale = 1 }):Play()
 if not reduced then
-	TweenService:Create(sun, TweenInfo.new(3, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), { Size = UDim2.fromOffset(240, 240) }):Play()
+	TweenService:Create(
+		sun,
+		TweenInfo.new(3, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+		{ Size = UDim2.fromOffset(240, 240) }
+	):Play()
 end
 
 task.spawn(function()
@@ -178,7 +182,9 @@ while true do
 	local data = player:GetAttribute("DataReady") == true
 	local p = (ready and 0.8 or world * 0.8) + (data and 0.2 or 0)
 	TweenService:Create(bar, TweenInfo.new(0.3), { Size = UDim2.fromScale(math.clamp(p, 0.02, 1), 1) }):Play()
-	status.Text = (not ready and ("Moldando a ilha... %d%%"):format(world * 100)) or (not data and "Recuperando seus suprimentos...") or "Pronto!"
+	status.Text = (not ready and ("Moldando a ilha... %d%%"):format(world * 100))
+		or (not data and "Recuperando seus suprimentos...")
+		or "Pronto!"
 	if (ready and data) or os.clock() - t0 > 90 then
 		break
 	end
@@ -198,7 +204,8 @@ local fade = TweenInfo.new(reduced and 0.05 or 0.6, Enum.EasingStyle.Quad, Enum.
 TweenService:Create(bg, fade, { BackgroundTransparency = 1 }):Play()
 for _, d in bg:GetDescendants() do
 	if d:IsA("TextLabel") or d:IsA("TextButton") then
-		TweenService:Create(d, fade, { TextTransparency = 1, TextStrokeTransparency = 1, BackgroundTransparency = 1 }):Play()
+		TweenService:Create(d, fade, { TextTransparency = 1, TextStrokeTransparency = 1, BackgroundTransparency = 1 })
+			:Play()
 	elseif d:IsA("Frame") then
 		TweenService:Create(d, fade, { BackgroundTransparency = 1 }):Play()
 	end

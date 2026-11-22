@@ -79,6 +79,7 @@ local function onPrompt(model: Model, nodeId: string, cf: CFrame, player: Player
 		return
 	end
 	local def = Nodes[nodeId]
+	fxEvent:FireAllClients({ kind = "anim", anim = "gather", char = player.Character })
 	giveDrops(player, def.drops, def.xp)
 	depleteNode(model, nodeId, cf)
 end

@@ -26,7 +26,8 @@ local function onCraft(player: Player, recipeId: any, times: any)
 	if not recipe or not t or not inv or not data or not hrp then
 		return
 	end
-	local hasStation = recipe.station == nil or BuildService.nearStation(hrp.Position, recipe.station, Recipes.STATION_RANGE)
+	local hasStation = recipe.station == nil
+		or BuildService.nearStation(hrp.Position, recipe.station, Recipes.STATION_RANGE)
 	local out = Items[recipe.output]
 	local ok, why = Rules.craft(inv, recipe, data.level, hasStation, out.stack, Game.HOTBAR_SLOTS, t)
 	if not ok then
@@ -36,6 +37,7 @@ local function onCraft(player: Player, recipeId: any, times: any)
 	PlayerService.changed(player)
 	PlayerService.notify(player, ("Fabricou %dx %s"):format(recipe.amount * t, out.name), "good", out.icon)
 	PlayerService.count(player, "craft", t)
+	PlayerService.count(player, "craft_" .. recipe.id, t)
 	if recipe.station == "campfire" then
 		PlayerService.count(player, "cook", t)
 	end

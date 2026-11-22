@@ -18,11 +18,54 @@ local V = Vector3.new
 local C = Color3.fromRGB
 
 local order: { Region } = {
-	{ id = "cave", name = "Caverna de Cristal", level = 6, center = V(40, 18, -250), radius = 80, minY = -10, maxY = 45, color = C(90, 220, 230), danger = 4 },
-	{ id = "volcano", name = "Cratera do Vulcão", level = 9, center = V(260, 120, -230), radius = 110, minY = 60, color = C(230, 90, 50), danger = 5 },
-	{ id = "highlands", name = "Planalto de Pedra", level = 4, center = V(-60, 60, -240), radius = 230, color = C(160, 160, 170), danger = 3 },
-	{ id = "jungle", name = "Selva Esmeralda", level = 1, center = V(0, 20, 60), radius = 330, color = C(60, 170, 90), danger = 2 },
-	{ id = "beach", name = "Praia do Naufrágio", level = 1, center = V(0, 3, 380), radius = 9999, color = C(240, 215, 150), danger = 1 },
+	{
+		id = "cave",
+		name = "Caverna de Cristal",
+		level = 6,
+		center = V(40, 18, -250),
+		radius = 80,
+		minY = -10,
+		maxY = 45,
+		color = C(90, 220, 230),
+		danger = 4,
+	},
+	{
+		id = "volcano",
+		name = "Cratera do Vulcão",
+		level = 9,
+		center = V(260, 120, -230),
+		radius = 110,
+		minY = 60,
+		color = C(230, 90, 50),
+		danger = 5,
+	},
+	{
+		id = "highlands",
+		name = "Planalto de Pedra",
+		level = 4,
+		center = V(-60, 60, -240),
+		radius = 230,
+		color = C(160, 160, 170),
+		danger = 3,
+	},
+	{
+		id = "jungle",
+		name = "Selva Esmeralda",
+		level = 1,
+		center = V(0, 20, 60),
+		radius = 330,
+		color = C(60, 170, 90),
+		danger = 2,
+	},
+	{
+		id = "beach",
+		name = "Praia do Naufrágio",
+		level = 1,
+		center = V(0, 3, 380),
+		radius = 9999,
+		color = C(240, 215, 150),
+		danger = 1,
+	},
 }
 
 local Regions = {

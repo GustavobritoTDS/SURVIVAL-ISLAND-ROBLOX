@@ -104,7 +104,12 @@ function PlayerService.sync(player: Player, ...: string)
 		elseif sec == "tutorial" then
 			out.tutorial = data.tutorial
 		elseif sec == "passes" then
-			out.passes = { vip = s.vip, bigBackpack = s.bigBackpack, parrot = player:GetAttribute("PassParrot") == true, trails = player:GetAttribute("PassTrails") == true }
+			out.passes = {
+				vip = s.vip,
+				bigBackpack = s.bigBackpack,
+				parrot = player:GetAttribute("PassParrot") == true,
+				trails = player:GetAttribute("PassTrails") == true,
+			}
 			out.keepItems = data.keepItems
 		end
 	end

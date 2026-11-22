@@ -8,7 +8,14 @@ local Rules = {}
 
 -- ===== Crafting =====
 -- Retorna (ok, motivo)
-function Rules.canCraft(inv: any, recipe: any, level: number, hasStation: boolean, stackMax: number, times: number?): (boolean, string?)
+function Rules.canCraft(
+	inv: any,
+	recipe: any,
+	level: number,
+	hasStation: boolean,
+	stackMax: number,
+	times: number?
+): (boolean, string?)
 	local t = times or 1
 	if t < 1 or t > 50 or t ~= math.floor(t) then
 		return false, "Quantidade inválida"
@@ -31,7 +38,15 @@ function Rules.canCraft(inv: any, recipe: any, level: number, hasStation: boolea
 	return true, nil
 end
 
-function Rules.craft(inv: any, recipe: any, level: number, hasStation: boolean, stackMax: number, hotbar: number, times: number?): (boolean, string?)
+function Rules.craft(
+	inv: any,
+	recipe: any,
+	level: number,
+	hasStation: boolean,
+	stackMax: number,
+	hotbar: number,
+	times: number?
+): (boolean, string?)
 	local t = times or 1
 	local ok, why = Rules.canCraft(inv, recipe, level, hasStation, stackMax, t)
 	if not ok then
@@ -102,7 +117,12 @@ end
 
 -- ===== Progressão =====
 -- Soma XP e retorna lista de níveis alcançados
-function Rules.addXp(p: { level: number, xp: number }, amount: number, xpFor: (number) -> number, maxLevel: number): { number }
+function Rules.addXp(
+	p: { level: number, xp: number },
+	amount: number,
+	xpFor: (number) -> number,
+	maxLevel: number
+): { number }
 	local ups = {}
 	if amount <= 0 or p.level >= maxLevel then
 		return ups
@@ -121,7 +141,11 @@ end
 
 -- ===== Drops =====
 -- rand(min, max) -> inteiro; rand0() -> [0,1)
-function Rules.rollDrops(drops: { any }, randInt: (number, number) -> number, rand01: () -> number): { [string]: number }
+function Rules.rollDrops(
+	drops: { any },
+	randInt: (number, number) -> number,
+	rand01: () -> number
+): { [string]: number }
 	local out: { [string]: number } = {}
 	for _, d in drops do
 		if d.chance == nil or rand01() < d.chance then

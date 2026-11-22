@@ -9,7 +9,14 @@ local ToolModels = {}
 
 local WOOD = Color3.fromRGB(120, 80, 45)
 
-local function part(parent: Instance, size: Vector3, color: Color3, material: Enum.Material, cf: CFrame, shape: Enum.PartType?): Part
+local function part(
+	parent: Instance,
+	size: Vector3,
+	color: Color3,
+	material: Enum.Material,
+	cf: CFrame,
+	shape: Enum.PartType?
+): Part
 	local p = Instance.new("Part")
 	p.Size = size
 	p.Color = color
@@ -69,7 +76,16 @@ function ToolModels.build(itemId: string): Tool?
 
 	if def.toolType == "axe" then
 		table.insert(extras, part(tool, Vector3.new(0.3, 0.9, 1.3), color, mat, top * CFrame.new(0, 0, -0.55)))
-		table.insert(extras, part(tool, Vector3.new(0.4, 0.4, 0.4), Color3.fromRGB(110, 170, 70), Enum.Material.Fabric, top * CFrame.new(0, -0.5, 0)))
+		table.insert(
+			extras,
+			part(
+				tool,
+				Vector3.new(0.4, 0.4, 0.4),
+				Color3.fromRGB(110, 170, 70),
+				Enum.Material.Fabric,
+				top * CFrame.new(0, -0.5, 0)
+			)
+		)
 	elseif def.toolType == "pickaxe" then
 		table.insert(extras, part(tool, Vector3.new(0.3, 0.35, 2.4), color, mat, top))
 		table.insert(extras, part(tool, Vector3.new(0.25, 0.5, 0.35), color, mat, top * CFrame.new(0, -0.25, 1.2)))
@@ -91,14 +107,32 @@ function ToolModels.build(itemId: string): Tool?
 		if itemId == "wooden_spear" then
 			handle.Size = Vector3.new(0.3, 5.5, 0.3)
 			tool.Grip = CFrame.new(0, -1.2, 0)
-			table.insert(extras, part(tool, Vector3.new(0.35, 0.9, 0.35), Color3.fromRGB(90, 90, 100), Enum.Material.Slate, origin * CFrame.new(0, 3.1, 0)))
+			table.insert(
+				extras,
+				part(
+					tool,
+					Vector3.new(0.35, 0.9, 0.35),
+					Color3.fromRGB(90, 90, 100),
+					Enum.Material.Slate,
+					origin * CFrame.new(0, 3.1, 0)
+				)
+			)
 		elseif itemId == "stone_club" then
 			table.insert(extras, part(tool, Vector3.new(1.1, 1.4, 1.1), color, mat, top, Enum.PartType.Ball))
 		else
 			-- lâminas
 			handle.Size = Vector3.new(0.35, 1.2, 0.35)
 			tool.Grip = CFrame.new(0, -0.2, 0)
-			table.insert(extras, part(tool, Vector3.new(1.2, 0.25, 0.4), Color3.fromRGB(70, 50, 30), Enum.Material.Wood, origin * CFrame.new(0, 0.7, 0)))
+			table.insert(
+				extras,
+				part(
+					tool,
+					Vector3.new(1.2, 0.25, 0.4),
+					Color3.fromRGB(70, 50, 30),
+					Enum.Material.Wood,
+					origin * CFrame.new(0, 0.7, 0)
+				)
+			)
 			local blade = part(tool, Vector3.new(0.15, 3.2, 0.55), color, mat, origin * CFrame.new(0, 2.4, 0))
 			if def.tier == 3 then
 				blade.Material = Enum.Material.Neon

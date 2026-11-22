@@ -242,35 +242,45 @@ end
 ----------------------------------------------------------------------------------------
 
 local function signText(gui: SurfaceGui, region: Regions.Region)
+	-- Margem interna evita letras cortadas nas bordas da placa
+	local pad = Instance.new("UIPadding")
+	pad.PaddingLeft = UDim.new(0.05, 0)
+	pad.PaddingRight = UDim.new(0.05, 0)
+	pad.PaddingTop = UDim.new(0.08, 0)
+	pad.PaddingBottom = UDim.new(0.08, 0)
+	pad.Parent = gui
+
 	local title = Instance.new("TextLabel")
 	title.BackgroundTransparency = 1
-	title.Position = UDim2.fromScale(0.04, 0.06)
-	title.Size = UDim2.fromScale(0.92, 0.5)
-	title.Font = Enum.Font.FredokaOne
+	title.Size = UDim2.fromScale(1, 0.58)
+	title.Font = Enum.Font.GothamBlack
 	title.TextScaled = true
+	title.TextWrapped = false
 	title.TextColor3 = C(255, 244, 220)
 	title.TextStrokeColor3 = C(60, 40, 25)
-	title.TextStrokeTransparency = 0.3
+	title.TextStrokeTransparency = 0.2
 	title.Text = region.name
 	title.Parent = gui
+	local tc = Instance.new("UITextSizeConstraint")
+	tc.MaxTextSize = 90
+	tc.Parent = title
 
 	local danger = math.clamp(region.danger, 0, 5)
 	local sub = Instance.new("TextLabel")
 	sub.BackgroundTransparency = 1
-	sub.Position = UDim2.fromScale(0.04, 0.6)
-	sub.Size = UDim2.fromScale(0.92, 0.32)
+	sub.Position = UDim2.fromScale(0, 0.64)
+	sub.Size = UDim2.fromScale(1, 0.36)
 	sub.Font = Enum.Font.GothamBold
 	sub.TextScaled = true
+	sub.TextWrapped = false
 	sub.TextColor3 = region.color:Lerp(Color3.new(1, 1, 1), 0.35)
 	sub.TextStrokeColor3 = C(40, 28, 18)
-	sub.TextStrokeTransparency = 0.3
-	sub.Text = string.format(
-		"Nível %d+   Perigo %s%s",
-		region.level,
-		string.rep("★", danger),
-		string.rep("☆", 5 - danger)
-	)
+	sub.TextStrokeTransparency = 0.2
+	sub.Text = string.format("Nível %d+  •  Perigo %d/5", region.level, danger)
 	sub.Parent = gui
+	local sc = Instance.new("UITextSizeConstraint")
+	sc.MaxTextSize = 56
+	sc.Parent = sub
 end
 
 local function makeSign(parent: Instance, at: Vector2, viewer: Vector2, region: Regions.Region): Vector3
@@ -282,8 +292,8 @@ local function makeSign(parent: Instance, at: Vector2, viewer: Vector2, region: 
 	local dark, light = C(95, 66, 42), C(150, 108, 68)
 	for _, sx in { -1, 1 } do
 		block({
-			size = Vector3.new(0.6, 8, 0.6),
-			cframe = base * CFrame.new(sx * 3.1, 2, 0),
+			size = Vector3.new(0.7, 9, 0.7),
+			cframe = base * CFrame.new(sx * 5.2, 2.5, 0),
 			color = dark,
 			material = M.Wood,
 			parent = model,
@@ -291,8 +301,8 @@ local function makeSign(parent: Instance, at: Vector2, viewer: Vector2, region: 
 		})
 	end
 	local board = block({
-		size = Vector3.new(7.4, 3.4, 0.45),
-		cframe = base * CFrame.new(0, 4.3, 0),
+		size = Vector3.new(11.6, 4.6, 0.45),
+		cframe = base * CFrame.new(0, 4.9, 0),
 		color = light,
 		material = M.WoodPlanks,
 		parent = model,
@@ -300,15 +310,15 @@ local function makeSign(parent: Instance, at: Vector2, viewer: Vector2, region: 
 		name = "Board",
 	})
 	block({
-		size = Vector3.new(8, 0.4, 0.8),
-		cframe = base * CFrame.new(0, 6.15, 0),
+		size = Vector3.new(12.4, 0.45, 0.8),
+		cframe = base * CFrame.new(0, 7.4, 0),
 		color = dark,
 		material = M.Wood,
 		parent = model,
 	})
 	block({
-		size = Vector3.new(7.4, 0.35, 0.5),
-		cframe = base * CFrame.new(0, 2.45, 0),
+		size = Vector3.new(11.6, 0.4, 0.5),
+		cframe = base * CFrame.new(0, 2.4, 0),
 		color = region.color,
 		parent = model,
 	})

@@ -66,7 +66,11 @@ local function update()
 	if not char then
 		return
 	end
-	rayParams.FilterDescendantsInstances = { char, ghost :: Instance, workspace:FindFirstChild("World") and workspace.World:FindFirstChild("Creatures") or nil }
+	rayParams.FilterDescendantsInstances = {
+		char,
+		ghost :: Instance,
+		workspace:FindFirstChild("World") and workspace.World:FindFirstChild("Creatures") or nil,
+	}
 	local origin, dir = aimRay()
 	local hit = workspace:Raycast(origin, dir * 120, rayParams)
 	if demolish then
@@ -171,7 +175,16 @@ end
 function Build.init(gui: ScreenGui)
 	highlight = Lib.new("Highlight", { FillTransparency = 0.6, OutlineColor = T.bad, Parent = gui })
 	-- Mira central para celular/controle
-	local cross = Lib.text({ AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(30, 30), Text = "+", TextSize = 30, TextStrokeTransparency = 0.3, Visible = false, Parent = gui })
+	local cross = Lib.text({
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Position = UDim2.fromScale(0.5, 0.5),
+		Size = UDim2.fromOffset(30, 30),
+		Text = "+",
+		TextSize = 30,
+		TextStrokeTransparency = 0.3,
+		Visible = false,
+		Parent = gui,
+	})
 	task.spawn(function()
 		while true do
 			cross.Visible = Build.isActive() and (Lib.isTouch() or not UserInputService.MouseEnabled)
@@ -180,15 +193,59 @@ function Build.init(gui: ScreenGui)
 	end)
 
 	-- Barra de ferramentas de construção (aparece no modo construção)
-	toolbar = Lib.panel({ AnchorPoint = Vector2.new(0.5, 1), Position = UDim2.new(0.5, 0, 1, -100), Size = UDim2.fromOffset(520, 96), Visible = false, Parent = gui })
-	hint = Lib.text({ Position = UDim2.fromOffset(10, 4), Size = UDim2.new(1, -20, 0, 26), Text = "", TextSize = 15, Parent = toolbar })
-	local row = Lib.new("Frame", { Position = UDim2.fromOffset(10, 36), Size = UDim2.new(1, -20, 0, 50), BackgroundTransparency = 1, Parent = toolbar })
-	Lib.new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 8), HorizontalAlignment = Enum.HorizontalAlignment.Center, Parent = row })
-	Lib.button({ Size = UDim2.fromOffset(150, 48), Text = "✅ Colocar", BackgroundColor3 = T.good:Lerp(T.panel, 0.4), Parent = row }, confirm)
+	toolbar = Lib.panel({
+		AnchorPoint = Vector2.new(0.5, 1),
+		Position = UDim2.new(0.5, 0, 1, -100),
+		Size = UDim2.fromOffset(520, 96),
+		Visible = false,
+		Parent = gui,
+	})
+	hint = Lib.text({
+		Position = UDim2.fromOffset(10, 4),
+		Size = UDim2.new(1, -20, 0, 26),
+		Text = "",
+		TextSize = 15,
+		Parent = toolbar,
+	})
+	local row = Lib.new(
+		"Frame",
+		{
+			Position = UDim2.fromOffset(10, 36),
+			Size = UDim2.new(1, -20, 0, 50),
+			BackgroundTransparency = 1,
+			Parent = toolbar,
+		}
+	)
+	Lib.new(
+		"UIListLayout",
+		{
+			FillDirection = Enum.FillDirection.Horizontal,
+			Padding = UDim.new(0, 8),
+			HorizontalAlignment = Enum.HorizontalAlignment.Center,
+			Parent = row,
+		}
+	)
+	Lib.button(
+		{
+			Size = UDim2.fromOffset(150, 48),
+			Text = "✅ Colocar",
+			BackgroundColor3 = T.good:Lerp(T.panel, 0.4),
+			Parent = row,
+		},
+		confirm
+	)
 	Lib.button({ Size = UDim2.fromOffset(110, 48), Text = "🔄 Girar", Parent = row }, function()
 		rot = (rot + 1) % 4
 	end)
-	Lib.button({ Size = UDim2.fromOffset(110, 48), Text = "❌ Sair", BackgroundColor3 = T.bad:Lerp(T.panel, 0.5), Parent = row }, stop)
+	Lib.button(
+		{
+			Size = UDim2.fromOffset(110, 48),
+			Text = "❌ Sair",
+			BackgroundColor3 = T.bad:Lerp(T.panel, 0.5),
+			Parent = row,
+		},
+		stop
+	)
 
 	-- Janela "Construir": lista de construções no inventário + desmontar
 	local _, body = Widgets.window(gui, "Build", "🏠 Construir", Vector2.new(640, 440))
@@ -199,9 +256,18 @@ function Build.init(gui: ScreenGui)
 				c:Destroy()
 			end
 		end
-		local d = Lib.button({ LayoutOrder = 0, BackgroundColor3 = T.bad:Lerp(T.panel, 0.6), Parent = grid }, Build.startDemolish)
+		local d = Lib.button(
+			{ LayoutOrder = 0, BackgroundColor3 = T.bad:Lerp(T.panel, 0.6), Parent = grid },
+			Build.startDemolish
+		)
 		Lib.text({ Size = UDim2.new(1, 0, 0.6, 0), Text = "🔨", TextSize = 36, Parent = d })
-		Lib.text({ Position = UDim2.fromScale(0, 0.6), Size = UDim2.new(1, 0, 0.4, 0), Text = "Desmontar", TextSize = 14, Parent = d })
+		Lib.text({
+			Position = UDim2.fromScale(0, 0.6),
+			Size = UDim2.new(1, 0, 0.4, 0),
+			Text = "Desmontar",
+			TextSize = 14,
+			Parent = d,
+		})
 		local any = false
 		for id, def in Items do
 			if def.category == "structure" then
@@ -212,13 +278,25 @@ function Build.init(gui: ScreenGui)
 						Build.start(id)
 					end)
 					Lib.text({ Size = UDim2.new(1, 0, 0.6, 0), Text = def.icon, TextSize = 36, Parent = b })
-					Lib.text({ Position = UDim2.fromScale(0, 0.6), Size = UDim2.new(1, 0, 0.4, 0), Text = ("%s x%d"):format(def.name, n), TextSize = 13, Parent = b })
+					Lib.text({
+						Position = UDim2.fromScale(0, 0.6),
+						Size = UDim2.new(1, 0, 0.4, 0),
+						Text = ("%s x%d"):format(def.name, n),
+						TextSize = 13,
+						Parent = b,
+					})
 				end
 			end
 		end
 		if not any then
 			local tip = Lib.panel({ LayoutOrder = 2, BackgroundColor3 = T.panel2, Parent = grid })
-			Lib.text({ Size = UDim2.fromScale(1, 1), Text = "Fabrique construções na aba 🏗️ do Crafting", TextSize = 13, Font = T.fontBody, Parent = tip })
+			Lib.text({
+				Size = UDim2.fromScale(1, 1),
+				Text = "Fabrique construções na aba 🏗️ do Crafting",
+				TextSize = 13,
+				Font = T.fontBody,
+				Parent = tip,
+			})
 		end
 	end
 	Widgets.onWindow("Build", rebuild)
@@ -231,7 +309,10 @@ function Build.init(gui: ScreenGui)
 			rot = (rot + 1) % 4
 		elseif input.KeyCode == Enum.KeyCode.Q or input.KeyCode == Enum.KeyCode.ButtonB then
 			stop()
-		elseif not processed and (input.UserInputType == Enum.UserInputType.MouseButton1 or input.KeyCode == Enum.KeyCode.ButtonR2) then
+		elseif
+			not processed
+			and (input.UserInputType == Enum.UserInputType.MouseButton1 or input.KeyCode == Enum.KeyCode.ButtonR2)
+		then
 			confirm()
 		end
 	end)

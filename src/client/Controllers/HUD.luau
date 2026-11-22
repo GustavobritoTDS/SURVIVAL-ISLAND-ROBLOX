@@ -52,8 +52,22 @@ local function notify(n: any)
 	local st = card:FindFirstChildOfClass("UIStroke") :: UIStroke
 	st.Color = color
 	st.Transparency = 0.1
-	Lib.text({ Position = UDim2.fromOffset(8, 0), Size = UDim2.fromOffset(30, 42), Text = n.icon or "•", TextSize = 22, Parent = card })
-	local label = Lib.text({ Position = UDim2.fromOffset(42, 0), Size = UDim2.new(1, -50, 1, 0), Text = n.text, TextSize = 15, TextXAlignment = Enum.TextXAlignment.Left, Font = T.fontBody, Parent = card })
+	Lib.text({
+		Position = UDim2.fromOffset(8, 0),
+		Size = UDim2.fromOffset(30, 42),
+		Text = n.icon or "•",
+		TextSize = 22,
+		Parent = card,
+	})
+	local label = Lib.text({
+		Position = UDim2.fromOffset(42, 0),
+		Size = UDim2.new(1, -50, 1, 0),
+		Text = n.text,
+		TextSize = 15,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		Font = T.fontBody,
+		Parent = card,
+	})
 	label.TextTruncate = Enum.TextTruncate.AtEnd
 	local inner = Lib.new("UIScale", { Scale = 0.85, Parent = card })
 	Lib.tween(inner, 0.25, { Scale = 1 }, Enum.EasingStyle.Back)
@@ -90,7 +104,12 @@ function HUD.init()
 	HUD.gui = gui
 
 	-- Status (canto superior esquerdo)
-	local stats = Lib.panel({ Position = UDim2.fromOffset(16, 16), Size = UDim2.fromOffset(240, 128), BackgroundTransparency = 0.25, Parent = gui })
+	local stats = Lib.panel({
+		Position = UDim2.fromOffset(16, 16),
+		Size = UDim2.fromOffset(240, 128),
+		BackgroundTransparency = 0.25,
+		Parent = gui,
+	})
 	Lib.pad(10).Parent = stats
 	Lib.new("UIListLayout", { Padding = UDim.new(0, 6), SortOrder = Enum.SortOrder.LayoutOrder, Parent = stats })
 	local setHealth = Widgets.bar(stats, "❤️", T.health, 1)
@@ -119,13 +138,40 @@ function HUD.init()
 	player.CharacterAdded:Connect(bindHumanoid)
 
 	-- Nível + XP + Conchas (topo central)
-	local top = Lib.panel({ AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 14), Size = UDim2.fromOffset(360, 52), BackgroundTransparency = 0.25, Parent = gui })
-	local lvl = Lib.text({ Position = UDim2.fromOffset(10, 0), Size = UDim2.fromOffset(70, 52), Text = "Nv 1", TextSize = 20, TextColor3 = T.accent, Parent = top })
-	local xpBack = Lib.new("Frame", { Position = UDim2.fromOffset(84, 20), Size = UDim2.fromOffset(150, 12), BackgroundColor3 = Color3.fromRGB(10, 16, 20), Parent = top })
+	local top = Lib.panel({
+		AnchorPoint = Vector2.new(0.5, 0),
+		Position = UDim2.new(0.5, 0, 0, 14),
+		Size = UDim2.fromOffset(360, 52),
+		BackgroundTransparency = 0.25,
+		Parent = gui,
+	})
+	local lvl = Lib.text({
+		Position = UDim2.fromOffset(10, 0),
+		Size = UDim2.fromOffset(70, 52),
+		Text = "Nv 1",
+		TextSize = 20,
+		TextColor3 = T.accent,
+		Parent = top,
+	})
+	local xpBack = Lib.new(
+		"Frame",
+		{
+			Position = UDim2.fromOffset(84, 20),
+			Size = UDim2.fromOffset(150, 12),
+			BackgroundColor3 = Color3.fromRGB(10, 16, 20),
+			Parent = top,
+		}
+	)
 	Lib.corner(6).Parent = xpBack
 	local xpFill = Lib.new("Frame", { Size = UDim2.fromScale(0, 1), BackgroundColor3 = T.xp, Parent = xpBack })
 	Lib.corner(6).Parent = xpFill
-	local shells = Lib.text({ Position = UDim2.fromOffset(240, 0), Size = UDim2.fromOffset(110, 52), Text = "🐚 0", TextSize = 18, Parent = top })
+	local shells = Lib.text({
+		Position = UDim2.fromOffset(240, 0),
+		Size = UDim2.fromOffset(110, 52),
+		Text = "🐚 0",
+		TextSize = 18,
+		Parent = top,
+	})
 	State.on("level", function(v)
 		lvl.Text = "Nv " .. tostring(v or 1)
 		Lib.pop(lvl)
@@ -140,9 +186,31 @@ function HUD.init()
 	end, true)
 
 	-- Relógio, clima e região (canto superior direito)
-	local info = Lib.panel({ AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -16, 0, 16), Size = UDim2.fromOffset(210, 52), BackgroundTransparency = 0.25, Parent = gui })
-	local clock = Lib.text({ Position = UDim2.fromOffset(10, 4), Size = UDim2.new(1, -20, 0, 22), Text = "☀️ 08:00", TextSize = 17, TextXAlignment = Enum.TextXAlignment.Left, Parent = info })
-	local region = Lib.text({ Position = UDim2.fromOffset(10, 26), Size = UDim2.new(1, -20, 0, 20), Text = "Praia do Naufrágio", TextSize = 13, Font = T.fontBody, TextColor3 = T.muted, TextXAlignment = Enum.TextXAlignment.Left, Parent = info })
+	local info = Lib.panel({
+		AnchorPoint = Vector2.new(1, 0),
+		Position = UDim2.new(1, -16, 0, 16),
+		Size = UDim2.fromOffset(210, 52),
+		BackgroundTransparency = 0.25,
+		Parent = gui,
+	})
+	local clock = Lib.text({
+		Position = UDim2.fromOffset(10, 4),
+		Size = UDim2.new(1, -20, 0, 22),
+		Text = "☀️ 08:00",
+		TextSize = 17,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		Parent = info,
+	})
+	local region = Lib.text({
+		Position = UDim2.fromOffset(10, 26),
+		Size = UDim2.new(1, -20, 0, 20),
+		Text = "Praia do Naufrágio",
+		TextSize = 13,
+		Font = T.fontBody,
+		TextColor3 = T.muted,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		Parent = info,
+	})
 	task.spawn(function()
 		while true do
 			local t = Lighting.ClockTime
@@ -156,7 +224,12 @@ function HUD.init()
 			elseif w == "storm" then
 				icon ..= "⛈️"
 			end
-			clock.Text = ("%s %02d:%02d  ·  Noite %d"):format(icon, h, m, ((workspace:GetAttribute("NightCount") :: number?) or 0) + 1)
+			clock.Text = ("%s %02d:%02d  ·  Noite %d"):format(
+				icon,
+				h,
+				m,
+				((workspace:GetAttribute("NightCount") :: number?) or 0) + 1
+			)
 			local rid = player:GetAttribute("Region")
 			local r = rid and Regions.byId[rid :: string]
 			region.Text = r and r.name or "Ilha"
@@ -166,8 +239,27 @@ function HUD.init()
 	end)
 
 	-- Hotbar (base central)
-	local hotbar = Lib.new("Frame", { Name = "Hotbar", AnchorPoint = Vector2.new(0.5, 1), Position = UDim2.new(0.5, 0, 1, -16), Size = UDim2.fromOffset(Game.HOTBAR_SLOTS * 72, 66), BackgroundTransparency = 1, Parent = gui })
-	Lib.new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, HorizontalAlignment = Enum.HorizontalAlignment.Center, Padding = UDim.new(0, 8), SortOrder = Enum.SortOrder.LayoutOrder, Parent = hotbar })
+	local hotbar = Lib.new(
+		"Frame",
+		{
+			Name = "Hotbar",
+			AnchorPoint = Vector2.new(0.5, 1),
+			Position = UDim2.new(0.5, 0, 1, -16),
+			Size = UDim2.fromOffset(Game.HOTBAR_SLOTS * 72, 66),
+			BackgroundTransparency = 1,
+			Parent = gui,
+		}
+	)
+	Lib.new(
+		"UIListLayout",
+		{
+			FillDirection = Enum.FillDirection.Horizontal,
+			HorizontalAlignment = Enum.HorizontalAlignment.Center,
+			Padding = UDim.new(0, 8),
+			SortOrder = Enum.SortOrder.LayoutOrder,
+			Parent = hotbar,
+		}
+	)
 	for i = 1, Game.HOTBAR_SLOTS do
 		local s = Widgets.slot(hotbar, 64, i)
 		HUD.hotbar[i] = s
@@ -175,7 +267,16 @@ function HUD.init()
 			HUD.useHotbar(i)
 		end)
 	end
-	local armorLabel = Lib.text({ AnchorPoint = Vector2.new(0.5, 1), Position = UDim2.new(0.5, 0, 1, -86), Size = UDim2.fromOffset(300, 18), Text = "", TextSize = 13, Font = T.fontBody, TextColor3 = T.muted, Parent = gui })
+	local armorLabel = Lib.text({
+		AnchorPoint = Vector2.new(0.5, 1),
+		Position = UDim2.new(0.5, 0, 1, -86),
+		Size = UDim2.fromOffset(300, 18),
+		Text = "",
+		TextSize = 13,
+		Font = T.fontBody,
+		TextColor3 = T.muted,
+		Parent = gui,
+	})
 	local function refreshHotbar()
 		for i, s in HUD.hotbar do
 			s.set(State.slots[i])
@@ -188,8 +289,17 @@ function HUD.init()
 
 	-- Botões de menu (lado direito)
 	-- Dock lateral: ícone + nome (legível em qualquer dispositivo) + atalho no PC
-	local menu = Lib.panel({ AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -12, 0.5, 0), Size = UDim2.fromOffset(84, 6 * 66 + 16), BackgroundTransparency = 0.35, Parent = gui })
-	Lib.new("UIPadding", { PaddingTop = UDim.new(0, 8), PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 6), Parent = menu })
+	local menu = Lib.panel({
+		AnchorPoint = Vector2.new(1, 0.5),
+		Position = UDim2.new(1, -12, 0.5, 0),
+		Size = UDim2.fromOffset(84, 6 * 66 + 16),
+		BackgroundTransparency = 0.35,
+		Parent = gui,
+	})
+	Lib.new(
+		"UIPadding",
+		{ PaddingTop = UDim.new(0, 8), PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 6), Parent = menu }
+	)
 	Lib.new("UIListLayout", { Padding = UDim.new(0, 6), SortOrder = Enum.SortOrder.LayoutOrder, Parent = menu })
 	local entries = {
 		{ "Inventory", "🎒", "Mochila", "Tab", T.accent2 },
@@ -200,13 +310,51 @@ function HUD.init()
 		{ "Settings", "⚙️", "Ajustes", "", T.muted },
 	}
 	for i, e in entries do
-		local b = Lib.button({ Size = UDim2.fromOffset(72, 60), LayoutOrder = i, Text = "", BackgroundColor3 = T.panel2, Parent = menu })
-		local bar = Lib.new("Frame", { Position = UDim2.fromOffset(0, 10), Size = UDim2.fromOffset(3, 40), BackgroundColor3 = e[5], BorderSizePixel = 0, Parent = b })
+		local b = Lib.button({
+			Size = UDim2.fromOffset(72, 60),
+			LayoutOrder = i,
+			Text = "",
+			BackgroundColor3 = T.panel2,
+			Parent = menu,
+		})
+		local bar = Lib.new(
+			"Frame",
+			{
+				Position = UDim2.fromOffset(0, 10),
+				Size = UDim2.fromOffset(3, 40),
+				BackgroundColor3 = e[5],
+				BorderSizePixel = 0,
+				Parent = b,
+			}
+		)
 		Lib.corner(2).Parent = bar
-		Lib.text({ Position = UDim2.fromOffset(0, 4), Size = UDim2.new(1, 0, 0, 30), Text = e[2], TextSize = 24, Parent = b })
-		Lib.text({ Position = UDim2.fromOffset(0, 36), Size = UDim2.new(1, 0, 0, 16), Text = e[3], TextSize = 12, TextColor3 = T.text, Parent = b })
+		Lib.text({
+			Position = UDim2.fromOffset(0, 4),
+			Size = UDim2.new(1, 0, 0, 30),
+			Text = e[2],
+			TextSize = 24,
+			Parent = b,
+		})
+		Lib.text({
+			Position = UDim2.fromOffset(0, 36),
+			Size = UDim2.new(1, 0, 0, 16),
+			Text = e[3],
+			TextSize = 12,
+			TextColor3 = T.text,
+			Parent = b,
+		})
 		if not Lib.isTouch() and e[4] ~= "" then
-			local badge = Lib.new("Frame", { AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -3, 0, 3), Size = UDim2.fromOffset(e[4] == "Tab" and 26 or 16, 14), BackgroundColor3 = Color3.fromRGB(10, 16, 20), BackgroundTransparency = 0.2, Parent = b })
+			local badge = Lib.new(
+				"Frame",
+				{
+					AnchorPoint = Vector2.new(1, 0),
+					Position = UDim2.new(1, -3, 0, 3),
+					Size = UDim2.fromOffset(e[4] == "Tab" and 26 or 16, 14),
+					BackgroundColor3 = Color3.fromRGB(10, 16, 20),
+					BackgroundTransparency = 0.2,
+					Parent = b,
+				}
+			)
 			Lib.corner(4).Parent = badge
 			Lib.text({ Size = UDim2.fromScale(1, 1), Text = e[4], TextSize = 10, TextColor3 = T.muted, Parent = badge })
 		end
@@ -217,13 +365,43 @@ function HUD.init()
 	end
 
 	-- Notificações
-	toastHolder = Lib.new("Frame", { AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -96, 0, 84), Size = UDim2.fromOffset(300, 300), BackgroundTransparency = 1, Parent = gui })
-	Lib.new("UIListLayout", { Padding = UDim.new(0, 6), SortOrder = Enum.SortOrder.LayoutOrder, HorizontalAlignment = Enum.HorizontalAlignment.Right, Parent = toastHolder })
+	toastHolder = Lib.new(
+		"Frame",
+		{
+			AnchorPoint = Vector2.new(1, 0),
+			Position = UDim2.new(1, -96, 0, 84),
+			Size = UDim2.fromOffset(300, 300),
+			BackgroundTransparency = 1,
+			Parent = gui,
+		}
+	)
+	Lib.new(
+		"UIListLayout",
+		{
+			Padding = UDim.new(0, 6),
+			SortOrder = Enum.SortOrder.LayoutOrder,
+			HorizontalAlignment = Enum.HorizontalAlignment.Right,
+			Parent = toastHolder,
+		}
+	)
 	Net.event("Notify").OnClientEvent:Connect(notify)
 
 	-- Indicadores de perigo (vinheta vermelha ao tomar dano / frio)
-	local vignette = Lib.new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = T.bad, BackgroundTransparency = 1, ZIndex = 0, Parent = gui })
-	Lib.new("UIGradient", { Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.2), NumberSequenceKeypoint.new(0.5, 1), NumberSequenceKeypoint.new(1, 0.2) }), Parent = vignette })
+	local vignette = Lib.new(
+		"Frame",
+		{ Size = UDim2.fromScale(1, 1), BackgroundColor3 = T.bad, BackgroundTransparency = 1, ZIndex = 0, Parent = gui }
+	)
+	Lib.new(
+		"UIGradient",
+		{
+			Transparency = NumberSequence.new({
+				NumberSequenceKeypoint.new(0, 0.2),
+				NumberSequenceKeypoint.new(0.5, 1),
+				NumberSequenceKeypoint.new(1, 0.2),
+			}),
+			Parent = vignette,
+		}
+	)
 	HUD.flash = function()
 		vignette.BackgroundTransparency = 0.55
 		Lib.tween(vignette, 0.6, { BackgroundTransparency = 1 })

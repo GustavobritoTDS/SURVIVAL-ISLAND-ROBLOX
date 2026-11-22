@@ -44,21 +44,92 @@ end
 function Crafting.init(gui: ScreenGui)
 	local _, body = Widgets.window(gui, "Crafting", "🔨 Criar", Vector2.new(820, 520))
 	local tabBar = Lib.new("Frame", { Size = UDim2.new(1, 0, 0, 38), BackgroundTransparency = 1, Parent = body })
-	Lib.new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 6), Parent = tabBar })
-	local listHolder = Lib.new("Frame", { Position = UDim2.fromOffset(0, 46), Size = UDim2.new(0, 470, 1, -46), BackgroundTransparency = 1, Parent = body })
-	local list = Lib.new("ScrollingFrame", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 6, AutomaticCanvasSize = Enum.AutomaticSize.Y, CanvasSize = UDim2.new(), Parent = listHolder })
+	Lib.new(
+		"UIListLayout",
+		{ FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 6), Parent = tabBar }
+	)
+	local listHolder = Lib.new(
+		"Frame",
+		{
+			Position = UDim2.fromOffset(0, 46),
+			Size = UDim2.new(0, 470, 1, -46),
+			BackgroundTransparency = 1,
+			Parent = body,
+		}
+	)
+	local list = Lib.new(
+		"ScrollingFrame",
+		{
+			Size = UDim2.fromScale(1, 1),
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			ScrollBarThickness = 6,
+			AutomaticCanvasSize = Enum.AutomaticSize.Y,
+			CanvasSize = UDim2.new(),
+			Parent = listHolder,
+		}
+	)
 	Lib.new("UIListLayout", { Padding = UDim.new(0, 6), SortOrder = Enum.SortOrder.LayoutOrder, Parent = list })
-	local detail = Lib.panel({ Position = UDim2.new(0, 482, 0, 46), Size = UDim2.new(1, -482, 1, -46), BackgroundColor3 = T.panel2, Parent = body })
+	local detail = Lib.panel({
+		Position = UDim2.new(0, 482, 0, 46),
+		Size = UDim2.new(1, -482, 1, -46),
+		BackgroundColor3 = T.panel2,
+		Parent = body,
+	})
 	Lib.pad(12).Parent = detail
 
 	local icon = Lib.text({ Size = UDim2.new(1, 0, 0, 60), Text = "🛠️", TextSize = 48, Parent = detail })
-	local title = Lib.text({ Position = UDim2.fromOffset(0, 62), Size = UDim2.new(1, 0, 0, 24), Text = "", TextSize = 19, Parent = detail })
-	local desc = Lib.text({ Position = UDim2.fromOffset(0, 88), Size = UDim2.new(1, 0, 0, 40), Text = "", TextSize = 13, Font = T.fontBody, TextColor3 = T.muted, Parent = detail })
-	local costs = Lib.new("Frame", { Position = UDim2.fromOffset(0, 132), Size = UDim2.new(1, 0, 0, 130), BackgroundTransparency = 1, Parent = detail })
+	local title = Lib.text({
+		Position = UDim2.fromOffset(0, 62),
+		Size = UDim2.new(1, 0, 0, 24),
+		Text = "",
+		TextSize = 19,
+		Parent = detail,
+	})
+	local desc = Lib.text({
+		Position = UDim2.fromOffset(0, 88),
+		Size = UDim2.new(1, 0, 0, 40),
+		Text = "",
+		TextSize = 13,
+		Font = T.fontBody,
+		TextColor3 = T.muted,
+		Parent = detail,
+	})
+	local costs = Lib.new(
+		"Frame",
+		{
+			Position = UDim2.fromOffset(0, 132),
+			Size = UDim2.new(1, 0, 0, 130),
+			BackgroundTransparency = 1,
+			Parent = detail,
+		}
+	)
 	Lib.new("UIListLayout", { Padding = UDim.new(0, 4), Parent = costs })
-	local req = Lib.text({ Position = UDim2.fromOffset(0, 266), Size = UDim2.new(1, 0, 0, 40), Text = "", TextSize = 13, Font = T.fontBody, Parent = detail })
-	local craftBtn = Lib.button({ AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, 0), Size = UDim2.new(0.62, -4, 0, 46), Text = "Fabricar", TextSize = 18, BackgroundColor3 = T.accent:Lerp(T.panel, 0.35), Parent = detail })
-	local craft5 = Lib.button({ AnchorPoint = Vector2.new(1, 1), Position = UDim2.new(1, 0, 1, 0), Size = UDim2.new(0.38, -4, 0, 46), Text = "x5", TextSize = 18, Parent = detail })
+	local req = Lib.text({
+		Position = UDim2.fromOffset(0, 266),
+		Size = UDim2.new(1, 0, 0, 40),
+		Text = "",
+		TextSize = 13,
+		Font = T.fontBody,
+		Parent = detail,
+	})
+	local craftBtn = Lib.button({
+		AnchorPoint = Vector2.new(0, 1),
+		Position = UDim2.new(0, 0, 1, 0),
+		Size = UDim2.new(0.62, -4, 0, 46),
+		Text = "Fabricar",
+		TextSize = 18,
+		BackgroundColor3 = T.accent:Lerp(T.panel, 0.35),
+		Parent = detail,
+	})
+	local craft5 = Lib.button({
+		AnchorPoint = Vector2.new(1, 1),
+		Position = UDim2.new(1, 0, 1, 0),
+		Size = UDim2.new(0.38, -4, 0, 46),
+		Text = "x5",
+		TextSize = 18,
+		Parent = detail,
+	})
 
 	local tab = "tools"
 	local current: any = nil
@@ -87,7 +158,15 @@ function Crafting.init(gui: ScreenGui)
 		for id, n in r.cost do
 			local have = State.count(id)
 			local def = Items[id]
-			Lib.text({ Size = UDim2.new(1, 0, 0, 22), Text = ("%s %s  %d/%d"):format(def.icon, def.name, have, n), TextSize = 15, Font = T.fontBody, TextXAlignment = Enum.TextXAlignment.Left, TextColor3 = have >= n and T.good or T.bad, Parent = costs })
+			Lib.text({
+				Size = UDim2.new(1, 0, 0, 22),
+				Text = ("%s %s  %d/%d"):format(def.icon, def.name, have, n),
+				TextSize = 15,
+				Font = T.fontBody,
+				TextXAlignment = Enum.TextXAlignment.Left,
+				TextColor3 = have >= n and T.good or T.bad,
+				Parent = costs,
+			})
 		end
 		local lines = {}
 		local blocked = false
@@ -122,13 +201,45 @@ function Crafting.init(gui: ScreenGui)
 				local out = Items[r.output]
 				local locked = level < r.level
 				local can = not locked and haveAll(r, 1)
-				local row = Lib.button({ Size = UDim2.new(1, -10, 0, 54), LayoutOrder = (locked and 1000 or 0) + i, BackgroundColor3 = can and T.slot or T.panel2, Parent = list }, function()
-					showRecipe(r)
-				end)
-				Lib.text({ Position = UDim2.fromOffset(8, 0), Size = UDim2.fromOffset(44, 54), Text = out.icon, TextSize = 30, Parent = row })
-				Lib.text({ Position = UDim2.fromOffset(60, 6), Size = UDim2.new(1, -70, 0, 22), Text = out.name, TextSize = 16, TextXAlignment = Enum.TextXAlignment.Left, TextColor3 = locked and T.muted or T.text, Parent = row })
-				local sub = locked and ("🔒 Nível " .. r.level) or (r.station and STATION_NAME[r.station] or "Com as mãos")
-				Lib.text({ Position = UDim2.fromOffset(60, 28), Size = UDim2.new(1, -70, 0, 18), Text = sub, TextSize = 12, Font = T.fontBody, TextXAlignment = Enum.TextXAlignment.Left, TextColor3 = can and T.good or T.muted, Parent = row })
+				local row = Lib.button(
+					{
+						Size = UDim2.new(1, -10, 0, 54),
+						LayoutOrder = (locked and 1000 or 0) + i,
+						BackgroundColor3 = can and T.slot or T.panel2,
+						Parent = list,
+					},
+					function()
+						showRecipe(r)
+					end
+				)
+				Lib.text({
+					Position = UDim2.fromOffset(8, 0),
+					Size = UDim2.fromOffset(44, 54),
+					Text = out.icon,
+					TextSize = 30,
+					Parent = row,
+				})
+				Lib.text({
+					Position = UDim2.fromOffset(60, 6),
+					Size = UDim2.new(1, -70, 0, 22),
+					Text = out.name,
+					TextSize = 16,
+					TextXAlignment = Enum.TextXAlignment.Left,
+					TextColor3 = locked and T.muted or T.text,
+					Parent = row,
+				})
+				local sub = locked and ("🔒 Nível " .. r.level)
+					or (r.station and STATION_NAME[r.station] or "Com as mãos")
+				Lib.text({
+					Position = UDim2.fromOffset(60, 28),
+					Size = UDim2.new(1, -70, 0, 18),
+					Text = sub,
+					TextSize = 12,
+					Font = T.fontBody,
+					TextXAlignment = Enum.TextXAlignment.Left,
+					TextColor3 = can and T.good or T.muted,
+					Parent = row,
+				})
 				firstShown = firstShown or r
 			end
 		end
@@ -141,7 +252,13 @@ function Crafting.init(gui: ScreenGui)
 	end
 
 	for i, t in TABS do
-		local b = Lib.button({ Size = UDim2.fromOffset(126, 36), Text = t[2], TextSize = 13, LayoutOrder = i, Parent = tabBar })
+		local b = Lib.button({
+			Size = UDim2.fromOffset(126, 36),
+			Text = t[2],
+			TextSize = 13,
+			LayoutOrder = i,
+			Parent = tabBar,
+		})
 		b.Activated:Connect(function()
 			tab = t[1]
 			current = nil

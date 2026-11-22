@@ -12,31 +12,101 @@ local T = Lib.Theme
 
 local Inventory = {}
 
-local CATEGORY = { resource = "Recurso", food = "Comida", tool = "Ferramenta", weapon = "Arma", armor = "Armadura", structure = "Construção", special = "Especial" }
+local CATEGORY = {
+	resource = "Recurso",
+	food = "Comida",
+	tool = "Ferramenta",
+	weapon = "Arma",
+	armor = "Armadura",
+	structure = "Construção",
+	special = "Especial",
+}
 
 function Inventory.init(gui: ScreenGui)
 	local win, body = Widgets.window(gui, "Inventory", "🎒 Inventário", Vector2.new(820, 520))
 
 	local left = Lib.new("Frame", { Size = UDim2.new(0, 500, 1, 0), BackgroundTransparency = 1, Parent = body })
 	local grid = Widgets.scroll(left, Vector2.new(70, 70), 8)
-	local right = Lib.panel({ Position = UDim2.new(0, 512, 0, 0), Size = UDim2.new(1, -512, 1, 0), BackgroundColor3 = T.panel2, Parent = body })
+	local right = Lib.panel({
+		Position = UDim2.new(0, 512, 0, 0),
+		Size = UDim2.new(1, -512, 1, 0),
+		BackgroundColor3 = T.panel2,
+		Parent = body,
+	})
 	Lib.pad(12).Parent = right
 
 	-- Detalhes
 	local details = Lib.new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Parent = right })
 	local bigIcon = Lib.text({ Size = UDim2.new(1, 0, 0, 70), Text = "🎒", TextSize = 54, Parent = details })
-	local name = Lib.text({ Position = UDim2.fromOffset(0, 74), Size = UDim2.new(1, 0, 0, 26), Text = "Selecione um item", TextSize = 19, Parent = details })
-	local cat = Lib.text({ Position = UDim2.fromOffset(0, 100), Size = UDim2.new(1, 0, 0, 18), Text = "", TextSize = 13, TextColor3 = T.muted, Font = T.fontBody, Parent = details })
-	local desc = Lib.text({ Position = UDim2.fromOffset(0, 124), Size = UDim2.new(1, 0, 0, 84), Text = "Toque num item para ver detalhes. Toque em outro espaço para mover.", TextSize = 14, Font = T.fontBody, TextColor3 = T.text, TextYAlignment = Enum.TextYAlignment.Top, Parent = details })
-	local actions = Lib.new("Frame", { AnchorPoint = Vector2.new(0, 1), Position = UDim2.fromScale(0, 1), Size = UDim2.new(1, 0, 0, 150), BackgroundTransparency = 1, Parent = details })
-	Lib.new("UIListLayout", { Padding = UDim.new(0, 8), VerticalAlignment = Enum.VerticalAlignment.Bottom, Parent = actions })
+	local name = Lib.text({
+		Position = UDim2.fromOffset(0, 74),
+		Size = UDim2.new(1, 0, 0, 26),
+		Text = "Selecione um item",
+		TextSize = 19,
+		Parent = details,
+	})
+	local cat = Lib.text({
+		Position = UDim2.fromOffset(0, 100),
+		Size = UDim2.new(1, 0, 0, 18),
+		Text = "",
+		TextSize = 13,
+		TextColor3 = T.muted,
+		Font = T.fontBody,
+		Parent = details,
+	})
+	local desc = Lib.text({
+		Position = UDim2.fromOffset(0, 124),
+		Size = UDim2.new(1, 0, 0, 84),
+		Text = "Toque num item para ver detalhes. Toque em outro espaço para mover.",
+		TextSize = 14,
+		Font = T.fontBody,
+		TextColor3 = T.text,
+		TextYAlignment = Enum.TextYAlignment.Top,
+		Parent = details,
+	})
+	local actions = Lib.new(
+		"Frame",
+		{
+			AnchorPoint = Vector2.new(0, 1),
+			Position = UDim2.fromScale(0, 1),
+			Size = UDim2.new(1, 0, 0, 150),
+			BackgroundTransparency = 1,
+			Parent = details,
+		}
+	)
+	Lib.new(
+		"UIListLayout",
+		{ Padding = UDim.new(0, 8), VerticalAlignment = Enum.VerticalAlignment.Bottom, Parent = actions }
+	)
 
-	local armorRow = Lib.text({ Position = UDim2.fromOffset(0, 212), Size = UDim2.new(1, 0, 0, 20), Text = "", TextSize = 14, TextColor3 = T.accent2, Parent = details })
+	local armorRow = Lib.text({
+		Position = UDim2.fromOffset(0, 212),
+		Size = UDim2.new(1, 0, 0, 20),
+		Text = "",
+		TextSize = 14,
+		TextColor3 = T.accent2,
+		Parent = details,
+	})
 
 	-- Baú
-	local chestView = Lib.new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Visible = false, Parent = right })
-	Lib.text({ Size = UDim2.new(1, 0, 0, 24), Text = "📦 Baú (toque para transferir)", TextSize = 16, TextColor3 = T.accent, Parent = chestView })
-	local chestGridHolder = Lib.new("Frame", { Position = UDim2.fromOffset(0, 30), Size = UDim2.new(1, 0, 1, -30), BackgroundTransparency = 1, Parent = chestView })
+	local chestView =
+		Lib.new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Visible = false, Parent = right })
+	Lib.text({
+		Size = UDim2.new(1, 0, 0, 24),
+		Text = "📦 Baú (toque para transferir)",
+		TextSize = 16,
+		TextColor3 = T.accent,
+		Parent = chestView,
+	})
+	local chestGridHolder = Lib.new(
+		"Frame",
+		{
+			Position = UDim2.fromOffset(0, 30),
+			Size = UDim2.new(1, 0, 1, -30),
+			BackgroundTransparency = 1,
+			Parent = chestView,
+		}
+	)
 	local chestGrid = Widgets.scroll(chestGridHolder, Vector2.new(58, 58), 6)
 
 	local selected: number? = nil
@@ -44,7 +114,8 @@ function Inventory.init(gui: ScreenGui)
 	local chestWidgets: { Widgets.Slot } = {}
 
 	local function actionButton(text: string, color: Color3, fn: () -> ())
-		local b = Lib.button({ Size = UDim2.new(1, 0, 0, 40), Text = text, BackgroundColor3 = color, TextSize = 16 }, fn)
+		local b =
+			Lib.button({ Size = UDim2.new(1, 0, 0, 40), Text = text, BackgroundColor3 = color, TextSize = 16 }, fn)
 		b.Parent = actions
 	end
 
@@ -67,7 +138,8 @@ function Inventory.init(gui: ScreenGui)
 			bigIcon.Text = "🎒"
 			name.Text = "Selecione um item"
 			cat.Text = ""
-			desc.Text = "Toque num item para ver detalhes. Toque em outro espaço para mover. Espaços 1–6 são a barra rápida."
+			desc.Text =
+				"Toque num item para ver detalhes. Toque em outro espaço para mover. Espaços 1–6 são a barra rápida."
 			return
 		end
 		local slot = selected :: number

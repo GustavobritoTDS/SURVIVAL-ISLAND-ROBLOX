@@ -11,7 +11,7 @@ local C = Color3.fromRGB
 local M = Enum.Material
 local TAU = math.pi * 2
 local pick = PartKit.pick
-local block, wedge, cyl, ball = PartKit.block, PartKit.wedge, PartKit.cylinder, PartKit.ball
+local block, cyl, ball = PartKit.block, PartKit.cylinder, PartKit.ball
 
 local GREYS = { C(122, 122, 128), C(108, 108, 114), C(136, 134, 132) }
 
@@ -32,53 +32,86 @@ local function hitbox(model: Model, size: Vector3, cf: CFrame, collide: boolean)
 	model.PrimaryPart = hb
 end
 
+-- Folha arqueada: segmentos finos que vão inclinando para baixo e afinando (fronde de palmeira)
+local function frond(
+	model: Model,
+	origin: Vector3,
+	yaw: number,
+	length: number,
+	width: number,
+	lift: number,
+	col: Color3
+)
+	local segs = 4
+	local pos = origin
+	local pitch = lift -- começa subindo, depois cai
+	for i = 1, segs do
+		local segLen = length / segs
+		local w = width * (1 - (i - 1) / (segs + 0.5))
+		local rot = CFrame.Angles(0, yaw, 0) * CFrame.Angles(pitch, 0, 0)
+		local dir = rot.LookVector
+		local center = pos + dir * (segLen / 2)
+		-- lâmina central (fina e larga) com leve inclinação lateral, parecendo folíolos
+		block({
+			size = Vector3.new(w, 0.18, segLen + 0.25),
+			cframe = CFrame.new(center) * rot * CFrame.Angles(0, 0, math.rad(8)),
+			color = col:Lerp(Color3.new(0, 0, 0), (i - 1) * 0.04),
+			material = M.Grass,
+			parent = model,
+			shadow = i <= 2,
+		})
+		pos = pos + dir * segLen
+		pitch -= math.rad(24) -- curva para baixo
+	end
+end
+
 local function palmTree(model: Model, rng: Random)
 	local s = rng:NextNumber(0.85, 1.2)
-	local h = rng:NextNumber(15, 20) * s
-	local lean = rng:NextNumber(2.5, 5) * s
+	local h = rng:NextNumber(16, 22) * s
+	local lean = rng:NextNumber(3, 6.5) * s
 	local yaw = rng:NextNumber(0, TAU)
 	local dx, dz = math.cos(yaw), math.sin(yaw)
-	local rings = { C(140, 110, 80), C(118, 92, 66) }
+	local rings = { C(150, 118, 84), C(122, 94, 68) }
 
-	-- tronco curvado em segmentos
-	local prev = Vector3.new(0, -0.6, 0)
-	for i = 1, 5 do
-		local t = i / 5
+	-- tronco curvado (curva quadrática), afinando, com anéis alternados
+	local segs = 7
+	local prev = Vector3.new(0, -0.8, 0)
+	for i = 1, segs do
+		local t = i / segs
 		local p = Vector3.new(dx * lean * t * t, h * t, dz * lean * t * t)
-		local tip = p + (p - prev).Unit * 0.3 -- leve sobreposição entre segmentos
-		cyl(prev, tip, (2.0 - 0.7 * t) * s, rings[i % 2 + 1], M.Wood, model, true)
+		local tip = p + (p - prev).Unit * 0.35
+		cyl(prev, tip, (2.1 - 0.85 * t) * s, rings[i % 2 + 1], M.Wood, model, i <= 3)
 		prev = p
 	end
 	local top = prev
-	ball(top + Vector3.new(0, 0.3, 0), 2.2 * s, C(104, 118, 56), M.SmoothPlastic, model)
+	-- base alargada
+	cyl(Vector3.new(0, -0.8, 0), Vector3.new(0, 1.4 * s, 0), 2.7 * s, C(128, 98, 70), M.Wood, model)
+	-- coroa
+	ball(top + Vector3.new(0, 0.2, 0), 1.8 * s, C(96, 112, 52), M.Grass, model)
 
-	-- folhas: cada fronde são 2 WedgeParts espelhadas
-	local leafCols = { C(70, 150, 60), C(88, 168, 70), C(62, 138, 56) }
-	for k = 1, 6 do
-		local fy = (k / 6) * TAU + rng:NextNumber(-0.25, 0.25)
-		local droop = math.rad(rng:NextNumber(18, 42))
-		local len = rng:NextNumber(8, 10.5) * s
-		local w = 1.5 * s
-		local base = CFrame.new(top + Vector3.new(0, 0.5, 0)) * CFrame.Angles(0, fy, 0) * CFrame.Angles(-droop, 0, 0)
-		local col = pick(rng, leafCols)
-		for side = -1, 1, 2 do
-			wedge({
-				size = Vector3.new(0.2, w, len),
-				cframe = base * CFrame.Angles(0, 0, side * math.pi / 2) * CFrame.new(0, w / 2, -len / 2),
-				color = col,
-				parent = model,
-				shadow = true,
-			})
-		end
+	-- frondes em arco ao redor da coroa
+	local leafCols = { C(62, 150, 62), C(80, 165, 66), C(54, 132, 58), C(96, 172, 74) }
+	local count = rng:NextInteger(7, 9)
+	for k = 1, count do
+		local fy = (k / count) * TAU + rng:NextNumber(-0.2, 0.2)
+		frond(
+			model,
+			top + Vector3.new(0, 0.6 * s, 0),
+			fy,
+			rng:NextNumber(9, 12) * s,
+			rng:NextNumber(2.2, 2.8) * s,
+			math.rad(rng:NextNumber(18, 32)),
+			pick(rng, leafCols)
+		)
 	end
 
-	-- cocos
+	-- cocos agrupados sob a copa
 	for i = 1, 3 do
 		local a = i / 3 * TAU + rng:NextNumber(-0.3, 0.3)
 		ball(
-			top + Vector3.new(math.cos(a) * 0.9 * s, -0.7 * s, math.sin(a) * 0.9 * s),
-			1.15 * s,
-			C(110, 75, 45),
+			top + Vector3.new(math.cos(a) * 0.8 * s, -0.9 * s, math.sin(a) * 0.8 * s),
+			1.1 * s,
+			C(104, 72, 42),
 			M.SmoothPlastic,
 			model
 		)
@@ -88,41 +121,66 @@ local function palmTree(model: Model, rng: Random)
 	hitbox(model, Vector3.new(lean + 3 * s, h + 2, 3 * s), CFrame.new(mid) * CFrame.Angles(0, -yaw, 0), true)
 end
 
+-- Tufo de folhagem facetado: blocos girados sobrepostos (visual low-poly orgânico, não uma bola)
+local function foliage(model: Model, rng: Random, center: Vector3, size: number, greens: { Color3 })
+	for _ = 1, 3 do
+		local off = Vector3.new(rng:NextNumber(-0.35, 0.35), rng:NextNumber(-0.2, 0.25), rng:NextNumber(-0.35, 0.35))
+			* size
+		local sz = Vector3.new(rng:NextNumber(0.75, 1.05), rng:NextNumber(0.5, 0.75), rng:NextNumber(0.75, 1.05)) * size
+		block({
+			size = sz,
+			cframe = CFrame.new(center + off)
+				* CFrame.Angles(rng:NextNumber(-0.5, 0.5), rng:NextNumber(0, TAU), rng:NextNumber(-0.5, 0.5)),
+			color = pick(rng, greens),
+			material = M.Grass,
+			parent = model,
+			shadow = true,
+		})
+	end
+end
+
 local function jungleTree(model: Model, rng: Random)
 	local s = rng:NextNumber(0.85, 1.25)
 	local h = rng:NextNumber(13, 18) * s
-	local d = 2.6 * s
-	local bark = C(96, 70, 50)
-	cyl(Vector3.new(0, -1, 0), Vector3.new(0, h, 0), d, bark, M.Wood, model, true)
-	cyl(Vector3.new(0, -1, 0), Vector3.new(0, 2.4 * s, 0), d * 1.45, C(82, 60, 43), M.Wood, model, true)
-	for i = 1, 2 do
-		local a = i * math.pi + rng:NextNumber(-0.5, 0.5)
-		cyl(
-			Vector3.new(0, h * 0.62, 0),
-			Vector3.new(math.cos(a) * 4.5 * s, h * 0.92, math.sin(a) * 4.5 * s),
-			0.9 * s,
-			bark,
-			M.Wood,
-			model
-		)
-	end
+	local d = 2.4 * s
+	local bark = { C(92, 68, 48), C(104, 78, 54), C(84, 62, 44) }
+	local greens = { C(46, 122, 56), C(58, 138, 60), C(38, 108, 50), C(72, 148, 64) }
 
-	-- copa: bolas de folhas
-	local greens = { C(46, 122, 56), C(60, 140, 62), C(36, 106, 50) }
-	local cTop = h + 1.5 * s
-	ball(Vector3.new(0, cTop, 0), 11 * s, pick(rng, greens), M.Grass, model, true)
-	ball(
-		Vector3.new(rng:NextNumber(-1, 1), cTop + 4 * s, rng:NextNumber(-1, 1)),
-		7 * s,
-		pick(rng, greens),
-		M.Grass,
-		model,
-		true
-	)
+	-- raízes de apoio (sapopemas) saindo da base
 	for i = 1, 4 do
 		local a = i / 4 * TAU + rng:NextNumber(-0.3, 0.3)
-		local p = Vector3.new(math.cos(a) * 4.6 * s, cTop - rng:NextNumber(1, 2.5) * s, math.sin(a) * 4.6 * s)
-		ball(p, rng:NextNumber(7, 9) * s, pick(rng, greens), M.Grass, model, true)
+		local foot = Vector3.new(math.cos(a) * 2.8 * s, -0.6, math.sin(a) * 2.8 * s)
+		cyl(foot, Vector3.new(math.cos(a) * 0.4, 3.2 * s, math.sin(a) * 0.4), 1.0 * s, pick(rng, bark), M.Wood, model)
+	end
+
+	-- tronco em 3 segmentos levemente tortos, afinando
+	local bend = Vector3.new(rng:NextNumber(-1, 1), 0, rng:NextNumber(-1, 1)) * 1.2 * s
+	local p0 = Vector3.new(0, -0.8, 0)
+	local p1 = Vector3.new(0, h * 0.4, 0) + bend * 0.5
+	local p2 = Vector3.new(0, h * 0.75, 0) + bend
+	local p3 = Vector3.new(0, h, 0) + bend * 0.6
+	cyl(p0, p1, d * 1.15, pick(rng, bark), M.Wood, model, true)
+	cyl(p1, p2, d, pick(rng, bark), M.Wood, model, true)
+	cyl(p2, p3, d * 0.8, pick(rng, bark), M.Wood, model, true)
+
+	-- galhos subindo para os lados, cada um terminando num tufo de folhas
+	local nb = rng:NextInteger(3, 4)
+	for i = 1, nb do
+		local a = i / nb * TAU + rng:NextNumber(-0.4, 0.4)
+		local from = p1:Lerp(p3, rng:NextNumber(0.45, 0.9))
+		local reach = rng:NextNumber(4.5, 6.5) * s
+		local to = from + Vector3.new(math.cos(a) * reach, rng:NextNumber(2.5, 4.5) * s, math.sin(a) * reach)
+		cyl(from, to, 0.75 * s, pick(rng, bark), M.Wood, model)
+		foliage(model, rng, to + Vector3.new(0, 0.8 * s, 0), rng:NextNumber(5.5, 7) * s, greens)
+	end
+	-- tufo central no topo
+	foliage(model, rng, p3 + Vector3.new(0, 2 * s, 0), 8 * s, greens)
+
+	-- cipós pendurados
+	for _ = 1, 2 do
+		local a = rng:NextNumber(0, TAU)
+		local top = p3 + Vector3.new(math.cos(a) * 3.5 * s, 0, math.sin(a) * 3.5 * s)
+		cyl(top, top - Vector3.new(0, rng:NextNumber(4, 7) * s, 0), 0.22 * s, C(70, 110, 50), M.Grass, model)
 	end
 
 	local hh = h + 7 * s

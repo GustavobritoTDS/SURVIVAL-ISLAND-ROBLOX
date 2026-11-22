@@ -85,9 +85,22 @@ local function floatText(pos: Vector3, text: string, color: Color3)
 	part.Position = pos + Vector3.new(math.random(-10, 10) / 10, 2, 0)
 	part.Parent = workspace.CurrentCamera
 	local bb = Lib.new("BillboardGui", { Size = UDim2.fromOffset(80, 30), AlwaysOnTop = true, Parent = part })
-	local label = Lib.text({ Size = UDim2.fromScale(1, 1), Text = text, TextScaled = true, TextColor3 = color, TextStrokeTransparency = 0.3, Parent = bb })
+	local label = Lib.text({
+		Size = UDim2.fromScale(1, 1),
+		Text = text,
+		TextScaled = true,
+		TextColor3 = color,
+		TextStrokeTransparency = 0.3,
+		Parent = bb,
+	})
 	Lib.tween(bb, 0.8, { StudsOffset = Vector3.new(0, 3, 0) }, Enum.EasingStyle.Quad)
-	Lib.tween(label, 0.8, { TextTransparency = 1, TextStrokeTransparency = 1 }, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+	Lib.tween(
+		label,
+		0.8,
+		{ TextTransparency = 1, TextStrokeTransparency = 1 },
+		Enum.EasingStyle.Quad,
+		Enum.EasingDirection.In
+	)
 	Debris:AddItem(part, 0.9)
 end
 
@@ -195,7 +208,11 @@ local function setupRain()
 		rain.Rate = target
 		-- tremor de câmera decai
 		if shakeAmount > 0.01 then
-			cam.CFrame *= CFrame.Angles((math.random() - 0.5) * shakeAmount * 0.1, (math.random() - 0.5) * shakeAmount * 0.1, 0)
+			cam.CFrame *= CFrame.Angles(
+				(math.random() - 0.5) * shakeAmount * 0.1,
+				(math.random() - 0.5) * shakeAmount * 0.1,
+				0
+			)
 			shakeAmount *= 0.85
 		end
 	end)
@@ -219,31 +236,88 @@ local function setupRain()
 end
 
 -- ===== Prompts de interação customizados =====
-local KIND_ICON = { collect = "✋", chest = "📦", door = "🚪", bed = "🛏️", water = "🌧️", drink = "💧", beacon = "🗼", bag = "🎒" }
+local KIND_ICON = {
+	collect = "✋",
+	chest = "📦",
+	door = "🚪",
+	bed = "🛏️",
+	water = "🌧️",
+	drink = "💧",
+	beacon = "🗼",
+	bag = "🎒",
+	talk = "💬",
+}
 local function setupPrompts(gui: ScreenGui)
 	ProximityPromptService.PromptShown:Connect(function(prompt: ProximityPrompt, inputType)
 		if prompt.Style ~= Enum.ProximityPromptStyle.Custom then
 			return
 		end
-		local bb = Lib.new("BillboardGui", { Name = "PromptUI", Size = UDim2.fromOffset(190, 64), AlwaysOnTop = true, Adornee = prompt.Parent, StudsOffset = Vector3.new(0, 2.5, 0), Active = true, Parent = gui })
+		local bb = Lib.new(
+			"BillboardGui",
+			{
+				Name = "PromptUI",
+				Size = UDim2.fromOffset(190, 64),
+				AlwaysOnTop = true,
+				Adornee = prompt.Parent,
+				StudsOffset = Vector3.new(0, 2.5, 0),
+				Active = true,
+				Parent = gui,
+			}
+		)
 		local card = Lib.button({ Size = UDim2.fromScale(1, 1), BackgroundColor3 = T.panel, Parent = bb })
-		local keyText = inputType == Enum.ProximityPromptInputType.Gamepad and "X" or (inputType == Enum.ProximityPromptInputType.Touch and (KIND_ICON[prompt:GetAttribute("Kind") :: string] or "👆") or "E")
-		local key = Lib.panel({ Position = UDim2.fromOffset(8, 10), Size = UDim2.fromOffset(44, 44), BackgroundColor3 = T.accent:Lerp(T.panel, 0.3), Parent = card })
+		local keyText = inputType == Enum.ProximityPromptInputType.Gamepad and "X"
+			or (
+				inputType == Enum.ProximityPromptInputType.Touch
+					and (KIND_ICON[prompt:GetAttribute("Kind") :: string] or "👆")
+				or "E"
+			)
+		local key = Lib.panel({
+			Position = UDim2.fromOffset(8, 10),
+			Size = UDim2.fromOffset(44, 44),
+			BackgroundColor3 = T.accent:Lerp(T.panel, 0.3),
+			Parent = card,
+		})
 		Lib.text({ Size = UDim2.fromScale(1, 1), Text = keyText, TextSize = 22, Parent = key })
-		local fill = Lib.new("Frame", { Size = UDim2.fromScale(0, 1), BackgroundColor3 = T.accent, BackgroundTransparency = 0.5, Parent = key })
+		local fill = Lib.new(
+			"Frame",
+			{ Size = UDim2.fromScale(0, 1), BackgroundColor3 = T.accent, BackgroundTransparency = 0.5, Parent = key }
+		)
 		Lib.corner(14).Parent = fill
-		Lib.text({ Position = UDim2.fromOffset(60, 8), Size = UDim2.new(1, -66, 0, 24), Text = prompt.ActionText, TextSize = 17, TextXAlignment = Enum.TextXAlignment.Left, Parent = card })
-		Lib.text({ Position = UDim2.fromOffset(60, 32), Size = UDim2.new(1, -66, 0, 20), Text = prompt.ObjectText, TextSize = 12, Font = T.fontBody, TextColor3 = T.muted, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, Parent = card })
+		Lib.text({
+			Position = UDim2.fromOffset(60, 8),
+			Size = UDim2.new(1, -66, 0, 24),
+			Text = prompt.ActionText,
+			TextSize = 17,
+			TextXAlignment = Enum.TextXAlignment.Left,
+			Parent = card,
+		})
+		Lib.text({
+			Position = UDim2.fromOffset(60, 32),
+			Size = UDim2.new(1, -66, 0, 20),
+			Text = prompt.ObjectText,
+			TextSize = 12,
+			Font = T.fontBody,
+			TextColor3 = T.muted,
+			TextXAlignment = Enum.TextXAlignment.Left,
+			TextTruncate = Enum.TextTruncate.AtEnd,
+			Parent = card,
+		})
 		local sc = Lib.new("UIScale", { Scale = 0.7, Parent = card })
 		Lib.tween(sc, 0.2, { Scale = 1 }, Enum.EasingStyle.Back)
 		-- Toque: segurar o cartão aciona o prompt
 		card.InputBegan:Connect(function(input)
-			if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+			if
+				input.UserInputType == Enum.UserInputType.Touch
+				or input.UserInputType == Enum.UserInputType.MouseButton1
+			then
 				prompt:InputHoldBegin()
 			end
 		end)
 		card.InputEnded:Connect(function(input)
-			if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+			if
+				input.UserInputType == Enum.UserInputType.Touch
+				or input.UserInputType == Enum.UserInputType.MouseButton1
+			then
 				prompt:InputHoldEnd()
 			end
 		end)
@@ -280,7 +354,8 @@ local function animateParrot()
 				local hrp = char:FindFirstChild("HumanoidRootPart") :: BasePart?
 				if hrp then
 					local t = os.clock()
-					parrot.CFrame = hrp.CFrame * CFrame.new(2 + math.sin(t * 1.3) * 0.4, 2.6 + math.sin(t * 3) * 0.3, math.cos(t * 1.1) * 0.5)
+					parrot.CFrame = hrp.CFrame
+						* CFrame.new(2 + math.sin(t * 1.3) * 0.4, 2.6 + math.sin(t * 3) * 0.3, math.cos(t * 1.1) * 0.5)
 					parrot.Anchored = true
 				end
 			end

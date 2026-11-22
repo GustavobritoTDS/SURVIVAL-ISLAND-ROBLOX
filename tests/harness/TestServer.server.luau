@@ -159,6 +159,27 @@ task.spawn(function()
 	end)
 	log(okSize and #enc < 3_000_000, ("salvamento: perfil serializável (%d bytes, limite 4 MB)"):format(okSize and #enc or -1))
 
+	-- ===== Guia Bento e Jornada =====
+	local GuideService = require(Services.GuideService)
+	local SurvivalService = require(Services.SurvivalService)
+	local bento = GuideService.npc()
+	log(bento ~= nil and bento.Parent ~= nil, "guia: NPC Bento existe no mundo")
+	if bento then
+		SurvivalService.grace(player)
+		char:PivotTo(bento:GetPivot() * CFrame.new(0, 0, -5))
+		task.wait(1)
+		GuideService.talk(player)
+		log(data.guide and data.guide.started == true and data.guide.stage == 1, "guia: conversa inicia a Jornada (etapa 1)")
+		SurvivalService.grace(player)
+		local Guide = require(game:GetService("ReplicatedStorage").Shared.Config.Guide)
+		char:PivotTo(CFrame.new(Guide.stages[1].check.pos + Vector3.new(0, 6, 0)))
+		local t4 = os.clock()
+		while data.guide.stage < 2 and os.clock() - t4 < 8 do
+			task.wait(0.5)
+		end
+		log(data.guide.stage >= 2, "guia: explorar os destroços concluiu a etapa 1 (etapa atual " .. tostring(data.guide.stage) .. ")")
+	end
+
 	-- ===== Desempenho =====
 	local Stats = game:GetService("Stats")
 	local parts, instances = 0, 0

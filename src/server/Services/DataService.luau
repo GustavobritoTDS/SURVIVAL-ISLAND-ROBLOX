@@ -221,7 +221,9 @@ function DataService.init()
 	end
 	if not store then
 		DataService.memoryMode = true
-		warn("[Data] DataStore indisponível: modo memória (nada será salvo). Publique o place e, no Studio, ative Game Settings > Security > Enable Studio Access to API Services.")
+		warn(
+			"[Data] DataStore indisponível: modo memória (nada será salvo). Publique o place e, no Studio, ative Game Settings > Security > Enable Studio Access to API Services."
+		)
 	end
 
 	Players.PlayerAdded:Connect(load)

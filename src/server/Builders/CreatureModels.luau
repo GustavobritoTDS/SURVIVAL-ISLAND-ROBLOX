@@ -6,7 +6,16 @@ local Creatures = require(Shared.Config.Creatures)
 
 local CreatureModels = {}
 
-type Spec = { size: Vector3, offset: Vector3, color: Color3?, material: Enum.Material?, shape: Enum.PartType?, transparency: number?, neon: boolean?, name: string? }
+type Spec = {
+	size: Vector3,
+	offset: Vector3,
+	color: Color3?,
+	material: Enum.Material?,
+	shape: Enum.PartType?,
+	transparency: number?,
+	neon: boolean?,
+	name: string?,
+}
 
 local function build(id: string, rootSize: Vector3, hip: number, specs: { Spec }): Model
 	local def = Creatures[id]
@@ -112,7 +121,12 @@ local builders: { [string]: () -> Model } = {
 	end,
 	cave_spider = function()
 		local specs: { Spec } = {
-			{ size = V(2.6, 1.8, 3), offset = V(0, 0, 0.6), shape = Enum.PartType.Ball, material = Enum.Material.Glass },
+			{
+				size = V(2.6, 1.8, 3),
+				offset = V(0, 0, 0.6),
+				shape = Enum.PartType.Ball,
+				material = Enum.Material.Glass,
+			},
 			{ size = V(1.6, 1.2, 1.6), offset = V(0, 0, -1.4), shape = Enum.PartType.Ball },
 			{ size = V(0.3, 0.3, 0.2), offset = V(-0.35, 0.3, -2.2), color = C(120, 255, 255), neon = true },
 			{ size = V(0.3, 0.3, 0.2), offset = V(0.35, 0.3, -2.2), color = C(120, 255, 255), neon = true },
@@ -127,10 +141,33 @@ local builders: { [string]: () -> Model } = {
 	tide_shade = function()
 		local specs: { Spec } = {
 			{ size = V(2, 3.6, 1.4), offset = V(0, 0, 0), material = Enum.Material.Glass, transparency = 0.25 },
-			{ size = V(1.6, 1.6, 1.6), offset = V(0, 2.6, 0), shape = Enum.PartType.Ball, material = Enum.Material.Glass, transparency = 0.2 },
-			{ size = V(0.35, 0.2, 0.1), offset = V(-0.35, 2.7, -0.78), color = C(120, 255, 240), neon = true, name = "Eye" },
-			{ size = V(0.35, 0.2, 0.1), offset = V(0.35, 2.7, -0.78), color = C(120, 255, 240), neon = true, name = "Eye" },
-			{ size = V(0.6, 3, 0.6), offset = V(-1.4, -0.2, -0.3), material = Enum.Material.Glass, transparency = 0.35 },
+			{
+				size = V(1.6, 1.6, 1.6),
+				offset = V(0, 2.6, 0),
+				shape = Enum.PartType.Ball,
+				material = Enum.Material.Glass,
+				transparency = 0.2,
+			},
+			{
+				size = V(0.35, 0.2, 0.1),
+				offset = V(-0.35, 2.7, -0.78),
+				color = C(120, 255, 240),
+				neon = true,
+				name = "Eye",
+			},
+			{
+				size = V(0.35, 0.2, 0.1),
+				offset = V(0.35, 2.7, -0.78),
+				color = C(120, 255, 240),
+				neon = true,
+				name = "Eye",
+			},
+			{
+				size = V(0.6, 3, 0.6),
+				offset = V(-1.4, -0.2, -0.3),
+				material = Enum.Material.Glass,
+				transparency = 0.35,
+			},
 			{ size = V(0.6, 3, 0.6), offset = V(1.4, -0.2, -0.3), material = Enum.Material.Glass, transparency = 0.35 },
 			{ size = V(1.6, 1.8, 1.2), offset = V(0, -2.6, 0), material = Enum.Material.Glass, transparency = 0.55 },
 		}

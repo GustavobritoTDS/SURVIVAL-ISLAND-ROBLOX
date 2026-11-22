@@ -70,12 +70,13 @@ function EquipService.refresh(player: Player)
 					return
 				end
 				lastSwing[player] = now
-				-- animação de golpe padrão do Roblox
-				local anim = Instance.new("StringValue")
-				anim.Name = "toolanim"
-				anim.Value = "Slash"
-				anim.Parent = newTool
-				game:GetService("Debris"):AddItem(anim, 0.5)
+				-- animação de golpe procedural em todos os clientes (Controllers/Animations)
+				fxEvent:FireAllClients({
+					kind = "anim",
+					anim = "swing",
+					char = player.Character,
+					toolType = def.toolType,
+				})
 				for _, fn in activatedHandlers do
 					task.spawn(fn, player, itemId :: string, newTool)
 				end
@@ -129,6 +130,7 @@ local function onUse(player: Player, slot: any)
 				PlayerService.count(player, "eat_cooked", 1)
 			end
 			fxEvent:FireClient(player, { kind = "eat", icon = def.icon })
+			fxEvent:FireAllClients({ kind = "anim", anim = "eat", char = player.Character })
 			PlayerService.sync(player, "stats")
 		end
 	elseif def.category == "armor" then
@@ -181,7 +183,8 @@ function EquipService.applyArmorVisual(player: Player)
 		plate.Name = "ArmorVisual"
 		plate.Size = torso.Size + Vector3.new(0.15, 0.1, 0.15)
 		plate.Color = def.color
-		plate.Material = def.id == "crystal_armor" and Enum.Material.Glass or (def.id == "iron_armor" and Enum.Material.Metal or Enum.Material.Fabric)
+		plate.Material = def.id == "crystal_armor" and Enum.Material.Glass
+			or (def.id == "iron_armor" and Enum.Material.Metal or Enum.Material.Fabric)
 		plate.Transparency = def.id == "crystal_armor" and 0.3 or 0
 		plate.CanCollide = false
 		plate.CanQuery = false

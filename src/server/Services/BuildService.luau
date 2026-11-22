@@ -87,7 +87,10 @@ end
 -- ===== Baús =====
 local function sendChest(player: Player, b: Built?)
 	if b then
-		stateEvent:FireClient(player, { chest = { guid = b.guid, inv = Inventory.serialize(b.chest), size = b.chest.size } })
+		stateEvent:FireClient(
+			player,
+			{ chest = { guid = b.guid, inv = Inventory.serialize(b.chest), size = b.chest.size } }
+		)
 	else
 		stateEvent:FireClient(player, { chest = false })
 	end
@@ -105,7 +108,13 @@ end
 local function onChestMove(player: Player, fromKind: any, from: any, toKind: any, to: any)
 	local b = openChest[player]
 	local hrp = hrpOf(player)
-	if not b or not hrp or not b.model.Parent or (b.model:GetPivot().Position - hrp.Position).Magnitude > CHEST_RANGE or not canUse(b, player) then
+	if
+		not b
+		or not hrp
+		or not b.model.Parent
+		or (b.model:GetPivot().Position - hrp.Position).Magnitude > CHEST_RANGE
+		or not canUse(b, player)
+	then
 		openChest[player] = nil
 		sendChest(player, nil)
 		return
@@ -152,7 +161,12 @@ end
 local function registerHeat(b: Built)
 	local def = Structures.defs[b.id]
 	if def.warmth or def.light then
-		Env.heat[b.model] = { pos = b.model:GetPivot().Position, warmth = def.warmth or 0, light = def.light or 0, repel = def.repelShades == true or b.id == "torch_post" or b.id == "rescue_beacon" }
+		Env.heat[b.model] = {
+			pos = b.model:GetPivot().Position,
+			warmth = def.warmth or 0,
+			light = def.light or 0,
+			repel = def.repelShades == true or b.id == "torch_post" or b.id == "rescue_beacon",
+		}
 	end
 end
 
@@ -439,13 +453,19 @@ local function onPlace(player: Player, id: any, x: any, y: any, z: any, rot: any
 	end
 	create(player, sid, cf, nil)
 	PlayerService.count(player, "build", 1)
+	PlayerService.count(player, "build_" .. sid, 1)
 	PlayerService.addXp(player, 4)
 	fxEvent:FireAllClients({ kind = "build", pos = cf.Position })
 	local mine = totems[player]
 	if sid ~= "base_totem" and (not mine or claimAt(cf.Position) ~= mine) then
 		PlayerService.notify(player, "Fora do seu Totem: esta construção não será salva", "info", "🗿")
 	elseif sid == "base_totem" then
-		PlayerService.notify(player, "Território criado! Construções num raio de 45 studs serão salvas.", "good", "🗿")
+		PlayerService.notify(
+			player,
+			"Território criado! Construções num raio de 45 studs serão salvas.",
+			"good",
+			"🗿"
+		)
 	end
 end
 
@@ -488,7 +508,13 @@ local function serializeBase(player: Player, data: any)
 		if b ~= t and claimAt(b.model:GetPivot().Position) == t then
 			local rel = origin:ToObjectSpace(b.model:GetPivot())
 			local _, ry, _ = rel:ToOrientation()
-			local entry = { b.id, math.floor(rel.X * 100) / 100, math.floor(rel.Y * 100) / 100, math.floor(rel.Z * 100) / 100, math.round(ry / (math.pi / 2)) % 4 }
+			local entry = {
+				b.id,
+				math.floor(rel.X * 100) / 100,
+				math.floor(rel.Y * 100) / 100,
+				math.floor(rel.Z * 100) / 100,
+				math.round(ry / (math.pi / 2)) % 4,
+			}
 			if b.chest then
 				entry[6] = Inventory.serialize(b.chest)
 			end
@@ -515,7 +541,9 @@ local function findTotemSpot(player: Player, want: Vector3): Vector3?
 			end
 		end
 		local region = Regions.at(pos)
-		return region.id ~= "cave" and region.id ~= "volcano" and ((pos - Regions.SPAWN) * Vector3.new(1, 0, 1)).Magnitude > Structures.MIN_DISTANCE_FROM_SPAWN + r
+		return region.id ~= "cave"
+			and region.id ~= "volcano"
+			and ((pos - Regions.SPAWN) * Vector3.new(1, 0, 1)).Magnitude > Structures.MIN_DISTANCE_FROM_SPAWN + r
 	end
 	if free(want) then
 		return want
@@ -545,7 +573,12 @@ local function restoreBase(player: Player, data: any)
 	local want = Vector3.new(base.totem[1], base.totem[2], base.totem[3])
 	local spot = findTotemSpot(player, want)
 	if not spot then
-		PlayerService.notify(player, "Não foi possível posicionar sua base; Totem devolvido ao inventário", "bad", "🗿")
+		PlayerService.notify(
+			player,
+			"Não foi possível posicionar sua base; Totem devolvido ao inventário",
+			"bad",
+			"🗿"
+		)
 		PlayerService.give(player, "base_totem", 1, true)
 		return
 	end

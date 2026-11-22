@@ -14,7 +14,8 @@ local Crafting = require(script.Parent.Controllers.Crafting)
 local Build = require(script.Parent.Controllers.Build)
 local Menus = require(script.Parent.Controllers.Menus)
 local Fx = require(script.Parent.Controllers.Fx)
-local Tutorial = require(script.Parent.Controllers.Tutorial)
+local Animations = require(script.Parent.Controllers.Animations)
+local Dialogue = require(script.Parent.Controllers.Dialogue)
 
 -- Esconde a mochila padrão do Roblox (usamos a nossa barra)
 task.spawn(function()
@@ -37,7 +38,8 @@ Crafting.init(gui)
 Build.init(gui)
 Menus.init(gui)
 Fx.init(gui, HUD)
-Tutorial.init(gui)
+Animations.init()
+Dialogue.init(gui)
 State.init()
 
 -- Atalhos
@@ -53,7 +55,8 @@ local KEYS: { [Enum.KeyCode]: string } = {
 	[Enum.KeyCode.DPadRight] = "Build",
 	[Enum.KeyCode.DPadDown] = "Quests",
 }
-local NUMBERS = { Enum.KeyCode.One, Enum.KeyCode.Two, Enum.KeyCode.Three, Enum.KeyCode.Four, Enum.KeyCode.Five, Enum.KeyCode.Six }
+local NUMBERS =
+	{ Enum.KeyCode.One, Enum.KeyCode.Two, Enum.KeyCode.Three, Enum.KeyCode.Four, Enum.KeyCode.Five, Enum.KeyCode.Six }
 
 local gamepadSlot = 1
 UserInputService.InputBegan:Connect(function(input, processed)

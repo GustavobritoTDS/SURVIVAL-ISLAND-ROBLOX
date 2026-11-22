@@ -14,7 +14,14 @@ local DARKWOOD = C(105, 70, 40)
 local STONE = C(135, 135, 140)
 local LEAF = C(85, 150, 70)
 
-local function part(model: Model, size: Vector3, offset: CFrame, color: Color3, mat: Enum.Material, shape: Enum.PartType?): Part
+local function part(
+	model: Model,
+	size: Vector3,
+	offset: CFrame,
+	color: Color3,
+	mat: Enum.Material,
+	shape: Enum.PartType?
+): Part
 	local p = Instance.new("Part")
 	p.Size = size
 	p.CFrame = offset
@@ -70,8 +77,20 @@ function StructureModels.build(id: string): Model
 		hb.Color = WOOD
 		-- travessas
 		local beamSize = id == "wood_wall" and V(8.1, 0.5, 1.15) or V(8.1, 1.1, 0.6)
-		part(model, beamSize, o * CFrame.new(0, id == "wood_wall" and 2.5 or 0, id == "wood_wall" and 0 or 3.7), DARKWOOD, Enum.Material.Wood)
-		part(model, beamSize, o * CFrame.new(0, id == "wood_wall" and -2.5 or 0, id == "wood_wall" and 0 or -3.7), DARKWOOD, Enum.Material.Wood)
+		part(
+			model,
+			beamSize,
+			o * CFrame.new(0, id == "wood_wall" and 2.5 or 0, id == "wood_wall" and 0 or 3.7),
+			DARKWOOD,
+			Enum.Material.Wood
+		)
+		part(
+			model,
+			beamSize,
+			o * CFrame.new(0, id == "wood_wall" and -2.5 or 0, id == "wood_wall" and 0 or -3.7),
+			DARKWOOD,
+			Enum.Material.Wood
+		)
 	elseif id == "stone_floor" or id == "stone_wall" then
 		hb.Transparency = 0
 		hb.Material = Enum.Material.Cobblestone
@@ -81,7 +100,13 @@ function StructureModels.build(id: string): Model
 		hb.Material = Enum.Material.Grass
 		hb.Color = LEAF
 		for i = -1, 1 do
-			part(model, V(8.3, 0.4, 2.2), o * CFrame.new(0, 0.55, i * 2.7) * CFrame.Angles(math.rad(8), 0, 0), C(110, 165, 75), Enum.Material.Grass)
+			part(
+				model,
+				V(8.3, 0.4, 2.2),
+				o * CFrame.new(0, 0.55, i * 2.7) * CFrame.Angles(math.rad(8), 0, 0),
+				C(110, 165, 75),
+				Enum.Material.Grass
+			)
 		end
 	elseif id == "wood_door" then
 		hb.Transparency = 1
@@ -91,15 +116,35 @@ function StructureModels.build(id: string): Model
 		panel.CanCollide = true
 		part(model, V(2, 8, 1), o * CFrame.new(-3, 0, 0), WOOD, Enum.Material.WoodPlanks).CanCollide = true
 		part(model, V(2, 8, 1), o * CFrame.new(3, 0, 0), WOOD, Enum.Material.WoodPlanks).CanCollide = true
-		local knob = part(model, V(0.4, 0.4, 0.9), o * CFrame.new(1.4, -0.4, 0), C(60, 60, 60), Enum.Material.Metal, Enum.PartType.Ball)
+		local knob = part(
+			model,
+			V(0.4, 0.4, 0.9),
+			o * CFrame.new(1.4, -0.4, 0),
+			C(60, 60, 60),
+			Enum.Material.Metal,
+			Enum.PartType.Ball
+		)
 		knob.Name = "Knob"
 	elseif id == "campfire" then
 		for i = 0, 7 do
 			local a = i / 8 * math.pi * 2
-			part(model, V(1.2, 0.9, 1.2), o * CFrame.new(math.cos(a) * 2, -h + 0.45, math.sin(a) * 2), STONE, Enum.Material.Slate, Enum.PartType.Ball)
+			part(
+				model,
+				V(1.2, 0.9, 1.2),
+				o * CFrame.new(math.cos(a) * 2, -h + 0.45, math.sin(a) * 2),
+				STONE,
+				Enum.Material.Slate,
+				Enum.PartType.Ball
+			)
 		end
 		for i = 0, 2 do
-			part(model, V(0.5, 0.5, 3.2), o * CFrame.new(0, -h + 0.5, 0) * CFrame.Angles(0, i * math.pi / 3, 0), DARKWOOD, Enum.Material.Wood)
+			part(
+				model,
+				V(0.5, 0.5, 3.2),
+				o * CFrame.new(0, -h + 0.5, 0) * CFrame.Angles(0, i * math.pi / 3, 0),
+				DARKWOOD,
+				Enum.Material.Wood
+			)
 		end
 		local core = part(model, V(0.5, 0.5, 0.5), o * CFrame.new(0, -h + 0.9, 0), C(255, 140, 50), Enum.Material.Neon)
 		core.Name = "FireCore"
@@ -113,7 +158,13 @@ function StructureModels.build(id: string): Model
 			end
 		end
 		part(model, V(1.6, 0.4, 0.8), o * CFrame.new(-1.5, h - 0.3, 0.6), STONE, Enum.Material.Slate)
-		part(model, V(0.3, 0.3, 2), o * CFrame.new(1.8, h - 0.35, -0.3) * CFrame.Angles(0, 0.4, 0), DARKWOOD, Enum.Material.Wood)
+		part(
+			model,
+			V(0.3, 0.3, 2),
+			o * CFrame.new(1.8, h - 0.35, -0.3) * CFrame.Angles(0, 0.4, 0),
+			DARKWOOD,
+			Enum.Material.Wood
+		)
 	elseif id == "forge" then
 		part(model, V(6, 4.5, 6), o * CFrame.new(0, -0.75, 0), C(110, 105, 100), Enum.Material.Cobblestone)
 		part(model, V(2.5, 2.5, 2), o * CFrame.new(0, h - 1.2, 0), C(90, 85, 80), Enum.Material.Cobblestone)
@@ -129,11 +180,31 @@ function StructureModels.build(id: string): Model
 		part(model, V(3.6, 0.6, 6.6), o * CFrame.new(0, 0.15, 0), LEAF, Enum.Material.Grass)
 		part(model, V(2.6, 0.5, 1.4), o * CFrame.new(0, 0.6, 2.4), C(230, 220, 190), Enum.Material.Fabric)
 	elseif id == "rain_collector" then
-		part(model, V(2.4, 3.2, 3.2), o * CFrame.new(0, -h + 1.2, 0) * CFrame.Angles(0, 0, math.pi / 2), WOOD, Enum.Material.WoodPlanks, Enum.PartType.Cylinder)
-		local water = part(model, V(0.2, 2.8, 2.8), o * CFrame.new(0, -h + 2.3, 0) * CFrame.Angles(0, 0, math.pi / 2), C(80, 170, 240), Enum.Material.Glass, Enum.PartType.Cylinder)
+		part(
+			model,
+			V(2.4, 3.2, 3.2),
+			o * CFrame.new(0, -h + 1.2, 0) * CFrame.Angles(0, 0, math.pi / 2),
+			WOOD,
+			Enum.Material.WoodPlanks,
+			Enum.PartType.Cylinder
+		)
+		local water = part(
+			model,
+			V(0.2, 2.8, 2.8),
+			o * CFrame.new(0, -h + 2.3, 0) * CFrame.Angles(0, 0, math.pi / 2),
+			C(80, 170, 240),
+			Enum.Material.Glass,
+			Enum.PartType.Cylinder
+		)
 		water.Name = "Water"
 		water.Transparency = 0.3
-		part(model, V(4.4, 0.3, 4.4), o * CFrame.new(0, h - 0.4, 0) * CFrame.Angles(0, math.rad(45), math.rad(12)), LEAF, Enum.Material.Grass)
+		part(
+			model,
+			V(4.4, 0.3, 4.4),
+			o * CFrame.new(0, h - 0.4, 0) * CFrame.Angles(0, math.rad(45), math.rad(12)),
+			LEAF,
+			Enum.Material.Grass
+		)
 		for _, x in { -1.8, 1.8 } do
 			part(model, V(0.3, 3, 0.3), o * CFrame.new(x, 0.9, 0), DARKWOOD, Enum.Material.Wood)
 		end
@@ -144,15 +215,39 @@ function StructureModels.build(id: string): Model
 	elseif id == "base_totem" then
 		local colors = { C(200, 160, 90), C(170, 120, 70), C(210, 90, 60) }
 		for i = 0, 2 do
-			part(model, V(2.6, 2.8, 2.6), o * CFrame.new(0, -h + 1.4 + i * 2.9, 0) * CFrame.Angles(0, i * 0.4, 0), colors[i + 1], Enum.Material.Wood)
-			part(model, V(0.5, 0.5, 0.2), o * CFrame.new(-0.6, -h + 1.8 + i * 2.9, -1.35), C(20, 20, 20), Enum.Material.Neon)
-			part(model, V(0.5, 0.5, 0.2), o * CFrame.new(0.6, -h + 1.8 + i * 2.9, -1.35), C(20, 20, 20), Enum.Material.Neon)
+			part(
+				model,
+				V(2.6, 2.8, 2.6),
+				o * CFrame.new(0, -h + 1.4 + i * 2.9, 0) * CFrame.Angles(0, i * 0.4, 0),
+				colors[i + 1],
+				Enum.Material.Wood
+			)
+			part(
+				model,
+				V(0.5, 0.5, 0.2),
+				o * CFrame.new(-0.6, -h + 1.8 + i * 2.9, -1.35),
+				C(20, 20, 20),
+				Enum.Material.Neon
+			)
+			part(
+				model,
+				V(0.5, 0.5, 0.2),
+				o * CFrame.new(0.6, -h + 1.8 + i * 2.9, -1.35),
+				C(20, 20, 20),
+				Enum.Material.Neon
+			)
 		end
 		part(model, V(5, 0.5, 1), o * CFrame.new(0, h - 0.6, 0), C(240, 200, 110), Enum.Material.Wood)
 	elseif id == "rescue_beacon" then
 		for i = 0, 5 do
 			local w = 9 - i * 1.1
-			part(model, V(w, 4.5, w), o * CFrame.new(0, -h + 2.25 + i * 4.5, 0), i % 2 == 0 and C(235, 230, 220) or C(200, 60, 50), Enum.Material.Concrete)
+			part(
+				model,
+				V(w, 4.5, w),
+				o * CFrame.new(0, -h + 2.25 + i * 4.5, 0),
+				i % 2 == 0 and C(235, 230, 220) or C(200, 60, 50),
+				Enum.Material.Concrete
+			)
 		end
 		local lamp = part(model, V(3.5, 3, 3.5), o * CFrame.new(0, h - 1.5, 0), C(255, 230, 140), Enum.Material.Glass)
 		lamp.Name = "Lamp"

@@ -41,7 +41,14 @@ end
 -- Adiciona até `n` itens; retorna quantos foram adicionados (o resto não coube).
 -- Preenche primeiro pilhas existentes, depois slots vazios (começando fora da hotbar
 -- para recursos, a não ser que `preferHotbar` seja true).
-function Inventory.add(inv: Inv, id: string, n: number, stackMax: number, hotbarSize: number?, preferHotbar: boolean?): number
+function Inventory.add(
+	inv: Inv,
+	id: string,
+	n: number,
+	stackMax: number,
+	hotbarSize: number?,
+	preferHotbar: boolean?
+): number
 	if n <= 0 then
 		return 0
 	end
@@ -206,7 +213,12 @@ function Inventory.serialize(inv: Inv): { any }
 end
 
 -- Desserializa validando ids e limites (dados podem estar corrompidos/antigos)
-function Inventory.deserialize(data: any, size: number, isValid: (string) -> boolean, stackMaxOf: (string) -> number): Inv
+function Inventory.deserialize(
+	data: any,
+	size: number,
+	isValid: (string) -> boolean,
+	stackMaxOf: (string) -> number
+): Inv
 	local inv = Inventory.new(size)
 	if type(data) ~= "table" then
 		return inv

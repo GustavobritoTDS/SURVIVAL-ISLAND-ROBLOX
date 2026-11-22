@@ -196,7 +196,13 @@ local function tick(dt: number)
 				local flat = (pos - prev) * Vector3.new(1, 0, 1)
 				if flat.Magnitude / math.max(dt, 0.1) > MAX_SPEED then
 					char:PivotTo(CFrame.new(prev + Vector3.new(0, 2, 0)))
-					warn(("[Survival] movimento suspeito de %s: %.0f studs em %.1fs"):format(player.Name, flat.Magnitude, dt))
+					warn(
+						("[Survival] movimento suspeito de %s: %.0f studs em %.1fs"):format(
+							player.Name,
+							flat.Magnitude,
+							dt
+						)
+					)
 					pos = prev
 				end
 			end
@@ -213,7 +219,8 @@ local function tick(dt: number)
 			else
 				lastSafe[player] = hrp.CFrame
 			end
-			local holdingTorch = char:FindFirstChildOfClass("Tool") and (char:FindFirstChildOfClass("Tool") :: Tool):GetAttribute("ItemId") == "torch"
+			local holdingTorch = char:FindFirstChildOfClass("Tool")
+				and (char:FindFirstChildOfClass("Tool") :: Tool):GetAttribute("ItemId") == "torch"
 			local inCave = region.id == "cave"
 			local env = {
 				dt = dt,

@@ -49,7 +49,12 @@ local function onCounter(player: Player, stat: string, n: number)
 			q.progress = math.min(def.goal, q.progress + n)
 			changed = true
 			if q.progress >= def.goal then
-				PlayerService.notify(player, "Missão concluída: " .. def.text .. " — resgate a recompensa!", "quest", "📜")
+				PlayerService.notify(
+					player,
+					"Missão concluída: " .. def.text .. " — resgate a recompensa!",
+					"quest",
+					"📜"
+				)
 			end
 		end
 	end
@@ -102,7 +107,12 @@ local function login(player: Player, data: any)
 		task.delay(4, function()
 			if player.Parent then
 				PlayerService.giveMany(player, r.items, true)
-				PlayerService.notify(player, ("Bônus diário (dia %d): +%d Conchas e suprimentos!"):format(streak, shells), "level", "🎁")
+				PlayerService.notify(
+					player,
+					("Bônus diário (dia %d): +%d Conchas e suprimentos!"):format(streak, shells),
+					"level",
+					"🎁"
+				)
 				PlayerService.sync(player, "progress", "quests")
 			end
 		end)
