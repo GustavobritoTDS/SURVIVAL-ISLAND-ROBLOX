@@ -22,18 +22,15 @@ local function clear(f: Instance)
 end
 
 local function list(parent: Instance): ScrollingFrame
-	local s = Lib.new(
-		"ScrollingFrame",
-		{
-			Size = UDim2.fromScale(1, 1),
-			BackgroundTransparency = 1,
-			BorderSizePixel = 0,
-			ScrollBarThickness = 6,
-			AutomaticCanvasSize = Enum.AutomaticSize.Y,
-			CanvasSize = UDim2.new(),
-			Parent = parent,
-		}
-	)
+	local s = Lib.new("ScrollingFrame", {
+		Size = UDim2.fromScale(1, 1),
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		ScrollBarThickness = 6,
+		AutomaticCanvasSize = Enum.AutomaticSize.Y,
+		CanvasSize = UDim2.new(),
+		Parent = parent,
+	})
 	Lib.new("UIListLayout", { Padding = UDim.new(0, 8), SortOrder = Enum.SortOrder.LayoutOrder, Parent = s })
 	Lib.new("UIPadding", { PaddingRight = UDim.new(0, 8), Parent = s })
 	return s
@@ -106,38 +103,29 @@ local function buildQuests(gui: ScreenGui)
 					TextXAlignment = Enum.TextXAlignment.Left,
 					Parent = card,
 				})
-				local back = Lib.new(
-					"Frame",
-					{
-						Position = UDim2.fromOffset(14, 38),
-						Size = UDim2.new(1, -180, 0, 12),
-						BackgroundColor3 = Color3.fromRGB(10, 16, 20),
-						Parent = card,
-					}
-				)
+				local back = Lib.new("Frame", {
+					Position = UDim2.fromOffset(14, 38),
+					Size = UDim2.new(1, -180, 0, 12),
+					BackgroundColor3 = Color3.fromRGB(10, 16, 20),
+					Parent = card,
+				})
 				Lib.corner(6).Parent = back
-				local fill = Lib.new(
-					"Frame",
-					{
-						Size = UDim2.fromScale(math.clamp(q.progress / def.goal, 0, 1), 1),
-						BackgroundColor3 = T.xp,
-						Parent = back,
-					}
-				)
+				local fill = Lib.new("Frame", {
+					Size = UDim2.fromScale(math.clamp(q.progress / def.goal, 0, 1), 1),
+					BackgroundColor3 = T.xp,
+					Parent = back,
+				})
 				Lib.corner(6).Parent = fill
 				local complete = q.progress >= def.goal
-				local btn = Lib.button(
-					{
-						AnchorPoint = Vector2.new(1, 0.5),
-						Position = UDim2.new(1, -10, 0.5, 0),
-						Size = UDim2.fromOffset(140, 44),
-						TextSize = 14,
-						Parent = card,
-					},
-					function()
-						State.action("ClaimQuest", i)
-					end
-				)
+				local btn = Lib.button({
+					AnchorPoint = Vector2.new(1, 0.5),
+					Position = UDim2.new(1, -10, 0.5, 0),
+					Size = UDim2.fromOffset(140, 44),
+					TextSize = 14,
+					Parent = card,
+				}, function()
+					State.action("ClaimQuest", i)
+				end)
 				if q.claimed then
 					btn.Text = "✅ Resgatado"
 					btn.TextColor3 = T.muted
@@ -236,22 +224,19 @@ local function buildShop(gui: ScreenGui)
 			TextYAlignment = Enum.TextYAlignment.Top,
 			Parent = c,
 		})
-		local b = Lib.button(
-			{
-				AnchorPoint = Vector2.new(1, 0.5),
-				Position = UDim2.new(1, -12, 0.5, 0),
-				Size = UDim2.fromOffset(150, 46),
-				Text = owned and "✅ Possui" or price,
-				TextSize = 15,
-				BackgroundColor3 = owned and T.panel or T.accent:Lerp(T.panel, 0.3),
-				Parent = c,
-			},
-			function()
-				if not owned then
-					onBuy()
-				end
+		local b = Lib.button({
+			AnchorPoint = Vector2.new(1, 0.5),
+			Position = UDim2.new(1, -12, 0.5, 0),
+			Size = UDim2.fromOffset(150, 46),
+			Text = owned and "✅ Possui" or price,
+			TextSize = 15,
+			BackgroundColor3 = owned and T.panel or T.accent:Lerp(T.panel, 0.3),
+			Parent = c,
+		}, function()
+			if not owned then
+				onBuy()
 			end
-		)
+		end)
 		return b
 	end
 	local function rebuild()

@@ -224,6 +224,7 @@ local function sendGuide(player: Player, dialogue: any?)
 		payload.target = st.target
 		payload.targetPos = st.check.pos
 		payload.stageId = st.id
+		payload.recipe = st.recipe
 	else
 		payload.finished = true
 	end
@@ -273,11 +274,15 @@ local function check(player: Player)
 end
 
 -- Jogador conversou com o Bento
-function GuideService.talk(player: Player)
+-- force = true: o Bento chama o jogador mesmo à distância (primeira entrada)
+function GuideService.talk(player: Player, force: boolean?)
 	local data = DataService.get(player)
 	local char = player.Character
 	local hrp = char and char:FindFirstChild("HumanoidRootPart") :: BasePart?
-	if not data or not hrp or not npc or (npc:GetPivot().Position - hrp.Position).Magnitude > 16 then
+	if not data or not hrp or not npc then
+		return
+	end
+	if not force and (npc:GetPivot().Position - hrp.Position).Magnitude > 16 then
 		return
 	end
 	local g = guideData(data)
@@ -304,18 +309,25 @@ function GuideService.init()
 			sendGuide(player)
 		else
 			-- dica para novatos: mostrar objetivo de falar com o Bento
-			stateEvent:FireClient(
-				player,
-				{
-					guide = {
-						stage = 0,
-						total = #Guide.stages,
-						objective = "Fale com o Velho Bento perto da fogueira",
-						title = "Náufrago",
-						target = "npc",
-					},
-				}
-			)
+			stateEvent:FireClient(player, {
+				guide = {
+					stage = 0,
+					total = #Guide.stages,
+					objective = "Fale com o Velho Bento perto da fogueira",
+					title = "Náufrago",
+					target = "npc",
+				},
+			})
+			-- Primeira vez: o Bento chama o jogador sozinho, logo depois que ele nasce
+			task.spawn(function()
+				local char = player.Character or player.CharacterAdded:Wait()
+				char:WaitForChild("HumanoidRootPart", 15)
+				task.wait(6)
+				local d = DataService.get(player)
+				if player.Parent and d and not guideData(d).started then
+					GuideService.talk(player, true)
+				end
+			end)
 		end
 	end)
 	PlayerService.onCounter(function(player)

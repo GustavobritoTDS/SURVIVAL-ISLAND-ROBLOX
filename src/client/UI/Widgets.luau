@@ -19,16 +19,13 @@ function Widgets.slot(parent: Instance, size: number, index: number?): Slot
 		Parent = parent,
 	})
 	local icon = Lib.text({ Size = UDim2.fromScale(1, 1), Text = "", TextScaled = true, Parent = b })
-	Lib.new(
-		"UIPadding",
-		{
-			PaddingTop = UDim.new(0.16, 0),
-			PaddingBottom = UDim.new(0.2, 0),
-			PaddingLeft = UDim.new(0.16, 0),
-			PaddingRight = UDim.new(0.16, 0),
-			Parent = icon,
-		}
-	)
+	Lib.new("UIPadding", {
+		PaddingTop = UDim.new(0.16, 0),
+		PaddingBottom = UDim.new(0.2, 0),
+		PaddingLeft = UDim.new(0.16, 0),
+		PaddingRight = UDim.new(0.16, 0),
+		Parent = icon,
+	})
 	local count = Lib.text({
 		AnchorPoint = Vector2.new(1, 1),
 		Position = UDim2.new(1, -4, 1, -2),
@@ -89,16 +86,13 @@ function Widgets.bar(parent: Instance, icon: string, color: Color3, order: numbe
 		{ Size = UDim2.fromOffset(210, 22), BackgroundTransparency = 1, LayoutOrder = order, Parent = parent }
 	)
 	Lib.text({ Size = UDim2.fromOffset(22, 22), Text = icon, TextScaled = true, Parent = row })
-	local back = Lib.new(
-		"Frame",
-		{
-			Position = UDim2.fromOffset(28, 4),
-			Size = UDim2.new(1, -28, 0, 14),
-			BackgroundColor3 = Color3.fromRGB(10, 16, 20),
-			BackgroundTransparency = 0.2,
-			Parent = row,
-		}
-	)
+	local back = Lib.new("Frame", {
+		Position = UDim2.fromOffset(28, 4),
+		Size = UDim2.new(1, -28, 0, 14),
+		BackgroundColor3 = Color3.fromRGB(10, 16, 20),
+		BackgroundTransparency = 0.2,
+		Parent = row,
+	})
 	Lib.corner(7).Parent = back
 	local fill = Lib.new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = color, Parent = back })
 	Lib.corner(7).Parent = fill
@@ -151,29 +145,23 @@ function Widgets.window(gui: ScreenGui, name: string, title: string, size: Vecto
 		TextColor3 = T.accent,
 		Parent = header,
 	})
-	Lib.button(
-		{
-			AnchorPoint = Vector2.new(1, 0.5),
-			Position = UDim2.new(1, -10, 0.5, 0),
-			Size = UDim2.fromOffset(34, 34),
-			Text = "X",
-			TextSize = 18,
-			Parent = header,
-		},
-		function()
-			Widgets.toggle(name, false)
-		end
-	)
-	local body = Lib.new(
-		"Frame",
-		{
-			Name = "Body",
-			Position = UDim2.fromOffset(14, 50),
-			Size = UDim2.new(1, -28, 1, -64),
-			BackgroundTransparency = 1,
-			Parent = f,
-		}
-	)
+	Lib.button({
+		AnchorPoint = Vector2.new(1, 0.5),
+		Position = UDim2.new(1, -10, 0.5, 0),
+		Size = UDim2.fromOffset(34, 34),
+		Text = "X",
+		TextSize = 18,
+		Parent = header,
+	}, function()
+		Widgets.toggle(name, false)
+	end)
+	local body = Lib.new("Frame", {
+		Name = "Body",
+		Position = UDim2.fromOffset(14, 50),
+		Size = UDim2.new(1, -28, 1, -64),
+		BackgroundTransparency = 1,
+		Parent = f,
+	})
 	windows[name] = { frame = f }
 	return f, body
 end
@@ -228,15 +216,12 @@ function Widgets.scroll(parent: Instance, cell: Vector2, pad: number): Scrolling
 		CanvasSize = UDim2.new(),
 		Parent = parent,
 	})
-	Lib.new(
-		"UIGridLayout",
-		{
-			CellSize = UDim2.fromOffset(cell.X, cell.Y),
-			CellPadding = UDim2.fromOffset(pad, pad),
-			SortOrder = Enum.SortOrder.LayoutOrder,
-			Parent = s,
-		}
-	)
+	Lib.new("UIGridLayout", {
+		CellSize = UDim2.fromOffset(cell.X, cell.Y),
+		CellPadding = UDim2.fromOffset(pad, pad),
+		SortOrder = Enum.SortOrder.LayoutOrder,
+		Parent = s,
+	})
 	Lib.new(
 		"UIPadding",
 		{ PaddingTop = UDim.new(0, 4), PaddingLeft = UDim.new(0, 4), PaddingRight = UDim.new(0, 8), Parent = s }

@@ -332,6 +332,36 @@ local function makeSign(parent: Instance, at: Vector2, viewer: Vector2, region: 
 		signText(gui, region)
 		gui.Parent = board
 	end
+	-- Letreiro flutuante em studs (cresce/diminui com a distância como texto do mundo; legível de longe)
+	local bb = Instance.new("BillboardGui")
+	bb.Name = "RegionTitle"
+	bb.Size = UDim2.new(22, 0, 5.5, 0)
+	bb.StudsOffset = Vector3.new(0, 7.5, 0)
+	bb.MaxDistance = 320
+	bb.LightInfluence = 0
+	bb.AlwaysOnTop = false
+	local title = Instance.new("TextLabel")
+	title.BackgroundTransparency = 1
+	title.Size = UDim2.fromScale(1, 0.62)
+	title.Font = Enum.Font.GothamBlack
+	title.TextScaled = true
+	title.Text = region.name
+	title.TextColor3 = C(255, 244, 220)
+	title.TextStrokeColor3 = C(30, 22, 14)
+	title.TextStrokeTransparency = 0
+	title.Parent = bb
+	local sub = Instance.new("TextLabel")
+	sub.BackgroundTransparency = 1
+	sub.Position = UDim2.fromScale(0, 0.64)
+	sub.Size = UDim2.fromScale(1, 0.36)
+	sub.Font = Enum.Font.GothamBold
+	sub.TextScaled = true
+	sub.Text = string.format("Nível %d+  •  Perigo %d/5", region.level, math.clamp(region.danger, 0, 5))
+	sub.TextColor3 = region.color:Lerp(Color3.new(1, 1, 1), 0.3)
+	sub.TextStrokeColor3 = C(30, 22, 14)
+	sub.TextStrokeTransparency = 0
+	sub.Parent = bb
+	bb.Parent = board
 	model:SetAttribute("Region", region.id)
 	model.Parent = parent
 	return pos

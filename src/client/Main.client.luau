@@ -16,6 +16,7 @@ local Menus = require(script.Parent.Controllers.Menus)
 local Fx = require(script.Parent.Controllers.Fx)
 local Animations = require(script.Parent.Controllers.Animations)
 local Dialogue = require(script.Parent.Controllers.Dialogue)
+local MapView = require(script.Parent.Controllers.MapView)
 
 -- Esconde a mochila padrão do Roblox (usamos a nossa barra)
 task.spawn(function()
@@ -40,6 +41,7 @@ Menus.init(gui)
 Fx.init(gui, HUD)
 Animations.init()
 Dialogue.init(gui)
+MapView.init(gui)
 State.init()
 
 -- Atalhos
@@ -50,6 +52,7 @@ local KEYS: { [Enum.KeyCode]: string } = {
 	[Enum.KeyCode.B] = "Build",
 	[Enum.KeyCode.J] = "Quests",
 	[Enum.KeyCode.M] = "Shop",
+	[Enum.KeyCode.N] = "Map",
 	[Enum.KeyCode.ButtonY] = "Inventory",
 	[Enum.KeyCode.DPadUp] = "Crafting",
 	[Enum.KeyCode.DPadRight] = "Build",

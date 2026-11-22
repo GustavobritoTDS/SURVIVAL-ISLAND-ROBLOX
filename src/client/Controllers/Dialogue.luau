@@ -45,17 +45,14 @@ function Dialogue.init(gui: ScreenGui)
 	local st = panel:FindFirstChildOfClass("UIStroke") :: UIStroke
 	st.Color = T.accent
 	st.Transparency = 0.1
-	local portrait = Lib.new(
-		"ViewportFrame",
-		{
-			Position = UDim2.fromOffset(14, 14),
-			Size = UDim2.fromOffset(120, 140),
-			BackgroundColor3 = T.panel2,
-			Ambient = Color3.fromRGB(200, 190, 170),
-			LightColor = Color3.fromRGB(255, 230, 190),
-			Parent = panel,
-		}
-	)
+	local portrait = Lib.new("ViewportFrame", {
+		Position = UDim2.fromOffset(14, 14),
+		Size = UDim2.fromOffset(120, 140),
+		BackgroundColor3 = T.panel2,
+		Ambient = Color3.fromRGB(200, 190, 170),
+		LightColor = Color3.fromRGB(255, 230, 190),
+		Parent = panel,
+	})
 	Lib.corner(12).Parent = portrait
 	local fallback = Lib.text({ Size = UDim2.fromScale(1, 1), Text = "🧔", TextSize = 64, Parent = portrait })
 	local name = Lib.text({
@@ -112,17 +109,14 @@ function Dialogue.init(gui: ScreenGui)
 	)
 
 	-- Balão de fala sobre o NPC
-	local bubble = Lib.new(
-		"BillboardGui",
-		{
-			Name = "TalkBubble",
-			Size = UDim2.fromOffset(70, 40),
-			StudsOffset = Vector3.new(0, 3.2, 0),
-			AlwaysOnTop = true,
-			Enabled = false,
-			Parent = gui,
-		}
-	)
+	local bubble = Lib.new("BillboardGui", {
+		Name = "TalkBubble",
+		Size = UDim2.fromOffset(70, 40),
+		StudsOffset = Vector3.new(0, 3.2, 0),
+		AlwaysOnTop = true,
+		Enabled = false,
+		Parent = gui,
+	})
 	local bubbleCard =
 		Lib.panel({ Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(255, 250, 238), Parent = bubble })
 	local dots = Lib.text({
@@ -134,17 +128,14 @@ function Dialogue.init(gui: ScreenGui)
 	})
 
 	-- Marcador sobre o NPC (❗ quando há algo novo para conversar)
-	local npcMark = Lib.new(
-		"BillboardGui",
-		{
-			Name = "NpcMark",
-			Size = UDim2.fromOffset(150, 60),
-			StudsOffset = Vector3.new(0, 4.6, 0),
-			AlwaysOnTop = true,
-			MaxDistance = 220,
-			Parent = gui,
-		}
-	)
+	local npcMark = Lib.new("BillboardGui", {
+		Name = "NpcMark",
+		Size = UDim2.fromOffset(150, 60),
+		StudsOffset = Vector3.new(0, 4.6, 0),
+		AlwaysOnTop = true,
+		MaxDistance = 220,
+		Parent = gui,
+	})
 	local markIcon = Lib.text({ Size = UDim2.new(1, 0, 0, 36), Text = "❗", TextSize = 34, Parent = npcMark })
 	local markText = Lib.text({
 		Position = UDim2.fromOffset(0, 36),
@@ -183,15 +174,12 @@ function Dialogue.init(gui: ScreenGui)
 		TextYAlignment = Enum.TextYAlignment.Top,
 		Parent = tracker,
 	})
-	local tBack = Lib.new(
-		"Frame",
-		{
-			Position = UDim2.new(0, 10, 1, -16),
-			Size = UDim2.new(1, -60, 0, 8),
-			BackgroundColor3 = Color3.fromRGB(10, 16, 20),
-			Parent = tracker,
-		}
-	)
+	local tBack = Lib.new("Frame", {
+		Position = UDim2.new(0, 10, 1, -16),
+		Size = UDim2.new(1, -60, 0, 8),
+		BackgroundColor3 = Color3.fromRGB(10, 16, 20),
+		Parent = tracker,
+	})
 	Lib.corner(4).Parent = tBack
 	local tFill = Lib.new("Frame", { Size = UDim2.fromScale(0, 1), BackgroundColor3 = T.accent, Parent = tBack })
 	Lib.corner(4).Parent = tFill
@@ -205,18 +193,101 @@ function Dialogue.init(gui: ScreenGui)
 		Parent = tracker,
 	})
 
+	-- Itens necessários para a receita da etapa (aparece embaixo do rastreador)
+	local Recipes = require(Shared.Config.Recipes)
+	local Items = require(Shared.Config.Items)
+	local needs = Lib.panel({
+		Position = UDim2.fromOffset(16, 242),
+		Size = UDim2.fromOffset(240, 40),
+		BackgroundTransparency = 0.25,
+		Visible = false,
+		AutomaticSize = Enum.AutomaticSize.Y,
+		Parent = gui,
+	})
+	Lib.pad(8).Parent = needs
+	Lib.new("UIListLayout", { Padding = UDim.new(0, 3), SortOrder = Enum.SortOrder.LayoutOrder, Parent = needs })
+	local STATION = {
+		workbench = "🛠️ Perto da Bancada",
+		campfire = "🔥 Perto da Fogueira",
+		forge = "🏭 Perto da Fornalha",
+	}
+	local function refreshNeeds()
+		for _, c in needs:GetChildren() do
+			if c:IsA("TextLabel") then
+				c:Destroy()
+			end
+		end
+		local g = State.data.guide
+		local r = g and g.recipe and Recipes.byId[g.recipe]
+		if not r or g.finished then
+			needs.Visible = false
+			return
+		end
+		needs.Visible = true
+		local out = Items[r.output]
+		Lib.text({
+			Size = UDim2.new(1, 0, 0, 18),
+			LayoutOrder = 0,
+			Text = "Para fabricar " .. out.icon .. " " .. out.name .. ":",
+			TextSize = 13,
+			TextColor3 = T.accent,
+			TextXAlignment = Enum.TextXAlignment.Left,
+			Parent = needs,
+		})
+		local i = 1
+		local allOk = true
+		for id, n in r.cost do
+			local have = State.count(id)
+			local d = Items[id]
+			allOk = allOk and have >= n
+			Lib.text({
+				Size = UDim2.new(1, 0, 0, 18),
+				LayoutOrder = i,
+				Text = ("%s %s  %d/%d %s"):format(d.icon, d.name, math.min(have, n), n, have >= n and "✔" or ""),
+				TextSize = 13,
+				Font = T.fontBody,
+				TextColor3 = have >= n and T.good or T.text,
+				TextXAlignment = Enum.TextXAlignment.Left,
+				Parent = needs,
+			})
+			i += 1
+		end
+		if r.station then
+			Lib.text({
+				Size = UDim2.new(1, 0, 0, 18),
+				LayoutOrder = 98,
+				Text = STATION[r.station] or r.station,
+				TextSize = 12,
+				Font = T.fontBody,
+				TextColor3 = T.muted,
+				TextXAlignment = Enum.TextXAlignment.Left,
+				Parent = needs,
+			})
+		end
+		if allOk then
+			Lib.text({
+				Size = UDim2.new(1, 0, 0, 18),
+				LayoutOrder = 99,
+				Text = State.count(r.output) > 0 and "✅ Pronto! Abra Construir (B)"
+					or "✅ Tudo certo! Abra Criar (C)",
+				TextSize = 13,
+				TextColor3 = T.good,
+				TextXAlignment = Enum.TextXAlignment.Left,
+				Parent = needs,
+			})
+		end
+	end
+	State.on("inv", refreshNeeds)
+
 	-- Marcador de destino (no mundo)
-	local waypoint = Lib.new(
-		"BillboardGui",
-		{
-			Name = "Waypoint",
-			Size = UDim2.fromOffset(90, 54),
-			StudsOffset = Vector3.new(0, 6, 0),
-			AlwaysOnTop = true,
-			Enabled = false,
-			Parent = gui,
-		}
-	)
+	local waypoint = Lib.new("BillboardGui", {
+		Name = "Waypoint",
+		Size = UDim2.fromOffset(90, 54),
+		StudsOffset = Vector3.new(0, 6, 0),
+		AlwaysOnTop = true,
+		Enabled = false,
+		Parent = gui,
+	})
 	Lib.text({ Size = UDim2.new(1, 0, 0, 30), Text = "⬇️", TextSize = 28, Parent = waypoint })
 	local wpDist = Lib.text({
 		Position = UDim2.fromOffset(0, 30),
@@ -256,6 +327,7 @@ function Dialogue.init(gui: ScreenGui)
 		Lib.tween(tFill, 0.35, { Size = UDim2.fromScale(frac, 1) })
 		tCount.Text = g.goal and ("%d/%d"):format(g.progress or 0, g.goal) or ""
 		Lib.pop(tracker)
+		refreshNeeds()
 	end)
 
 	-- ===== Fluxo do diálogo =====
@@ -400,6 +472,11 @@ function Dialogue.init(gui: ScreenGui)
 	State.on("dialogue", function(d)
 		if d and d.lines then
 			State.data.dialogue = nil
+			-- espera o jogador sair da tela de carregamento
+			local pg = player:WaitForChild("PlayerGui")
+			while pg:FindFirstChild("Loading") do
+				task.wait(0.3)
+			end
 			open(d)
 		end
 	end)

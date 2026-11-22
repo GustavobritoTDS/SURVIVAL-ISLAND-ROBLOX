@@ -71,6 +71,7 @@ local function boot()
 	step("Quest", QuestService.init)
 	step("Monetization", MonetizationService.init)
 	step("Guide", require(Services.GuideService).init)
+	step("Map", require(Services.MapService).init)
 
 	-- Golpes: armas priorizam criaturas; machados/picaretas priorizam nós de recurso
 	EquipService.onActivated(function(player, itemId)

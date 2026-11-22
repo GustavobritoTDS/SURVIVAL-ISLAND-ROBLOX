@@ -17,13 +17,8 @@ local Fx = {}
 local player = Players.LocalPlayer
 local HUD: any = nil
 
-local SOUNDS = {
-	hit = "rbxasset://sounds/action_jump_land.mp3",
-	drink = "rbxasset://sounds/impact_water.mp3",
-	hurt = "rbxasset://sounds/ouch.ogg",
-	build = "rbxasset://sounds/action_get_up.mp3",
-	big = "rbxasset://sounds/impact_explosion_03.mp3",
-}
+local Sounds = require(Shared.Config.Sounds)
+local TREES = { palm_tree = true, jungle_tree = true }
 
 local function sfxOn(): boolean
 	return not (State.data.settings and State.data.settings.sfx == false)
@@ -32,14 +27,23 @@ local function fxOn(): boolean
 	return not (State.data.settings and State.data.settings.fx == false)
 end
 
-local function play(name: string, pos: Vector3?, volume: number?)
+-- Toca um efeito da tabela Sounds (variação e tom aleatórios). pos = som 3D no mundo.
+local function play(name: string, pos: Vector3?, volumeMul: number?)
 	if not sfxOn() then
 		return
 	end
+	local def = Sounds[name]
 	local s = Instance.new("Sound")
-	s.SoundId = SOUNDS[name]
-	s.Volume = volume or 0.5
-	s.PlaybackSpeed = 0.9 + math.random() * 0.2
+	if def then
+		s.SoundId = "rbxassetid://" .. def.ids[math.random(1, #def.ids)]
+		s.Volume = def.volume * (volumeMul or 1)
+		local p = def.pitch or { 1, 1 }
+		s.PlaybackSpeed = p[1] + math.random() * (p[2] - p[1])
+	else
+		s.SoundId = "rbxasset://sounds/ouch.ogg" -- dor (som nativo)
+		s.Volume = 0.35 * (volumeMul or 1)
+	end
+	s.RollOffMinDistance = 8
 	if pos then
 		local a = Instance.new("Attachment")
 		a.WorldPosition = pos
@@ -136,7 +140,7 @@ local function onFx(fx: any)
 	local kind = fx.kind
 	if kind == "hit" then
 		burst(fx.pos, Color3.fromRGB(190, 150, 100), 8)
-		play("hit", fx.pos, 0.4)
+		play(TREES[fx.nodeId] and "chop" or "mine", fx.pos)
 		if fx.damage then
 			floatText(fx.pos, "-" .. fx.damage, T.accent)
 		end
@@ -144,34 +148,47 @@ local function onFx(fx: any)
 	elseif kind == "hitFail" then
 		floatText(fx.pos, "✖", T.bad)
 	elseif kind == "nodeBreak" then
-		burst(fx.pos + Vector3.new(0, 2, 0), Color3.fromRGB(140, 200, 110), 20)
-		play("big", fx.pos, 0.25)
+		burst(fx.pos + Vector3.new(0, 2, 0), Color3.fromRGB(140, 200, 110), TREES[fx.nodeId] and 20 or 8)
+		if TREES[fx.nodeId] then
+			play("treeFall", fx.pos)
+		elseif
+			fx.nodeId == "rock"
+			or fx.nodeId == "iron_rock"
+			or fx.nodeId == "crystal_node"
+			or fx.nodeId == "obsidian_rock"
+		then
+			play("mine", fx.pos, 1.2)
+		else
+			play("collect", fx.pos)
+		end
 	elseif kind == "creatureHit" then
 		burst(fx.pos, T.bad, 10)
 		floatText(fx.pos, "-" .. tostring(fx.damage), T.bad)
-		play("hit", fx.pos, 0.5)
+		play("creatureHit", fx.pos)
 	elseif kind == "creatureDie" then
 		burst(fx.pos, Color3.fromRGB(240, 240, 240), 24)
 	elseif kind == "hurt" then
-		play("hurt", nil, 0.5)
+		play("hurt")
 		cameraShake(0.35)
 		if HUD and HUD.flash then
 			HUD.flash()
 		end
 	elseif kind == "eat" or kind == "drink" then
-		play("drink", nil, 0.4)
+		play(kind == "eat" and "eat" or "drink")
 		local char = player.Character
 		if char then
 			floatText(char:GetPivot().Position + Vector3.new(0, 2, 0), fx.icon or "💧", T.good)
 		end
 	elseif kind == "build" then
 		burst(fx.pos, Color3.fromRGB(200, 170, 120), 14)
-		play("build", fx.pos, 0.5)
+		play("build", fx.pos)
 	elseif kind == "craft" then
-		play("build", nil, 0.35)
+		play("craft")
 	elseif kind == "rescue" then
-		play("big", nil, 0.8)
+		play("reward", nil, 1.5)
 		cameraShake(0.5)
+	elseif kind == "anim" and fx.anim == "swing" and typeof(fx.char) == "Instance" then
+		play("swing", (fx.char :: Model):GetPivot().Position, 0.8)
 	end
 end
 
@@ -229,7 +246,7 @@ local function setupRain()
 					task.wait(0.08)
 					cc.Brightness = b
 				end
-				play("big", nil, 0.3)
+				play("treeFall", nil, 0.7) -- trovão abafado
 			end
 		end
 	end)
@@ -252,18 +269,15 @@ local function setupPrompts(gui: ScreenGui)
 		if prompt.Style ~= Enum.ProximityPromptStyle.Custom then
 			return
 		end
-		local bb = Lib.new(
-			"BillboardGui",
-			{
-				Name = "PromptUI",
-				Size = UDim2.fromOffset(190, 64),
-				AlwaysOnTop = true,
-				Adornee = prompt.Parent,
-				StudsOffset = Vector3.new(0, 2.5, 0),
-				Active = true,
-				Parent = gui,
-			}
-		)
+		local bb = Lib.new("BillboardGui", {
+			Name = "PromptUI",
+			Size = UDim2.fromOffset(190, 64),
+			AlwaysOnTop = true,
+			Adornee = prompt.Parent,
+			StudsOffset = Vector3.new(0, 2.5, 0),
+			Active = true,
+			Parent = gui,
+		})
 		local card = Lib.button({ Size = UDim2.fromScale(1, 1), BackgroundColor3 = T.panel, Parent = bb })
 		local keyText = inputType == Enum.ProximityPromptInputType.Gamepad and "X"
 			or (
@@ -363,8 +377,74 @@ local function animateParrot()
 	end)
 end
 
+-- ===== Ambiente sonoro: ondas na praia, selva de dia, grilos à noite, fogueiras crepitando =====
+local function loop(name: string): Sound
+	local def = Sounds[name]
+	local s = Instance.new("Sound")
+	s.SoundId = "rbxassetid://" .. def.ids[1]
+	s.Looped = true
+	s.Volume = 0
+	s.Parent = workspace.CurrentCamera
+	s:Play()
+	return s
+end
+
+local function setupAmbience()
+	local waves, jungle, night = loop("waves"), loop("jungle"), loop("night")
+	task.spawn(function()
+		while true do
+			local region = player:GetAttribute("Region")
+			local isNight = workspace:GetAttribute("Night") == true
+			local on = sfxOn()
+			local function target(s: Sound, name: string, active: boolean)
+				Lib.tween(s, 2, { Volume = (on and active) and Sounds[name].volume or 0 })
+			end
+			target(waves, "waves", region == "beach" or region == nil)
+			target(jungle, "jungle", not isNight and (region == "jungle" or region == "highlands"))
+			target(night, "night", isNight and region ~= "cave")
+			task.wait(2)
+		end
+	end)
+	-- fogueiras: som 3D em cada "FireCore"
+	local function attach(d: Instance)
+		if d:IsA("BasePart") and d.Name == "FireCore" and not d:FindFirstChild("Crackle") then
+			local def = Sounds.campfire
+			local s = Instance.new("Sound")
+			s.Name = "Crackle"
+			s.SoundId = "rbxassetid://" .. def.ids[1]
+			s.Looped = true
+			s.Volume = sfxOn() and def.volume or 0
+			s.RollOffMinDistance = 6
+			s.RollOffMaxDistance = 45
+			s.Parent = d
+			s:Play()
+		end
+	end
+	task.spawn(function()
+		local world = workspace:WaitForChild("World")
+		for _, d in world:GetDescendants() do
+			attach(d)
+		end
+		world.DescendantAdded:Connect(attach)
+	end)
+end
+
+Fx.play = play
+
 function Fx.init(gui: ScreenGui, hud: any)
 	HUD = hud
+	setupAmbience()
+	Lib.clickSound = function()
+		play("click")
+	end
+	-- som suave ao receber itens
+	Net.event("Notify").OnClientEvent:Connect(function(n)
+		if n.kind == "item" then
+			play("pickup")
+		elseif n.kind == "level" or n.kind == "quest" then
+			play("reward")
+		end
+	end)
 	Net.event("Fx").OnClientEvent:Connect(function(fx)
 		local ok, err = pcall(onFx, fx)
 		if not ok then

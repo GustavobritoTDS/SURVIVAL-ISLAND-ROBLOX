@@ -153,15 +153,12 @@ function HUD.init()
 		TextColor3 = T.accent,
 		Parent = top,
 	})
-	local xpBack = Lib.new(
-		"Frame",
-		{
-			Position = UDim2.fromOffset(84, 20),
-			Size = UDim2.fromOffset(150, 12),
-			BackgroundColor3 = Color3.fromRGB(10, 16, 20),
-			Parent = top,
-		}
-	)
+	local xpBack = Lib.new("Frame", {
+		Position = UDim2.fromOffset(84, 20),
+		Size = UDim2.fromOffset(150, 12),
+		BackgroundColor3 = Color3.fromRGB(10, 16, 20),
+		Parent = top,
+	})
 	Lib.corner(6).Parent = xpBack
 	local xpFill = Lib.new("Frame", { Size = UDim2.fromScale(0, 1), BackgroundColor3 = T.xp, Parent = xpBack })
 	Lib.corner(6).Parent = xpFill
@@ -239,27 +236,21 @@ function HUD.init()
 	end)
 
 	-- Hotbar (base central)
-	local hotbar = Lib.new(
-		"Frame",
-		{
-			Name = "Hotbar",
-			AnchorPoint = Vector2.new(0.5, 1),
-			Position = UDim2.new(0.5, 0, 1, -16),
-			Size = UDim2.fromOffset(Game.HOTBAR_SLOTS * 72, 66),
-			BackgroundTransparency = 1,
-			Parent = gui,
-		}
-	)
-	Lib.new(
-		"UIListLayout",
-		{
-			FillDirection = Enum.FillDirection.Horizontal,
-			HorizontalAlignment = Enum.HorizontalAlignment.Center,
-			Padding = UDim.new(0, 8),
-			SortOrder = Enum.SortOrder.LayoutOrder,
-			Parent = hotbar,
-		}
-	)
+	local hotbar = Lib.new("Frame", {
+		Name = "Hotbar",
+		AnchorPoint = Vector2.new(0.5, 1),
+		Position = UDim2.new(0.5, 0, 1, -16),
+		Size = UDim2.fromOffset(Game.HOTBAR_SLOTS * 72, 66),
+		BackgroundTransparency = 1,
+		Parent = gui,
+	})
+	Lib.new("UIListLayout", {
+		FillDirection = Enum.FillDirection.Horizontal,
+		HorizontalAlignment = Enum.HorizontalAlignment.Center,
+		Padding = UDim.new(0, 8),
+		SortOrder = Enum.SortOrder.LayoutOrder,
+		Parent = hotbar,
+	})
 	for i = 1, Game.HOTBAR_SLOTS do
 		local s = Widgets.slot(hotbar, 64, i)
 		HUD.hotbar[i] = s
@@ -317,16 +308,13 @@ function HUD.init()
 			BackgroundColor3 = T.panel2,
 			Parent = menu,
 		})
-		local bar = Lib.new(
-			"Frame",
-			{
-				Position = UDim2.fromOffset(0, 10),
-				Size = UDim2.fromOffset(3, 40),
-				BackgroundColor3 = e[5],
-				BorderSizePixel = 0,
-				Parent = b,
-			}
-		)
+		local bar = Lib.new("Frame", {
+			Position = UDim2.fromOffset(0, 10),
+			Size = UDim2.fromOffset(3, 40),
+			BackgroundColor3 = e[5],
+			BorderSizePixel = 0,
+			Parent = b,
+		})
 		Lib.corner(2).Parent = bar
 		Lib.text({
 			Position = UDim2.fromOffset(0, 4),
@@ -344,17 +332,14 @@ function HUD.init()
 			Parent = b,
 		})
 		if not Lib.isTouch() and e[4] ~= "" then
-			local badge = Lib.new(
-				"Frame",
-				{
-					AnchorPoint = Vector2.new(1, 0),
-					Position = UDim2.new(1, -3, 0, 3),
-					Size = UDim2.fromOffset(e[4] == "Tab" and 26 or 16, 14),
-					BackgroundColor3 = Color3.fromRGB(10, 16, 20),
-					BackgroundTransparency = 0.2,
-					Parent = b,
-				}
-			)
+			local badge = Lib.new("Frame", {
+				AnchorPoint = Vector2.new(1, 0),
+				Position = UDim2.new(1, -3, 0, 3),
+				Size = UDim2.fromOffset(e[4] == "Tab" and 26 or 16, 14),
+				BackgroundColor3 = Color3.fromRGB(10, 16, 20),
+				BackgroundTransparency = 0.2,
+				Parent = b,
+			})
 			Lib.corner(4).Parent = badge
 			Lib.text({ Size = UDim2.fromScale(1, 1), Text = e[4], TextSize = 10, TextColor3 = T.muted, Parent = badge })
 		end
@@ -365,25 +350,19 @@ function HUD.init()
 	end
 
 	-- Notificações
-	toastHolder = Lib.new(
-		"Frame",
-		{
-			AnchorPoint = Vector2.new(1, 0),
-			Position = UDim2.new(1, -96, 0, 84),
-			Size = UDim2.fromOffset(300, 300),
-			BackgroundTransparency = 1,
-			Parent = gui,
-		}
-	)
-	Lib.new(
-		"UIListLayout",
-		{
-			Padding = UDim.new(0, 6),
-			SortOrder = Enum.SortOrder.LayoutOrder,
-			HorizontalAlignment = Enum.HorizontalAlignment.Right,
-			Parent = toastHolder,
-		}
-	)
+	toastHolder = Lib.new("Frame", {
+		AnchorPoint = Vector2.new(1, 0),
+		Position = UDim2.new(1, -96, 0, 84),
+		Size = UDim2.fromOffset(300, 300),
+		BackgroundTransparency = 1,
+		Parent = gui,
+	})
+	Lib.new("UIListLayout", {
+		Padding = UDim.new(0, 6),
+		SortOrder = Enum.SortOrder.LayoutOrder,
+		HorizontalAlignment = Enum.HorizontalAlignment.Right,
+		Parent = toastHolder,
+	})
 	Net.event("Notify").OnClientEvent:Connect(notify)
 
 	-- Indicadores de perigo (vinheta vermelha ao tomar dano / frio)
@@ -391,17 +370,14 @@ function HUD.init()
 		"Frame",
 		{ Size = UDim2.fromScale(1, 1), BackgroundColor3 = T.bad, BackgroundTransparency = 1, ZIndex = 0, Parent = gui }
 	)
-	Lib.new(
-		"UIGradient",
-		{
-			Transparency = NumberSequence.new({
-				NumberSequenceKeypoint.new(0, 0.2),
-				NumberSequenceKeypoint.new(0.5, 1),
-				NumberSequenceKeypoint.new(1, 0.2),
-			}),
-			Parent = vignette,
-		}
-	)
+	Lib.new("UIGradient", {
+		Transparency = NumberSequence.new({
+			NumberSequenceKeypoint.new(0, 0.2),
+			NumberSequenceKeypoint.new(0.5, 1),
+			NumberSequenceKeypoint.new(1, 0.2),
+		}),
+		Parent = vignette,
+	})
 	HUD.flash = function()
 		vignette.BackgroundTransparency = 0.55
 		Lib.tween(vignette, 0.6, { BackgroundTransparency = 1 })
@@ -412,7 +388,9 @@ end
 function HUD.useHotbar(i: number)
 	local st = State.slots[i]
 	local def = st and Items[st.id]
-	if def and (def.category == "food" or def.category == "armor") then
+	if def and def.id == "island_map" then
+		Widgets.toggle("Map")
+	elseif def and (def.category == "food" or def.category == "armor") then
 		State.action("Use", i)
 	elseif def and def.category == "structure" then
 		local Build = require(script.Parent.Build)

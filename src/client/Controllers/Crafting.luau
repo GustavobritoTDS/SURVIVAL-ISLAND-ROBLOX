@@ -48,27 +48,21 @@ function Crafting.init(gui: ScreenGui)
 		"UIListLayout",
 		{ FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 6), Parent = tabBar }
 	)
-	local listHolder = Lib.new(
-		"Frame",
-		{
-			Position = UDim2.fromOffset(0, 46),
-			Size = UDim2.new(0, 470, 1, -46),
-			BackgroundTransparency = 1,
-			Parent = body,
-		}
-	)
-	local list = Lib.new(
-		"ScrollingFrame",
-		{
-			Size = UDim2.fromScale(1, 1),
-			BackgroundTransparency = 1,
-			BorderSizePixel = 0,
-			ScrollBarThickness = 6,
-			AutomaticCanvasSize = Enum.AutomaticSize.Y,
-			CanvasSize = UDim2.new(),
-			Parent = listHolder,
-		}
-	)
+	local listHolder = Lib.new("Frame", {
+		Position = UDim2.fromOffset(0, 46),
+		Size = UDim2.new(0, 470, 1, -46),
+		BackgroundTransparency = 1,
+		Parent = body,
+	})
+	local list = Lib.new("ScrollingFrame", {
+		Size = UDim2.fromScale(1, 1),
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		ScrollBarThickness = 6,
+		AutomaticCanvasSize = Enum.AutomaticSize.Y,
+		CanvasSize = UDim2.new(),
+		Parent = listHolder,
+	})
 	Lib.new("UIListLayout", { Padding = UDim.new(0, 6), SortOrder = Enum.SortOrder.LayoutOrder, Parent = list })
 	local detail = Lib.panel({
 		Position = UDim2.new(0, 482, 0, 46),
@@ -95,15 +89,12 @@ function Crafting.init(gui: ScreenGui)
 		TextColor3 = T.muted,
 		Parent = detail,
 	})
-	local costs = Lib.new(
-		"Frame",
-		{
-			Position = UDim2.fromOffset(0, 132),
-			Size = UDim2.new(1, 0, 0, 130),
-			BackgroundTransparency = 1,
-			Parent = detail,
-		}
-	)
+	local costs = Lib.new("Frame", {
+		Position = UDim2.fromOffset(0, 132),
+		Size = UDim2.new(1, 0, 0, 130),
+		BackgroundTransparency = 1,
+		Parent = detail,
+	})
 	Lib.new("UIListLayout", { Padding = UDim.new(0, 4), Parent = costs })
 	local req = Lib.text({
 		Position = UDim2.fromOffset(0, 266),
@@ -201,17 +192,14 @@ function Crafting.init(gui: ScreenGui)
 				local out = Items[r.output]
 				local locked = level < r.level
 				local can = not locked and haveAll(r, 1)
-				local row = Lib.button(
-					{
-						Size = UDim2.new(1, -10, 0, 54),
-						LayoutOrder = (locked and 1000 or 0) + i,
-						BackgroundColor3 = can and T.slot or T.panel2,
-						Parent = list,
-					},
-					function()
-						showRecipe(r)
-					end
-				)
+				local row = Lib.button({
+					Size = UDim2.new(1, -10, 0, 54),
+					LayoutOrder = (locked and 1000 or 0) + i,
+					BackgroundColor3 = can and T.slot or T.panel2,
+					Parent = list,
+				}, function()
+					showRecipe(r)
+				end)
 				Lib.text({
 					Position = UDim2.fromOffset(8, 0),
 					Size = UDim2.fromOffset(44, 54),

@@ -632,6 +632,17 @@ local Items: { [string]: ItemDef } = {
 		structure = "rescue_beacon",
 		rarity = "legendary",
 	},
+	-- ===== Especiais =====
+	island_map = {
+		id = "island_map",
+		name = "Mapa da Ilha",
+		description = "Mostra a ilha, os locais importantes e onde você está.",
+		category = "special",
+		icon = "🗺️",
+		color = C(220, 190, 130),
+		stack = 1,
+		rarity = "uncommon",
+	},
 }
 
 -- Valida e preenche ids

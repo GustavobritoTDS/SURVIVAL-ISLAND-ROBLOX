@@ -64,16 +64,13 @@ function Inventory.init(gui: ScreenGui)
 		TextYAlignment = Enum.TextYAlignment.Top,
 		Parent = details,
 	})
-	local actions = Lib.new(
-		"Frame",
-		{
-			AnchorPoint = Vector2.new(0, 1),
-			Position = UDim2.fromScale(0, 1),
-			Size = UDim2.new(1, 0, 0, 150),
-			BackgroundTransparency = 1,
-			Parent = details,
-		}
-	)
+	local actions = Lib.new("Frame", {
+		AnchorPoint = Vector2.new(0, 1),
+		Position = UDim2.fromScale(0, 1),
+		Size = UDim2.new(1, 0, 0, 150),
+		BackgroundTransparency = 1,
+		Parent = details,
+	})
 	Lib.new(
 		"UIListLayout",
 		{ Padding = UDim.new(0, 8), VerticalAlignment = Enum.VerticalAlignment.Bottom, Parent = actions }
@@ -98,15 +95,12 @@ function Inventory.init(gui: ScreenGui)
 		TextColor3 = T.accent,
 		Parent = chestView,
 	})
-	local chestGridHolder = Lib.new(
-		"Frame",
-		{
-			Position = UDim2.fromOffset(0, 30),
-			Size = UDim2.new(1, 0, 1, -30),
-			BackgroundTransparency = 1,
-			Parent = chestView,
-		}
-	)
+	local chestGridHolder = Lib.new("Frame", {
+		Position = UDim2.fromOffset(0, 30),
+		Size = UDim2.new(1, 0, 1, -30),
+		BackgroundTransparency = 1,
+		Parent = chestView,
+	})
 	local chestGrid = Widgets.scroll(chestGridHolder, Vector2.new(58, 58), 6)
 
 	local selected: number? = nil
@@ -156,6 +150,12 @@ function Inventory.init(gui: ScreenGui)
 			extra = ("\n🛡️ Defesa %d%%   🔥 Calor %d%%"):format(def.defense * 100, (def.warmth or 0) * 100)
 		end
 		desc.Text = def.description .. extra
+		if def.id == "island_map" then
+			actionButton("🗺️ Abrir mapa (N)", T.accent2:Lerp(T.panel, 0.4), function()
+				Widgets.toggle("Map", true)
+			end)
+			return
+		end
 		if def.category == "food" then
 			actionButton("Comer / Beber", T.good:Lerp(T.panel, 0.4), function()
 				State.action("Use", slot)

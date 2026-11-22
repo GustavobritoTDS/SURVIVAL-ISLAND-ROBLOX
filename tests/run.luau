@@ -265,6 +265,7 @@ test("todo item obtenível (sem itens órfãos)", function()
 	end
 	for _, c in Creatures do for _, d in c.drops do obtainable[d.item] = true end end
 	obtainable.fresh_water = true -- coletor de chuva
+	obtainable.island_map = true -- recebido ao entrar
 	for id in Items do
 		assert(obtainable[id], "item impossível de obter: " .. id)
 	end

@@ -207,45 +207,33 @@ function Build.init(gui: ScreenGui)
 		TextSize = 15,
 		Parent = toolbar,
 	})
-	local row = Lib.new(
-		"Frame",
-		{
-			Position = UDim2.fromOffset(10, 36),
-			Size = UDim2.new(1, -20, 0, 50),
-			BackgroundTransparency = 1,
-			Parent = toolbar,
-		}
-	)
-	Lib.new(
-		"UIListLayout",
-		{
-			FillDirection = Enum.FillDirection.Horizontal,
-			Padding = UDim.new(0, 8),
-			HorizontalAlignment = Enum.HorizontalAlignment.Center,
-			Parent = row,
-		}
-	)
-	Lib.button(
-		{
-			Size = UDim2.fromOffset(150, 48),
-			Text = "✅ Colocar",
-			BackgroundColor3 = T.good:Lerp(T.panel, 0.4),
-			Parent = row,
-		},
-		confirm
-	)
+	local row = Lib.new("Frame", {
+		Position = UDim2.fromOffset(10, 36),
+		Size = UDim2.new(1, -20, 0, 50),
+		BackgroundTransparency = 1,
+		Parent = toolbar,
+	})
+	Lib.new("UIListLayout", {
+		FillDirection = Enum.FillDirection.Horizontal,
+		Padding = UDim.new(0, 8),
+		HorizontalAlignment = Enum.HorizontalAlignment.Center,
+		Parent = row,
+	})
+	Lib.button({
+		Size = UDim2.fromOffset(150, 48),
+		Text = "✅ Colocar",
+		BackgroundColor3 = T.good:Lerp(T.panel, 0.4),
+		Parent = row,
+	}, confirm)
 	Lib.button({ Size = UDim2.fromOffset(110, 48), Text = "🔄 Girar", Parent = row }, function()
 		rot = (rot + 1) % 4
 	end)
-	Lib.button(
-		{
-			Size = UDim2.fromOffset(110, 48),
-			Text = "❌ Sair",
-			BackgroundColor3 = T.bad:Lerp(T.panel, 0.5),
-			Parent = row,
-		},
-		stop
-	)
+	Lib.button({
+		Size = UDim2.fromOffset(110, 48),
+		Text = "❌ Sair",
+		BackgroundColor3 = T.bad:Lerp(T.panel, 0.5),
+		Parent = row,
+	}, stop)
 
 	-- Janela "Construir": lista de construções no inventário + desmontar
 	local _, body = Widgets.window(gui, "Build", "🏠 Construir", Vector2.new(640, 440))

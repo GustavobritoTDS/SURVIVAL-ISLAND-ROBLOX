@@ -37,6 +37,7 @@ Lib.Theme = {
 	},
 }
 local T = Lib.Theme
+Lib.clickSound = nil :: (() -> ())? -- definido pelo Fx (som de clique)
 
 function Lib.reducedMotion(): boolean
 	local ok, v = pcall(function()
@@ -74,15 +75,12 @@ function Lib.corner(r: number): UICorner
 end
 
 function Lib.stroke(color: Color3?, thickness: number?, transparency: number?): UIStroke
-	return Lib.new(
-		"UIStroke",
-		{
-			Color = color or T.stroke,
-			Thickness = thickness or 1.5,
-			Transparency = transparency or 0.35,
-			ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-		}
-	)
+	return Lib.new("UIStroke", {
+		Color = color or T.stroke,
+		Thickness = thickness or 1.5,
+		Transparency = transparency or 0.35,
+		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+	})
 end
 
 function Lib.pad(px: number): UIPadding
@@ -167,6 +165,11 @@ function Lib.button(props: { [string]: any }, onClick: (() -> ())?): TextButton
 	end)
 	b.MouseButton1Down:Connect(function()
 		Lib.tween(scale, 0.08, { Scale = 0.94 })
+	end)
+	b.Activated:Connect(function()
+		if Lib.clickSound then
+			Lib.clickSound()
+		end
 	end)
 	b.MouseButton1Up:Connect(function()
 		Lib.tween(scale, 0.22, { Scale = 1 }, Enum.EasingStyle.Back)

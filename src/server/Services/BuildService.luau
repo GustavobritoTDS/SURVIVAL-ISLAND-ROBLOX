@@ -299,6 +299,7 @@ local function create(owner: Player, id: string, cf: CFrame, extra: any?): Built
 	table.insert(list, b)
 	if id == "base_totem" then
 		totems[owner] = b
+		owner:SetAttribute("BasePos", cf.Position) -- marcador no Mapa da Ilha
 	end
 	registerHeat(b)
 	setupInteractions(b)
@@ -318,6 +319,7 @@ local function destroy(b: Built)
 	end
 	if totems[b.owner] == b then
 		totems[b.owner] = nil
+		b.owner:SetAttribute("BasePos", nil)
 	end
 	if beds[b.owner] == b then
 		beds[b.owner] = nil

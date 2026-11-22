@@ -388,6 +388,10 @@ function PlayerService.init()
 			task.spawn(fn, player, data)
 		end
 		PlayerService.refreshInventorySize(player)
+		-- Todo náufrago tem o Mapa da Ilha
+		if Inventory.count(s.inv, "island_map") == 0 then
+			Inventory.add(s.inv, "island_map", 1, 1, Game.HOTBAR_SLOTS, true)
+		end
 		PlayerService.sync(player)
 		player:SetAttribute("DataReady", true)
 	end
