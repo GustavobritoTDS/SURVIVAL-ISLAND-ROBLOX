@@ -54,7 +54,7 @@
 | Jogador fora do servidor → `NotProcessedYet` (Roblox reenvia) | ✅ |
 | Falha ao salvar após a compra → `NotProcessedYet` (sem dupla entrega graças à lista de recibos) | ✅ Revisão |
 | Passes reconhecidos ao reconectar | ✅ Revisão (checados em todo login) |
-| Compra real de pass ou produto | ⏳ **Não testado**: exige publicar e criar os produtos. Usar as compras de teste do Studio (não cobram Robux) |
+| Compra de pass ou produto | ✅ 4 passes e 5 produtos criados com IDs reais; compra de teste no Studio feita pelo dono (v9) |
 
 ## 5. Salvamento
 
@@ -64,7 +64,7 @@
 | Perfil pequeno (821 bytes; limite 4 MB) | ✅ |
 | Dados corrompidos ou antigos (ids inválidos, pilhas acima do limite) | ✅ Unitário: `deserialize` sanitiza |
 | Trava de sessão, retries, autosave e BindToClose | ✅ Revisão |
-| Salvamento real no DataStore | ⏳ **Não testado**: exige publicar e ativar API Services |
+| Salvamento real no DataStore | ✅ Ativo no place publicado (sem modo memória nos logs da v7–v9) |
 
 ## 6. Privacidade e políticas (17.3)
 
@@ -111,3 +111,8 @@ Antes do lançamento público, falta:
 3. Criar os produtos e testar as compras de teste do Studio.
 4. Testar no emulador de celular.
 5. Preencher o questionário de maturidade.
+
+## Atualização: versão publicada v9 (2026-11-22)
+- Experiência publicada (privada), DataStore real ativo e monetização com IDs reais.
+- Guia Bento, Mapa da Ilha com rotas, sons licenciados e placas legíveis incluídos e testados em Play.
+- Pendente antes do lançamento público: questionário de maturidade, teste com 2 jogadores, teste no emulador de celular e thumbnails com capturas reais.
