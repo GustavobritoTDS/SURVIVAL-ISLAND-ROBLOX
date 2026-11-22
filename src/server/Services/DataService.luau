@@ -21,6 +21,7 @@ local store: DataStore? = nil
 local profiles: { [Player]: any } = {}
 local loadedSignal = Instance.new("BindableEvent")
 local saving: { [Player]: boolean } = {}
+local lastWrite: { [Player]: number } = {}
 DataService.memoryMode = false
 
 function DataService.template(): any
@@ -107,6 +108,7 @@ local function load(player: Player)
 		end)
 		if ok and not locked then
 			profiles[player] = reconcile(data or DataService.template())
+			lastWrite[player] = os.clock() -- o carregamento também grava (trava de sessão)
 			loadedSignal:Fire(player)
 			return
 		end
@@ -131,6 +133,12 @@ function DataService.save(player: Player, release: boolean?): boolean
 		return false
 	end
 	saving[player] = true
+	-- O Roblox aceita 1 gravação por chave a cada ~6 s; espera o intervalo para não enfileirar
+	local since = os.clock() - (lastWrite[player] or 0)
+	if since < 6.5 then
+		task.wait(6.5 - since)
+	end
+	lastWrite[player] = os.clock()
 	local ds = store :: DataStore
 	local ok, err = retry(function()
 		ds:UpdateAsync(key(player), function(old: any)
