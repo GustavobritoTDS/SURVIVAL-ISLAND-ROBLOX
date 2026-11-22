@@ -80,7 +80,7 @@ Ver `docs/PRIVACIDADE.md`. Resumo:
 | Caso | Resultado |
 |---|---|
 | Território bloqueia construção de terceiros, baú e porta de não-amigos | ✅ Revisão de código |
-| Teste com 2 ou mais jogadores (Studio → *Clients and Servers*) | ⏳ **Não testado**: próximo passo |
+| Teste com 2 jogadores (Studio → Clientes e servidores) | ✅ Feito pelo dono: baú e território bloqueados para não-amigos, sem erros nos logs |
 
 ## 8. Desempenho
 
@@ -115,4 +115,5 @@ Antes do lançamento público, falta:
 ## Atualização: versão publicada v9 (2026-11-22)
 - Experiência publicada (privada), DataStore real ativo e monetização com IDs reais.
 - Guia Bento, Mapa da Ilha com rotas, sons licenciados e placas legíveis incluídos e testados em Play.
-- Pendente antes do lançamento público: questionário de maturidade, teste com 2 jogadores, teste no emulador de celular e thumbnails com capturas reais.
+- Testes com 2 jogadores e no emulador de celular: ✅ aprovados pelo dono (sem erros nos logs; só um aviso de fila do DataStore, corrigido).
+- Pendente antes do lançamento público: questionário de maturidade e thumbnails com capturas reais.
