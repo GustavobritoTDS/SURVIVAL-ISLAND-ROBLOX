@@ -383,6 +383,17 @@ function BuildService.validate(player: Player, id: string, pos: Vector3, rot: nu
 	if #inside > 0 then
 		return false, "Espaço ocupado", nil
 	end
+	-- Não pode prender/encobrir jogadores
+	for _, other in Players:GetPlayers() do
+		local ohrp = hrpOf(other)
+		if ohrp then
+			local rel = cf:PointToObjectSpace(ohrp.Position)
+			local half = def.size / 2 + Vector3.new(1.5, 3, 1.5)
+			if math.abs(rel.X) < half.X and math.abs(rel.Y) < half.Y and math.abs(rel.Z) < half.Z then
+				return false, "Há um jogador no caminho", nil
+			end
+		end
+	end
 	-- Apoio: chão (terreno) abaixo ou encostado em outra construção
 	local down = workspace:Raycast(p, Vector3.new(0, -(def.size.Y / 2 + 2.5), 0), rayParams)
 	local supported = down ~= nil

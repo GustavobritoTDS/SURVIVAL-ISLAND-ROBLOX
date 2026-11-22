@@ -254,8 +254,15 @@ function PlayerService.onCounter(fn: (Player, string, number) -> ())
 	table.insert(counterListeners, fn)
 end
 
+-- Registra callback de "jogador pronto"; também é chamado para quem já estava pronto
 function PlayerService.onReady(fn: (Player, any) -> ())
 	table.insert(readyListeners, fn)
+	for p in sessions do
+		local data = DataService.get(p)
+		if data and p.Parent then
+			task.spawn(fn, p, data)
+		end
+	end
 end
 
 function PlayerService.isFriend(owner: Player?, other: Player): boolean
@@ -350,9 +357,9 @@ local function onTutorial(player: Player, step: any)
 end
 
 function PlayerService.init()
-	DataService.loaded:Connect(function(player: Player)
+	local function onLoaded(player: Player)
 		local data = DataService.get(player)
-		if not data then
+		if not data or sessions[player] then
 			return
 		end
 		local s: Session = {
@@ -378,7 +385,12 @@ function PlayerService.init()
 		PlayerService.refreshInventorySize(player)
 		PlayerService.sync(player)
 		player:SetAttribute("DataReady", true)
-	end)
+	end
+	DataService.loaded:Connect(onLoaded)
+	-- Jogadores cujo perfil carregou antes deste serviço iniciar (entraram durante a geração do mundo)
+	for _, p in Players:GetPlayers() do
+		task.spawn(onLoaded, p)
+	end
 
 	DataService.onBeforeSave(function(player, data)
 		local s = sessions[player]

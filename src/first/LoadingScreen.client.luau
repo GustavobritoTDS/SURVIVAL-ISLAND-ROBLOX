@@ -34,10 +34,19 @@ grad.Color = ColorSequence.new({
 grad.Rotation = 90
 grad.Parent = bg
 
-local scale = Instance.new("UIScale")
-scale.Parent = bg
+-- Conteúdo escalado: o quadro é ampliado por 1/escala e reduzido pela UIScale,
+-- assim continua cobrindo a tela inteira e o conteúdo fica proporcional a 720 px de altura.
 local cam = workspace.CurrentCamera
-scale.Scale = math.clamp((cam and cam.ViewportSize.Y or 720) / 720, 0.6, 1.2)
+local s = math.clamp((cam and cam.ViewportSize.Y or 720) / 720, 0.6, 1.2)
+local content = Instance.new("Frame")
+content.AnchorPoint = Vector2.new(0.5, 0.5)
+content.Position = UDim2.fromScale(0.5, 0.5)
+content.Size = UDim2.fromScale(1 / s, 1 / s)
+content.BackgroundTransparency = 1
+content.Parent = bg
+local scale = Instance.new("UIScale")
+scale.Scale = s
+scale.Parent = content
 
 -- Sol + horizonte (ambiente: o sol "respira" devagar)
 local sun = Instance.new("Frame")
@@ -46,7 +55,7 @@ sun.Position = UDim2.fromScale(0.5, 0.36)
 sun.Size = UDim2.fromOffset(220, 220)
 sun.BackgroundColor3 = Color3.fromRGB(255, 205, 120)
 sun.BackgroundTransparency = 0.25
-sun.Parent = bg
+sun.Parent = content
 local sc = Instance.new("UICorner")
 sc.CornerRadius = UDim.new(1, 0)
 sc.Parent = sun
@@ -62,7 +71,7 @@ title.TextColor3 = TEXT
 title.TextSize = 84
 title.TextStrokeColor3 = Color3.fromRGB(20, 40, 50)
 title.TextStrokeTransparency = 0
-title.Parent = bg
+title.Parent = content
 
 local subtitle = Instance.new("TextLabel")
 subtitle.AnchorPoint = Vector2.new(0.5, 0)
@@ -73,7 +82,7 @@ subtitle.Font = Enum.Font.GothamBold
 subtitle.Text = "A MARÉ SOMBRIA"
 subtitle.TextColor3 = TIDE
 subtitle.TextSize = 26
-subtitle.Parent = bg
+subtitle.Parent = content
 
 local barBack = Instance.new("Frame")
 barBack.AnchorPoint = Vector2.new(0.5, 0)
@@ -81,7 +90,7 @@ barBack.Position = UDim2.fromScale(0.5, 0.66)
 barBack.Size = UDim2.fromOffset(420, 14)
 barBack.BackgroundColor3 = Color3.fromRGB(5, 15, 20)
 barBack.BackgroundTransparency = 0.3
-barBack.Parent = bg
+barBack.Parent = content
 local c1 = Instance.new("UICorner")
 c1.CornerRadius = UDim.new(1, 0)
 c1.Parent = barBack
@@ -102,7 +111,7 @@ status.Font = Enum.Font.GothamMedium
 status.TextColor3 = TEXT
 status.TextSize = 16
 status.Text = "Chegando à ilha..."
-status.Parent = bg
+status.Parent = content
 
 local TIPS = {
 	"Dica: fogueiras afastam as Sombras da Maré à noite.",
@@ -121,7 +130,7 @@ tip.Font = Enum.Font.GothamMedium
 tip.TextColor3 = Color3.fromRGB(200, 220, 225)
 tip.TextSize = 15
 tip.Text = TIPS[math.random(1, #TIPS)]
-tip.Parent = bg
+tip.Parent = content
 
 local play = Instance.new("TextButton")
 play.AnchorPoint = Vector2.new(0.5, 0)
@@ -134,7 +143,7 @@ play.TextColor3 = Color3.fromRGB(40, 30, 20)
 play.TextSize = 32
 play.Visible = false
 play.AutoButtonColor = true
-play.Parent = bg
+play.Parent = content
 local c3 = Instance.new("UICorner")
 c3.CornerRadius = UDim.new(0, 16)
 c3.Parent = play

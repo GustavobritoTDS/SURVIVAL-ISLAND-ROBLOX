@@ -321,6 +321,9 @@ local function onEquipCosmetic(player: Player, kind: any, id: any)
 	PlayerService.sync(player, "cosmetics")
 end
 
+-- Exposto para testes automatizados (harness de Studio)
+MonetizationService.processReceipt = processReceipt
+
 function MonetizationService.init()
 	MarketplaceService.ProcessReceipt = processReceipt
 	MarketplaceService.PromptGamePassPurchaseFinished:Connect(function(player, passId, purchased)

@@ -22,6 +22,15 @@ local SurvivalService = {}
 
 local fxEvent = Net.event("Fx")
 local lastSafe: { [Player]: CFrame } = {}
+local lastPos: { [Player]: Vector3 } = {}
+local MAX_SPEED = 75 -- studs/s horizontais (andar = 18; margem para empurrões e lag)
+
+-- Teleportes legítimos do servidor ganham alguns segundos de tolerância
+local function grace(player: Player)
+	player:SetAttribute("TeleportGrace", os.clock() + 3)
+	lastPos[player] = nil
+end
+SurvivalService.grace = grace
 local alive: { [Player]: boolean } = {}
 
 -- ===== Água doce =====
@@ -136,6 +145,7 @@ local function onCharacter(player: Player, char: Model)
 	alive[player] = true
 	-- Renascimento: cama ou praia
 	local bed = BuildService.bedOf(player)
+	grace(player)
 	task.defer(function()
 		if bed then
 			char:PivotTo(bed)
@@ -179,11 +189,24 @@ local function tick(dt: number)
 		local hrp = char and char:FindFirstChild("HumanoidRootPart") :: BasePart?
 		if data and hum and hrp and hum.Health > 0 and alive[player] then
 			local pos = hrp.Position
+			-- Anti-teleporte/speed: deslocamento horizontal impossível volta à última posição
+			local prev = lastPos[player]
+			local graceUntil = (player:GetAttribute("TeleportGrace") :: number?) or 0
+			if prev and os.clock() > graceUntil then
+				local flat = (pos - prev) * Vector3.new(1, 0, 1)
+				if flat.Magnitude / math.max(dt, 0.1) > MAX_SPEED then
+					char:PivotTo(CFrame.new(prev + Vector3.new(0, 2, 0)))
+					warn(("[Survival] movimento suspeito de %s: %.0f studs em %.1fs"):format(player.Name, flat.Magnitude, dt))
+					pos = prev
+				end
+			end
+			lastPos[player] = pos
 			local region = Regions.at(pos)
 			-- Regiões bloqueadas por nível: empurra de volta para o último ponto seguro
 			if data.level < region.level then
 				local back = lastSafe[player]
 				if back then
+					grace(player)
 					char:PivotTo(back)
 				end
 				PlayerService.notify(player, ("%s requer nível %d"):format(region.name, region.level), "bad", "🔒")
@@ -243,6 +266,7 @@ function SurvivalService.init()
 	end
 	Players.PlayerRemoving:Connect(function(p)
 		lastSafe[p] = nil
+		lastPos[p] = nil
 		alive[p] = nil
 	end)
 

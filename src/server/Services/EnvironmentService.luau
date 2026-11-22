@@ -134,7 +134,7 @@ function EnvironmentService.init()
 				Env.night = night
 				workspace:SetAttribute("Night", night)
 				if night then
-					tween(Lighting, { OutdoorAmbient = Color3.fromRGB(60, 70, 105), Brightness = 1.2 }, 8)
+					tween(Lighting, { OutdoorAmbient = Color3.fromRGB(95, 108, 150), Brightness = 1.7 }, 8)
 					for _, p in Players:GetPlayers() do
 						PlayerService.notify(p, "A noite caiu. As Sombras da Maré despertam...", "bad", "🌙")
 					end

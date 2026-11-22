@@ -1,0 +1,40 @@
+{
+  "name": "SurvivalIslandTest",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "Shared": { "$path": "src/shared" }
+    },
+    "ReplicatedFirst": {
+      "Loading": { "$path": "src/first" }
+    },
+    "ServerScriptService": {
+      "Server": { "$path": "src/server" },
+      "TestServer": { "$path": "tests/harness/TestServer.server.luau" }
+    },
+    "StarterPlayer": {
+      "$properties": {
+        "CameraMaxZoomDistance": 60,
+        "CharacterWalkSpeed": 18,
+        "CharacterJumpPower": 50
+      },
+      "StarterPlayerScripts": {
+        "Client": { "$path": "src/client" },
+        "TestClient": { "$path": "tests/harness/TestClient.client.luau" }
+      }
+    },
+    "Players": {
+      "$properties": { "CharacterAutoLoads": false }
+    },
+    "Workspace": {
+      "$properties": {
+        "StreamingEnabled": true,
+        "StreamingMinRadius": 128,
+        "StreamingTargetRadius": 512
+      }
+    },
+    "Lighting": {
+      "$properties": { "Technology": "ShadowMap", "ClockTime": 8 }
+    }
+  }
+}

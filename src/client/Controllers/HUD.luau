@@ -25,7 +25,8 @@ local function makeGui(): ScreenGui
 	local gui = Lib.new("ScreenGui", {
 		Name = "SurvivalHUD",
 		ResetOnSpawn = false,
-		IgnoreGuiInset = true,
+		-- Mantém o HUD fora da barra superior do Roblox (menu e chat)
+		ScreenInsets = Enum.ScreenInsets.CoreUISafeInsets,
 		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
 		Parent = player:WaitForChild("PlayerGui"),
 	})
@@ -186,21 +187,28 @@ function HUD.init()
 	State.on("inv", refreshHotbar, true)
 
 	-- Botões de menu (lado direito)
-	local menu = Lib.new("Frame", { AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -16, 0.5, 0), Size = UDim2.fromOffset(64, 6 * 70), BackgroundTransparency = 1, Parent = gui })
-	Lib.new("UIListLayout", { Padding = UDim.new(0, 8), SortOrder = Enum.SortOrder.LayoutOrder, VerticalAlignment = Enum.VerticalAlignment.Center, Parent = menu })
+	-- Dock lateral: ícone + nome (legível em qualquer dispositivo) + atalho no PC
+	local menu = Lib.panel({ AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -12, 0.5, 0), Size = UDim2.fromOffset(84, 6 * 66 + 16), BackgroundTransparency = 0.35, Parent = gui })
+	Lib.new("UIPadding", { PaddingTop = UDim.new(0, 8), PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 6), Parent = menu })
+	Lib.new("UIListLayout", { Padding = UDim.new(0, 6), SortOrder = Enum.SortOrder.LayoutOrder, Parent = menu })
 	local entries = {
-		{ "Inventory", "🎒", "Tab" },
-		{ "Crafting", "🛠️", "C" },
-		{ "Build", "🏗️", "B" },
-		{ "Quests", "📜", "J" },
-		{ "Shop", "🛒", "M" },
-		{ "Settings", "⚙️", "" },
+		{ "Inventory", "🎒", "Mochila", "Tab", T.accent2 },
+		{ "Crafting", "🔨", "Criar", "C", T.accent },
+		{ "Build", "🏠", "Construir", "B", Color3.fromRGB(150, 200, 110) },
+		{ "Quests", "📜", "Missões", "J", T.xp },
+		{ "Shop", "🛒", "Loja", "M", Color3.fromRGB(255, 120, 150) },
+		{ "Settings", "⚙️", "Ajustes", "", T.muted },
 	}
 	for i, e in entries do
-		local b = Lib.button({ Size = UDim2.fromOffset(62, 62), LayoutOrder = i, Text = "", BackgroundColor3 = T.panel, Parent = menu })
-		Lib.text({ Size = UDim2.new(1, 0, 0.75, 0), Text = e[2], TextSize = 28, Parent = b })
-		if not Lib.isTouch() and e[3] ~= "" then
-			Lib.text({ Position = UDim2.fromScale(0, 0.68), Size = UDim2.new(1, 0, 0.3, 0), Text = e[3], TextSize = 11, TextColor3 = T.muted, Parent = b })
+		local b = Lib.button({ Size = UDim2.fromOffset(72, 60), LayoutOrder = i, Text = "", BackgroundColor3 = T.panel2, Parent = menu })
+		local bar = Lib.new("Frame", { Position = UDim2.fromOffset(0, 10), Size = UDim2.fromOffset(3, 40), BackgroundColor3 = e[5], BorderSizePixel = 0, Parent = b })
+		Lib.corner(2).Parent = bar
+		Lib.text({ Position = UDim2.fromOffset(0, 4), Size = UDim2.new(1, 0, 0, 30), Text = e[2], TextSize = 24, Parent = b })
+		Lib.text({ Position = UDim2.fromOffset(0, 36), Size = UDim2.new(1, 0, 0, 16), Text = e[3], TextSize = 12, TextColor3 = T.text, Parent = b })
+		if not Lib.isTouch() and e[4] ~= "" then
+			local badge = Lib.new("Frame", { AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -3, 0, 3), Size = UDim2.fromOffset(e[4] == "Tab" and 26 or 16, 14), BackgroundColor3 = Color3.fromRGB(10, 16, 20), BackgroundTransparency = 0.2, Parent = b })
+			Lib.corner(4).Parent = badge
+			Lib.text({ Size = UDim2.fromScale(1, 1), Text = e[4], TextSize = 10, TextColor3 = T.muted, Parent = badge })
 		end
 		b.Activated:Connect(function()
 			Widgets.toggle(e[1])

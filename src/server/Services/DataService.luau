@@ -186,23 +186,42 @@ local function beforeSave(player: Player)
 	end
 end
 
-function DataService.init()
-	local ok, res = pcall(function()
-		return DataStoreService:GetDataStore(Game.DATASTORE_NAME)
+-- Executa fn com limite de tempo; retorna (concluiu, ok, resultado)
+local function withTimeout(seconds: number, fn: () -> any): (boolean, boolean, any)
+	local done, ok, res = false, false, nil
+	task.spawn(function()
+		ok, res = pcall(fn)
+		done = true
 	end)
-	if ok then
-		store = res
-		-- teste rápido de acesso (no Studio sem API Services isso falha)
-		local okRead = pcall(function()
-			(res :: DataStore):GetAsync("__probe")
+	local t0 = os.clock()
+	while not done and os.clock() - t0 < seconds do
+		task.wait(0.1)
+	end
+	return done, ok, res
+end
+
+DataService.runBeforeSave = beforeSave -- exposto para testes
+
+function DataService.init()
+	-- Place não publicado (PlaceId 0) não tem DataStore: usa memória direto
+	if game.PlaceId ~= 0 then
+		local ok, res = pcall(function()
+			return DataStoreService:GetDataStore(Game.DATASTORE_NAME)
 		end)
-		if not okRead then
-			store = nil
+		if ok then
+			store = res
+			-- teste rápido de acesso (no Studio sem API Services isso falha ou trava)
+			local finished, okRead = withTimeout(8, function()
+				return (res :: DataStore):GetAsync("__probe")
+			end)
+			if not finished or not okRead then
+				store = nil
+			end
 		end
 	end
 	if not store then
 		DataService.memoryMode = true
-		warn("[Data] DataStore indisponível: modo memória (nada será salvo). No Studio, ative Game Settings > Security > Enable Studio Access to API Services.")
+		warn("[Data] DataStore indisponível: modo memória (nada será salvo). Publique o place e, no Studio, ative Game Settings > Security > Enable Studio Access to API Services.")
 	end
 
 	Players.PlayerAdded:Connect(load)

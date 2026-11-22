@@ -17,6 +17,10 @@ local EquipService = {}
 
 local fxEvent = Net.event("Fx")
 local activatedHandlers: { (Player, string, Tool) -> () } = {}
+local lastSwing: { [Player]: number } = {}
+Players.PlayerRemoving:Connect(function(p)
+	lastSwing[p] = nil
+end)
 
 -- Outros serviços (Resource/Combat) registram o que acontece ao golpear
 function EquipService.onActivated(fn: (Player, string, Tool) -> ())
@@ -59,13 +63,13 @@ function EquipService.refresh(player: Player)
 		clearTools(player)
 		local newTool = ToolModels.build(itemId :: string)
 		if newTool then
-			local last = 0
 			newTool.Activated:Connect(function()
+				-- cooldown por jogador (não por Tool): trocar de slot não zera o tempo
 				local now = os.clock()
-				if now - last < (def.cooldown or 0.6) then
+				if now - (lastSwing[player] or 0) < (def.cooldown or 0.6) then
 					return
 				end
-				last = now
+				lastSwing[player] = now
 				-- animação de golpe padrão do Roblox
 				local anim = Instance.new("StringValue")
 				anim.Name = "toolanim"
