@@ -9,28 +9,28 @@ local Monetization = {}
 
 Monetization.gamePasses = {
 	vip = {
-		id = 0,
+		id = 2092092715,
 		name = "VIP do Náufrago",
 		price = 299,
 		icon = "👑",
 		description = "Tag VIP dourada, +10% de XP, +25 Conchas por dia e trilha dourada. Sem vantagem em combate.",
 	},
 	big_backpack = {
-		id = 0,
+		id = 2097282478,
 		name = "Mochila do Explorador",
 		price = 149,
 		icon = "🎒",
 		description = "+12 espaços no inventário (24 → 36).",
 	},
 	parrot = {
-		id = 0,
+		id = 2092590766,
 		name = "Papagaio Companheiro",
 		price = 99,
 		icon = "🦜",
 		description = "Um papagaio colorido que voa ao seu lado. Puramente cosmético.",
 	},
 	trails = {
-		id = 0,
+		id = 2093802684,
 		name = "Rastros Lendários",
 		price = 79,
 		icon = "✨",
@@ -40,7 +40,7 @@ Monetization.gamePasses = {
 
 Monetization.devProducts = {
 	shells_small = {
-		id = 0,
+		id = 3734925918,
 		name = "Saco de Conchas",
 		price = 25,
 		icon = "🐚",
@@ -48,7 +48,7 @@ Monetization.devProducts = {
 		description = "+100 Conchas",
 	},
 	shells_medium = {
-		id = 0,
+		id = 3734926078,
 		name = "Baú de Conchas",
 		price = 99,
 		icon = "🐚",
@@ -56,7 +56,7 @@ Monetization.devProducts = {
 		description = "+450 Conchas (+12% bônus)",
 	},
 	shells_large = {
-		id = 0,
+		id = 3734926391,
 		name = "Tesouro de Conchas",
 		price = 299,
 		icon = "🐚",
@@ -64,7 +64,7 @@ Monetization.devProducts = {
 		description = "+1500 Conchas (+25% bônus)",
 	},
 	supply_crate = {
-		id = 0,
+		id = 3734926564,
 		name = "Caixa de Suprimentos",
 		price = 49,
 		icon = "📦",
@@ -72,7 +72,7 @@ Monetization.devProducts = {
 		description = "Recursos para acelerar sua base",
 	},
 	keep_items = {
-		id = 0,
+		id = 3734926770,
 		name = "Amuleto da Maré",
 		price = 35,
 		icon = "🧿",

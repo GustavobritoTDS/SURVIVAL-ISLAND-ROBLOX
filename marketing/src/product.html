@@ -1,0 +1,20 @@
+<!doctype html>
+<!-- Ícone 512x512 de Game Pass / Produto. Uso: product.html?icon=👑&c1=%23ffcf5a&c2=%23c47a1c&label=VIP -->
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;width:512px;height:512px;overflow:hidden;background:transparent}
+  .card{position:absolute;inset:0;border-radius:96px;overflow:hidden}
+  .ray{position:absolute;inset:-50%;background:repeating-conic-gradient(rgba(255,255,255,.10) 0 10deg,transparent 10deg 20deg)}
+  .glow{position:absolute;left:50%;top:44%;width:330px;height:330px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(rgba(255,255,255,.55),rgba(255,255,255,0) 70%)}
+  .icon{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);font-size:230px;line-height:1;filter:drop-shadow(0 14px 10px rgba(0,0,0,.35))}
+  .label{position:absolute;bottom:34px;left:0;right:0;text-align:center;font-family:'Fredoka',sans-serif;font-size:62px;color:#fff;-webkit-text-stroke:9px #13303d;paint-order:stroke fill;letter-spacing:2px}
+  .rim{position:absolute;inset:6px;border-radius:90px;border:6px solid rgba(255,255,255,.55)}
+</style></head>
+<body><div class="card" id="card"><div class="ray"></div><div class="glow"></div><div class="icon" id="icon"></div><div class="label" id="label"></div><div class="rim"></div></div>
+<script>
+  const p = new URLSearchParams(location.search);
+  document.getElementById('card').style.background = `linear-gradient(160deg, ${p.get('c1')||'#40cdc3'}, ${p.get('c2')||'#13303d'})`;
+  document.getElementById('icon').textContent = p.get('icon') || '🏝️';
+  document.getElementById('label').textContent = p.get('label') || '';
+</script></body></html>

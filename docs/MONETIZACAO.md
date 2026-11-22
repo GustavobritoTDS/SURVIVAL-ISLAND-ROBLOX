@@ -38,3 +38,19 @@ Conchas compram apenas cosméticos e uma cesta de frutas. Também são ganhas jo
 5. Teste com compras de teste no Studio (o Studio não cobra Robux).
 
 Considere ativar o **preço regional / Price Optimization** do Roblox depois de ter tráfego.
+
+## IDs reais criados no Creator Dashboard (2026-11-22)
+
+| Item | Tipo | ID | Preço (R$) |
+|---|---|---|---|
+| VIP do Náufrago | Game Pass | 2092092715 | 299 |
+| Mochila do Explorador | Game Pass | 2097282478 | 149 |
+| Papagaio Companheiro | Game Pass | 2092590766 | 99 |
+| Rastros Lendários | Game Pass | 2093802684 | 79 |
+| Saco de Conchas | Developer Product | 3734925918 | 25 |
+| Baú de Conchas | Developer Product | 3734926078 | 99 |
+| Tesouro de Conchas | Developer Product | 3734926391 | 299 |
+| Caixa de Suprimentos | Developer Product | 3734926564 | 49 |
+| Amuleto da Maré | Developer Product | 3734926770 | 35 |
+
+O Gerenciamento de Preços (preço regional automático) ficou **desativado**: ativá-lo exige aceitar um termo do Roblox, e essa decisão é do dono da conta.
