@@ -10,8 +10,9 @@ local Guide = require(Shared.Config.Guide)
 
 local MapService = {}
 
-MapService.GRID = 56
+MapService.GRID = 80
 MapService.EXTENT = 620 -- metade do lado do mapa em studs
+local B36 = "0123456789abcdefghijklmnopqrstuvwxyz"
 
 -- código de cor por material
 local CODES: { [Enum.Material]: string } = {
@@ -32,6 +33,10 @@ function MapService.init()
 	params.FilterType = Enum.RaycastFilterType.Include
 	params.FilterDescendantsInstances = { workspace.Terrain }
 	params.IgnoreWater = false
+	local floorParams = RaycastParams.new()
+	floorParams.FilterType = Enum.RaycastFilterType.Include
+	floorParams.FilterDescendantsInstances = { workspace.Terrain }
+	floorParams.IgnoreWater = true
 	local n, ext = MapService.GRID, MapService.EXTENT
 	local cells = table.create(n * n)
 	for row = 0, n - 1 do
@@ -47,9 +52,16 @@ function MapService.init()
 				else
 					code = CODES[hit.Material] or "g"
 				end
-				h = math.clamp(math.floor(hit.Position.Y / 16), 0, 9)
+				local y = hit.Position.Y
+				if hit.Material == Enum.Material.Water then
+					-- profundidade: segundo raio atravessando a água até o fundo
+					local floor =
+						workspace:Raycast(hit.Position + Vector3.new(0, -0.5, 0), Vector3.new(0, -80, 0), floorParams)
+					y = floor and floor.Position.Y or -40
+				end
+				h = math.clamp(math.floor((y + 30) / 6), 0, 35) -- base36: relevo fino (inclui fundo do mar)
 			end
-			cells[row * n + col + 1] = code .. tostring(h)
+			cells[row * n + col + 1] = code .. string.sub(B36, h + 1, h + 1)
 		end
 		if row % 8 == 0 then
 			task.wait()
