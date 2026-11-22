@@ -28,3 +28,7 @@ start build/SurvivalIsland.rbxlx
 - Crie os Game Passes e Produtos (`docs/MONETIZACAO.md`), atualize os IDs e republique.
 - Ative *Analytics → Funnel Events* para medir onde o jogador sai do tutorial.
 - Mantenha o `CHANGELOG.md` a cada atualização (ciclo sugerido: 1–2 semanas).
+
+## Experiência publicada
+- Place ID: `114489520493330` · Universe ID: `10778546362`
+- Atualizar: abrir no Studio (Creator Dashboard → Editar no Studio), Plugins → Rojo → Connect (`rojo serve`), Arquivo → Publicar no Roblox.
