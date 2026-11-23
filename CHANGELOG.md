@@ -1,5 +1,21 @@
 # Histórico de alterações
 
+## [0.2.0] — 2026-11-22 — Publicação privada (v9 no Roblox)
+
+### Adicionado
+- Guia **Velho Bento** com a Jornada do Náufrago (12 etapas, diálogo animado, câmera cinematográfica e itens necessários por etapa).
+- **Mapa da Ilha** (tecla N): relevo sombreado, zoom, arrastar e rotas com trilha de setas no chão.
+- Animações procedurais de golpe, coleta e refeição, e do NPC.
+- Sons licenciados (ProSoundEffects/Roblox) e ambiente (ondas, selva, grilos, fogueiras).
+- Árvores e placas refeitas; zona segura na praia inicial.
+- Monetização real: 4 Game Passes e 5 Developer Products com IDs da plataforma.
+- Ícone, descrição e 4 thumbnails com capturas reais do jogo.
+
+### Corrigido
+- Inventário ausente para quem entrava durante a geração do mapa; HUD atrás da barra do Roblox.
+- Exploit de cooldown de golpe; anti-teleporte; construção sobre outros jogadores.
+- DataStore: timeout em place não publicado e espaçamento de gravações por chave.
+
 ## [0.1.0] — 2026-11-22 — Primeira versão jogável (pré-publicação)
 
 ### Adicionado

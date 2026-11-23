@@ -32,3 +32,10 @@ start build/SurvivalIsland.rbxlx
 ## Experiência publicada
 - Place ID: `114489520493330` · Universe ID: `10778546362`
 - Atualizar: abrir no Studio (Creator Dashboard → Editar no Studio), Plugins → Rojo → Connect (`rojo serve`), Arquivo → Publicar no Roblox.
+
+## Checklist de lançamento público
+- [x] Publicado (privado), DataStore real, monetização com IDs reais
+- [x] Testes: unitários, E2E em Play, 2 jogadores, celular
+- [x] Ícone, descrição e thumbnails enviados
+- [ ] Questionário de maturidade (Dashboard → Público) — dono da conta
+- [ ] Acesso → Público — decisão do dono
