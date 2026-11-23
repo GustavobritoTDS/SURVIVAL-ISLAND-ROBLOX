@@ -37,5 +37,6 @@ start build/SurvivalIsland.rbxlx
 - [x] Publicado (privado), DataStore real, monetização com IDs reais
 - [x] Testes: unitários, E2E em Play, 2 jogadores, celular
 - [x] Ícone, descrição e thumbnails enviados
-- [ ] Questionário de maturidade (Dashboard → Público) — dono da conta
-- [ ] Acesso → Público — decisão do dono
+- [x] Faixa etária respondida e jogo **público** (2026-11-22)
+- [ ] Questionário detalhado de classificação (gênero/IARC) — opcional, amplia regiões e idades
+- [ ] Verificação em duas etapas na conta — recomendado

@@ -2,7 +2,7 @@
 
 Jogo de sobrevivência cooperativo para **Roblox**: você naufraga numa ilha tropical, coleta recursos, fabrica ferramentas, constrói sua base e sobrevive às noites, quando as **Sombras da Maré** saem do mar. O objetivo final é acender o **Farol de Resgate**.
 
-> 🎮 **Jogar:** https://www.roblox.com/games/114489520493330 (Place ID `114489520493330`, Universe ID `10778546362`; ainda privado)
+> 🎮 **Jogar:** https://www.roblox.com/games/114489520493330 (Place ID `114489520493330`, Universe ID `10778546362`; **público**)
 >
 > Código 100% em Luau, versionado com Git e sincronizado com o Roblox Studio via [Rojo](https://rojo.space).
 
